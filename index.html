@@ -1309,8 +1309,8 @@ function renderAuth(){
     main.innerHTML = `
       <div class="pt-wrap pt-intro">
         <h2>E-postanı doğrula</h2>
-        <p><strong>${pendingEmail}</strong> adresine gönderdiğimiz 6 haneli kodu gir.</p>
-        <input class="write-input" id="verifyCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456" style="text-align:center;font-size:1.4rem;letter-spacing:8px;">
+        <p><strong>${pendingEmail}</strong> adresine gönderdiğimiz doğrulama kodunu gir.</p>
+        <input class="write-input" id="verifyCode" type="text" inputmode="numeric" maxlength="10" placeholder="Kodu buraya yaz" style="text-align:center;font-size:1.4rem;letter-spacing:6px;">
         ${authError ? `<div class="write-feedback no show">${authError}</div>` : ''}
         <button class="btn-full" id="verifyBtn">Doğrula ve Devam Et</button>
         <span class="pt-skip" id="resendBtn">Kodu tekrar gönder</span>

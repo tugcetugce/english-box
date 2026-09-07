@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+<title>İngilizce Çalışma Kutum</title>
+<meta name="theme-color" content="#2B3A67">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="İngilizce Kutum">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232B3A67'/%3E%3Ctext x='50' y='64' font-size='46' text-anchor='middle' fill='%23E39A34' font-family='Georgia,serif' font-weight='700'%3EEn%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232B3A67'/%3E%3Ctext x='50' y='64' font-size='46' text-anchor='middle' fill='%23E39A34' font-family='Georgia,serif' font-weight='700'%3EEn%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F0F3EE;
+    --surface:#FFFFFF;
+    --ink:#1F2A44;
+    --ink-soft:#5A6478;
+    --navy:#2B3A67;
+    --navy-dark:#1D2848;
+    --amber:#E39A34;
+    --amber-soft:#FBEBD3;
+    --green:#4C8C6F;
+    --green-soft:#E1EFE7;
+    --rose:#C1577B;
+    --rose-soft:#F6E2E9;
+    --border:#DEE3D9;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    font-family:'Work Sans',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    background:var(--surface);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    box-shadow:0 0 40px rgba(31,42,68,0.08);
+  }
+  header.topbar{
+    background:var(--navy);
+    color:#fff;
+    padding:calc(20px + env(safe-area-inset-top)) 20px 18px;
+    border-bottom-left-radius:22px;
+    border-bottom-right-radius:22px;
+  }
+  header.topbar h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.4rem;
+    margin:0 0 4px;
+    letter-spacing:0.2px;
+  }
+  header.topbar p{
+    margin:0;
+    font-size:0.82rem;
+    color:#C8D0E6;
+  }
+  .level-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:10px;
+  }
+  .auth-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:8px;
+    padding-bottom:6px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .user-email{
+    font-size:0.72rem;
+    color:#C8D0E6;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    max-width:210px;
+  }
+  .level-badge{
+    background:var(--amber);
+    color:var(--navy-dark);
+    font-size:0.72rem;
+    font-weight:700;
+    padding:4px 11px;
+    border-radius:999px;
+  }
+  .retest-link{
+    font-size:0.72rem;
+    color:#B9C4E6;
+    text-decoration:underline;
+    cursor:pointer;
+  }
+  .rank-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:12px;
+  }
+  .rank-chip{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.82rem;
+    font-weight:600;
+  }
+  .rank-chip .emoji{font-size:1.15rem;}
+  .xp-text{font-size:0.74rem;color:#C8D0E6;font-weight:600;}
+  .xp-bar-track{
+    height:7px;
+    background:rgba(255,255,255,0.16);
+    border-radius:999px;
+    margin-top:8px;
+    overflow:hidden;
+  }
+  .xp-bar-fill{
+    height:100%;
+    background:var(--amber);
+    border-radius:999px;
+    width:0%;
+    transition:width 0.7s cubic-bezier(.2,.8,.3,1);
+  }
+  .streak-row{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+  }
+  .streak-pill{
+    background:rgba(255,255,255,0.1);
+    border-radius:12px;
+    padding:8px 10px;
+    font-size:0.72rem;
+    flex:1;
+    text-align:center;
+  }
+  .streak-pill strong{
+    display:block;
+    font-family:'Fraunces',serif;
+    font-size:1.1rem;
+    font-weight:600;
+  }
+  main{
+    flex:1;
+    padding:20px 18px 90px;
+  }
+  .section-title{
+    font-family:'Fraunces',serif;
+    font-size:1.15rem;
+    font-weight:600;
+    margin:0 0 4px;
+    color:var(--navy);
+  }
+  .section-sub{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+    line-height:1.5;
+  }
+  nav.tabbar{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    background:var(--surface);
+    border-top:1px solid var(--border);
+    display:flex;
+    padding:7px 4px calc(7px + env(safe-area-inset-bottom));
+  }
+  nav.tabbar button{
+    flex:1;
+    background:none;
+    border:none;
+    font-family:'Work Sans',sans-serif;
+    font-size:0.58rem;
+    color:var(--ink-soft);
+    padding:6px 1px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    cursor:pointer;
+    border-radius:10px;
+  }
+  nav.tabbar button.active{
+    color:var(--navy);
+    background:var(--amber-soft);
+  }
+  nav.tabbar svg{width:17px;height:17px;}
+
+  /* Placement test */
+  .pt-wrap{padding:6px 2px;}
+  .pt-intro, .pt-result{text-align:center;padding:26px 8px;}
+  .pt-intro h2, .pt-result h2{
+    font-family:'Fraunces',serif;
+    font-size:1.35rem;
+    color:var(--navy);
+    margin:0 0 12px;
+  }
+  .pt-intro p{color:var(--ink-soft);font-size:0.88rem;line-height:1.6;margin:0 0 22px;}
+  .pt-skip{display:block;text-align:center;margin-top:16px;font-size:0.8rem;color:var(--ink-soft);text-decoration:underline;cursor:pointer;}
+  .pt-progress{font-size:0.75rem;color:var(--ink-soft);text-align:center;margin-bottom:12px;}
+  .pt-q{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;color:var(--navy);text-align:center;margin-bottom:18px;line-height:1.4;}
+  .level-big{font-family:'Fraunces',serif;font-size:2.6rem;color:var(--navy);font-weight:700;}
+  .level-name{color:var(--amber);font-weight:600;margin-bottom:14px;}
+
+  /* Level up toast */
+  .level-toast{
+    position:fixed;
+    top:16px;
+    left:50%;
+    transform:translateX(-50%) translateY(-24px);
+    background:var(--green);
+    color:#fff;
+    padding:12px 18px;
+    border-radius:12px;
+    font-size:0.83rem;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.2);
+    opacity:0;
+    transition:all 0.35s ease;
+    z-index:999;
+    max-width:88%;
+    text-align:center;
+  }
+  .level-toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  /* Flashcards */
+  .chip-row{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    margin-bottom:14px;
+  }
+  .chip{
+    white-space:nowrap;
+    padding:7px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .chip.active{
+    background:var(--navy);
+    color:#fff;
+    border-color:var(--navy);
+  }
+  .progress-strip{
+    display:flex;
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .progress-box{
+    flex:1;
+    background:var(--green-soft);
+    border-radius:12px;
+    padding:10px 12px;
+    text-align:center;
+  }
+  .progress-box.learning{background:var(--amber-soft);}
+  .progress-box strong{
+    display:block;
+    font-family:'Fraunces',serif;
+    font-size:1.3rem;
+    color:var(--navy);
+  }
+  .progress-box span{font-size:0.72rem;color:var(--ink-soft);}
+  .tier-note{
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    text-align:center;
+    margin-bottom:14px;
+  }
+  .badge-strip{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:2px 2px 16px;
+  }
+  .badge-item{
+    flex:0 0 auto;
+    width:72px;
+    text-align:center;
+    padding:10px 5px;
+    border-radius:14px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    transition:transform 0.15s ease;
+  }
+  .badge-item.earned{
+    background:var(--amber-soft);
+    border-color:var(--amber);
+    animation:badgePop 0.4s ease;
+  }
+  .badge-item .b-emoji{
+    font-size:1.4rem;
+    display:block;
+    margin-bottom:4px;
+    filter:grayscale(1);
+    opacity:0.35;
+  }
+  .badge-item.earned .b-emoji{filter:none;opacity:1;}
+  .badge-item .b-name{font-size:0.6rem;color:var(--ink-soft);line-height:1.2;display:block;}
+  .badge-item.earned .b-name{color:var(--navy);font-weight:600;}
+  @keyframes badgePop{
+    0%{transform:scale(0.7);}
+    60%{transform:scale(1.08);}
+    100%{transform:scale(1);}
+  }
+  .tier-ring-wrap{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--bg);
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:16px;
+  }
+  .tier-ring-wrap svg{flex:0 0 auto;}
+  .tier-ring-text{font-size:0.78rem;color:var(--ink-soft);line-height:1.4;}
+  .tier-ring-text strong{color:var(--navy);font-family:'Fraunces',serif;font-size:1rem;}
+  .confetti-piece{
+    position:fixed;
+    width:8px;height:8px;
+    border-radius:2px;
+    pointer-events:none;
+    z-index:1000;
+  }
+  .reading-card{
+    background:var(--bg);
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:16px;
+  }
+  .reading-title{
+    font-family:'Fraunces',serif;
+    font-size:1.15rem;
+    font-weight:600;
+    color:var(--navy);
+    margin-bottom:10px;
+  }
+  .reading-text{
+    font-size:0.95rem;
+    line-height:1.7;
+    color:var(--ink);
+  }
+  .reading-tr{
+    font-size:0.9rem;
+    line-height:1.7;
+    color:var(--ink-soft);
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--border);
+    display:none;
+  }
+  .reading-tr.show{display:block;}
+  .reveal-btn{
+    margin-top:14px;
+    background:none;
+    border:1.5px solid var(--navy);
+    color:var(--navy);
+    padding:9px 16px;
+    border-radius:999px;
+    font-size:0.8rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+  @keyframes cardPop{
+    0%{transform:scale(0.94) translateY(4px);opacity:0.4;}
+    100%{transform:scale(1) translateY(0);opacity:1;}
+  }
+  .flashcard, .wod-card, .write-card{animation:cardPop 0.25s ease;}
+  .btn:active, .btn-full:active, .chip:active, .q-option:active, .sb-chip:active, nav.tabbar button:active{
+    transform:scale(0.95);
+  }
+  .btn, .btn-full, .chip, .q-option, .sb-chip, nav.tabbar button{
+    transition:transform 0.12s ease;
+  }
+  .flashcard{
+    background:var(--navy);
+    color:#fff;
+    border-radius:18px;
+    min-height:210px;
+    padding:26px 22px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    cursor:pointer;
+    position:relative;
+    margin-bottom:16px;
+  }
+  .flashcard .cat-label{
+    position:absolute;
+    top:14px;
+    left:16px;
+    font-size:0.7rem;
+    color:#AEB9DA;
+  }
+  .flashcard .lvl-label{
+    position:absolute;
+    top:14px;
+    right:16px;
+    font-size:0.68rem;
+    color:var(--amber);
+    font-weight:700;
+  }
+  .flashcard .word-en{
+    font-family:'Fraunces',serif;
+    font-size:1.9rem;
+    font-weight:600;
+  }
+  .flashcard .word-tr{
+    font-family:'Fraunces',serif;
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--amber);
+    margin-bottom:10px;
+  }
+  .flashcard .example{
+    font-size:0.85rem;
+    color:#D6DCEE;
+    margin-top:10px;
+    line-height:1.5;
+  }
+  .flashcard .hint{
+    font-size:0.72rem;
+    color:#8E9AC2;
+    margin-top:14px;
+  }
+  .card-actions{
+    display:flex;
+    gap:10px;
+  }
+  .btn{
+    flex:1;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    font-family:'Work Sans',sans-serif;
+    font-weight:600;
+    font-size:0.88rem;
+    cursor:pointer;
+  }
+  .btn-secondary{
+    background:var(--rose-soft);
+    color:var(--rose);
+  }
+  .btn-primary{
+    background:var(--green-soft);
+    color:var(--green);
+  }
+  .btn-full{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    padding:13px;
+    border-radius:12px;
+    border:none;
+    font-weight:600;
+    font-size:0.9rem;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .deck-status{
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+  }
+
+  /* Grammar */
+  .topic-card{
+    border:1px solid var(--border);
+    border-radius:14px;
+    margin-bottom:12px;
+    overflow:hidden;
+  }
+  .topic-card.locked{background:#FAFAF8;}
+  .topic-head{
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    background:var(--surface);
+  }
+  .topic-card.locked .topic-head{
+    background:#FAFAF8;
+    cursor:pointer;
+  }
+  .topic-head h3{
+    margin:0;
+    font-family:'Fraunces',serif;
+    font-size:1rem;
+    font-weight:600;
+    color:var(--navy);
+  }
+  .topic-card.locked h3{color:var(--ink-soft);}
+  .topic-progress-bar{
+    height:5px;
+    background:var(--border);
+    border-radius:4px;
+    margin-top:6px;
+    width:140px;
+    overflow:hidden;
+  }
+  .topic-progress-fill{
+    height:100%;
+    background:var(--green);
+  }
+  .topic-body{
+    padding:0 16px 16px;
+    display:none;
+    border-top:1px solid var(--border);
+  }
+  .topic-body.open{display:block;}
+  .q-block{margin-top:16px;}
+  .q-text{font-size:0.92rem;margin-bottom:10px;line-height:1.5;}
+  .q-options{display:flex;flex-direction:column;gap:8px;}
+  .q-option{
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:0.86rem;
+    cursor:pointer;
+    background:var(--surface);
+  }
+  .q-option.correct{background:var(--green-soft);border-color:var(--green);color:var(--green);}
+  .q-option.incorrect{background:var(--rose-soft);border-color:var(--rose);color:var(--rose);}
+  .q-explain{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+    padding:8px 10px;
+    background:var(--bg);
+    border-radius:8px;
+    display:none;
+  }
+  .q-explain.show{display:block;}
+
+  /* Word of day / quiz */
+  .wod-card{
+    background:linear-gradient(155deg,var(--navy) 0%, var(--navy-dark) 100%);
+    color:#fff;
+    border-radius:18px;
+    padding:24px 20px;
+    text-align:center;
+    margin-bottom:18px;
+  }
+  .wod-card .label{font-size:0.72rem;color:#9FADD4;margin-bottom:6px;}
+  .wod-card .word{
+    font-family:'Fraunces',serif;
+    font-size:2rem;
+    font-weight:700;
+  }
+  .wod-card .tr{
+    color:var(--amber);
+    font-size:1.2rem;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin-top:2px;
+  }
+  .wod-card .example{
+    margin-top:12px;
+    font-size:0.85rem;
+    color:#D6DCEE;
+    line-height:1.5;
+  }
+  .sound-btn{
+    margin-top:14px;
+    background:rgba(255,255,255,0.12);
+    border:none;
+    color:#fff;
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:0.78rem;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .quiz-score-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .stat-box{
+    flex:1;
+    background:var(--bg);
+    border-radius:12px;
+    padding:10px;
+    text-align:center;
+  }
+  .stat-box strong{
+    display:block;
+    font-family:'Fraunces',serif;
+    font-size:1.2rem;
+    color:var(--navy);
+  }
+  .stat-box span{font-size:0.7rem;color:var(--ink-soft);}
+  .quiz-q{
+    font-family:'Fraunces',serif;
+    font-size:1.3rem;
+    font-weight:600;
+    margin-bottom:14px;
+    color:var(--navy);
+    text-align:center;
+  }
+  .quiz-progress{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .quiz-result{
+    text-align:center;
+    padding:20px 10px;
+  }
+  .quiz-result .big{
+    font-family:'Fraunces',serif;
+    font-size:2.4rem;
+    color:var(--navy);
+    font-weight:700;
+  }
+
+  /* Sentence builder */
+  .sb-hint{
+    text-align:center;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+  .sb-answer-row{
+    min-height:52px;
+    border:1.5px dashed var(--border);
+    border-radius:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    padding:10px;
+    margin-bottom:16px;
+  }
+  .sb-chip{
+    background:var(--navy);
+    color:#fff;
+    padding:8px 12px;
+    border-radius:8px;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .sb-pool{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .sb-pool .sb-chip{
+    background:var(--bg);
+    color:var(--ink);
+    border:1px solid var(--border);
+  }
+  .sb-feedback{
+    text-align:center;
+    font-size:0.85rem;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:12px;
+    display:none;
+  }
+  .sb-feedback.show{display:block;}
+  .sb-feedback.ok{background:var(--green-soft);color:var(--green);}
+  .sb-feedback.no{background:var(--rose-soft);color:var(--rose);}
+  .sb-counter{
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+  }
+
+  /* Writing practice */
+  .write-card{
+    background:var(--bg);
+    border-radius:16px;
+    padding:22px 18px;
+    text-align:center;
+    margin-bottom:16px;
+  }
+  .write-prompt-label{font-size:0.72rem;color:var(--ink-soft);margin-bottom:8px;}
+  .write-prompt{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;color:var(--navy);}
+  .write-input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:12px;
+    border:1.5px solid var(--border);
+    font-size:1rem;
+    font-family:'Work Sans',sans-serif;
+    margin-bottom:12px;
+    outline:none;
+  }
+  .write-input:focus{border-color:var(--navy);}
+  .write-input.correct{border-color:var(--green);background:var(--green-soft);}
+  .write-input.incorrect{border-color:var(--rose);background:var(--rose-soft);}
+  .write-feedback{font-size:0.84rem;text-align:center;margin-bottom:8px;min-height:20px;font-weight:600;}
+  .write-feedback.ok{color:var(--green);}
+  .write-feedback.no{color:var(--rose);}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <h1>İngilizce Çalışma Kutum</h1>
+    <p>Kelime kelime, gün gün İngilizceni büyüt 🌱</p>
+    <div class="auth-row" id="authRow" style="display:none">
+      <span class="user-email" id="userEmailLabel"></span>
+      <span class="retest-link" id="logoutBtn">Çıkış Yap</span>
+    </div>
+    <div class="level-row" id="headerLevelRow" style="display:none">
+      <span class="level-badge" id="levelBadge">Seviye: A1</span>
+      <span class="retest-link" id="retestBtn">Yeniden test et</span>
+    </div>
+    <div class="rank-row" id="rankRow" style="display:none">
+      <span class="rank-chip"><span class="emoji" id="rankEmoji">🌱</span><span id="rankTitle">Çaylak</span></span>
+      <span class="xp-text" id="xpText">0 XP</span>
+    </div>
+    <div class="xp-bar-track" id="xpBarTrack" style="display:none"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+    <div class="streak-row" id="streakRow" style="display:none">
+      <div class="streak-pill"><strong id="streakCount">0</strong>🔥 gün seri</div>
+      <div class="streak-pill"><strong id="knownCount">0</strong>öğrenilen kelime</div>
+      <div class="streak-pill"><strong id="quizAvg">–</strong>başarı oranı</div>
+    </div>
+  </header>
+
+  <main id="main"></main>
+
+  <nav class="tabbar" id="tabbar" style="display:none">
+    <button data-tab="flash" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 6V4a1 1 0 011-1h8a1 1 0 011 1v2"/></svg>
+      Kelime
+    </button>
+    <button data-tab="grammar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      Grammar
+    </button>
+    <button data-tab="write">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+      Yazma
+    </button>
+    <button data-tab="wod">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Günlük
+    </button>
+    <button data-tab="sentence">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h13"/></svg>
+      Cümle
+    </button>
+    <button data-tab="reading">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4H6.5A2.5 2.5 0 004 6.5v13z"/><path d="M8 8h8M8 11h8"/></svg>
+      Okuma
+    </button>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ---------------- SUPABASE (account system) ---------------- */
+const SUPABASE_URL = 'https://iyxrbevjdufqimepmqwc.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5eHJiZXZqZHVmcWltZXBtcXdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3NzQ4MzcsImV4cCI6MjEwNDM1MDgzN30.o8JRS1vFzsAO1-_zDNt7CscS_RkLrM82yjXUF2NI3j0';
+let supabaseClient = null;
+let currentUser = null;
+let authMode = 'login';
+let pendingEmail = '';
+let authError = '';
+
+/* ---------------- LEVELS ---------------- */
+const LEVELS = [
+  {code:'A1', label:'Başlangıç'},
+  {code:'A2', label:'Temel'},
+  {code:'B1', label:'Orta'},
+  {code:'B2', label:'Orta-Üstü'}
+];
+function levelIdx(code){ return LEVELS.findIndex(l=>l.code===code); }
+
+/* ---------------- DATA: VOCAB ---------------- */
+const VOCAB = [
+  // ---- A1 ----
+  {id:1,en:"house",tr:"ev",ex:"I live in a small house.",exTr:"Küçük bir evde yaşıyorum.",cat:"Günlük Yaşam",level:"A1"},
+  {id:2,en:"book",tr:"kitap",ex:"She is reading a book.",exTr:"O bir kitap okuyor.",cat:"Günlük Yaşam",level:"A1"},
+  {id:3,en:"school",tr:"okul",ex:"My children go to school.",exTr:"Çocuklarım okula gidiyor.",cat:"Günlük Yaşam",level:"A1"},
+  {id:4,en:"work",tr:"iş",ex:"I go to work at eight.",exTr:"Saat sekizde işe gidiyorum.",cat:"Günlük Yaşam",level:"A1"},
+  {id:5,en:"friend",tr:"arkadaş",ex:"He is my best friend.",exTr:"O benim en iyi arkadaşım.",cat:"Günlük Yaşam",level:"A1"},
+  {id:6,en:"water",tr:"su",ex:"Can I have some water?",exTr:"Biraz su alabilir miyim?",cat:"Yiyecek",level:"A1"},
+  {id:7,en:"bread",tr:"ekmek",ex:"We need to buy bread.",exTr:"Ekmek almamız gerekiyor.",cat:"Yiyecek",level:"A1"},
+  {id:8,en:"apple",tr:"elma",ex:"I eat an apple every day.",exTr:"Her gün bir elma yerim.",cat:"Yiyecek",level:"A1"},
+  {id:9,en:"coffee",tr:"kahve",ex:"She drinks coffee in the morning.",exTr:"O sabahları kahve içer.",cat:"Yiyecek",level:"A1"},
+  {id:10,en:"dinner",tr:"akşam yemeği",ex:"We have dinner at seven.",exTr:"Saat yedide akşam yemeği yeriz.",cat:"Yiyecek",level:"A1"},
+  {id:11,en:"mother",tr:"anne",ex:"My mother cooks very well.",exTr:"Annem çok iyi yemek yapar.",cat:"Aile",level:"A1"},
+  {id:12,en:"father",tr:"baba",ex:"My father works in a bank.",exTr:"Babam bir bankada çalışır.",cat:"Aile",level:"A1"},
+  {id:13,en:"sister",tr:"kız kardeş",ex:"My sister lives in Izmir.",exTr:"Kız kardeşim İzmir'de yaşıyor.",cat:"Aile",level:"A1"},
+  {id:14,en:"brother",tr:"erkek kardeş",ex:"I have one brother.",exTr:"Bir erkek kardeşim var.",cat:"Aile",level:"A1"},
+  {id:15,en:"child",tr:"çocuk",ex:"The child is playing outside.",exTr:"Çocuk dışarıda oynuyor.",cat:"Aile",level:"A1"},
+  {id:16,en:"go",tr:"gitmek",ex:"I go to work by bus.",exTr:"İşe otobüsle giderim.",cat:"Fiiller",level:"A1"},
+  {id:17,en:"eat",tr:"yemek yemek",ex:"They eat lunch at noon.",exTr:"Öğlen yemek yerler.",cat:"Fiiller",level:"A1"},
+  {id:18,en:"drink",tr:"içmek",ex:"Do you drink tea or coffee?",exTr:"Çay mı kahve mi içersin?",cat:"Fiiller",level:"A1"},
+  {id:19,en:"read",tr:"okumak",ex:"I read a book every night.",exTr:"Her gece bir kitap okurum.",cat:"Fiiller",level:"A1"},
+  {id:20,en:"sleep",tr:"uyumak",ex:"The baby sleeps for ten hours.",exTr:"Bebek on saat uyur.",cat:"Fiiller",level:"A1"},
+  {id:21,en:"like",tr:"sevmek",ex:"I like sunny days.",exTr:"Güneşli günleri severim.",cat:"Fiiller",level:"A1"},
+  {id:22,en:"want",tr:"istemek",ex:"She wants a new phone.",exTr:"O yeni bir telefon istiyor.",cat:"Fiiller",level:"A1"},
+  {id:23,en:"speak",tr:"konuşmak",ex:"He speaks English very well.",exTr:"O çok iyi İngilizce konuşuyor.",cat:"Fiiller",level:"A1"},
+  {id:24,en:"happy",tr:"mutlu",ex:"She looks very happy today.",exTr:"O bugün çok mutlu görünüyor.",cat:"Sıfatlar",level:"A1"},
+  {id:25,en:"tired",tr:"yorgun",ex:"I am tired after work.",exTr:"İşten sonra yorgunum.",cat:"Sıfatlar",level:"A1"},
+  {id:26,en:"big",tr:"büyük",ex:"They live in a big house.",exTr:"Büyük bir evde yaşıyorlar.",cat:"Sıfatlar",level:"A1"},
+  {id:27,en:"small",tr:"küçük",ex:"This is a small city.",exTr:"Bu küçük bir şehir.",cat:"Sıfatlar",level:"A1"},
+  {id:28,en:"new",tr:"yeni",ex:"I bought a new car.",exTr:"Yeni bir araba aldım.",cat:"Sıfatlar",level:"A1"},
+  {id:29,en:"old",tr:"eski",ex:"This is an old building.",exTr:"Bu eski bir bina.",cat:"Sıfatlar",level:"A1"},
+  {id:30,en:"beautiful",tr:"güzel",ex:"The garden is very beautiful.",exTr:"Bahçe çok güzel.",cat:"Sıfatlar",level:"A1"},
+  {id:31,en:"today",tr:"bugün",ex:"I am busy today.",exTr:"Bugün meşgulüm.",cat:"Zaman",level:"A1"},
+  {id:32,en:"tomorrow",tr:"yarın",ex:"We will travel tomorrow.",exTr:"Yarın seyahat edeceğiz.",cat:"Zaman",level:"A1"},
+  {id:33,en:"morning",tr:"sabah",ex:"I run every morning.",exTr:"Her sabah koşarım.",cat:"Zaman",level:"A1"},
+  {id:34,en:"week",tr:"hafta",ex:"See you next week.",exTr:"Gelecek hafta görüşürüz.",cat:"Zaman",level:"A1"},
+  {id:35,en:"always",tr:"her zaman",ex:"She always arrives on time.",exTr:"O her zaman zamanında gelir.",cat:"Zaman",level:"A1"},
+  {id:36,en:"never",tr:"asla",ex:"He never eats meat.",exTr:"O hiç et yemez.",cat:"Zaman",level:"A1"},
+  // ---- A2 ----
+  {id:37,en:"weather",tr:"hava durumu",ex:"The weather is nice today.",exTr:"Bugün hava güzel.",cat:"Hava Durumu",level:"A2"},
+  {id:38,en:"rain",tr:"yağmur",ex:"It often rains in April.",exTr:"Nisan'da sık sık yağmur yağar.",cat:"Hava Durumu",level:"A2"},
+  {id:39,en:"cold",tr:"soğuk",ex:"It's very cold outside.",exTr:"Dışarısı çok soğuk.",cat:"Hava Durumu",level:"A2"},
+  {id:40,en:"shop",tr:"mağaza",ex:"I need to go to the shop.",exTr:"Mağazaya gitmem gerekiyor.",cat:"Alışveriş",level:"A2"},
+  {id:41,en:"money",tr:"para",ex:"I don't have much money.",exTr:"Çok param yok.",cat:"Alışveriş",level:"A2"},
+  {id:42,en:"buy",tr:"satın almak",ex:"I want to buy new shoes.",exTr:"Yeni ayakkabı almak istiyorum.",cat:"Alışveriş",level:"A2"},
+  {id:43,en:"sell",tr:"satmak",ex:"They sell fresh vegetables.",exTr:"Taze sebze satıyorlar.",cat:"Alışveriş",level:"A2"},
+  {id:44,en:"price",tr:"fiyat",ex:"The price is too high.",exTr:"Fiyat çok yüksek.",cat:"Alışveriş",level:"A2"},
+  {id:45,en:"cheap",tr:"ucuz",ex:"This restaurant is cheap.",exTr:"Bu restoran ucuz.",cat:"Alışveriş",level:"A2"},
+  {id:46,en:"expensive",tr:"pahalı",ex:"That car is very expensive.",exTr:"O araba çok pahalı.",cat:"Alışveriş",level:"A2"},
+  {id:47,en:"hobby",tr:"hobi",ex:"Painting is my favorite hobby.",exTr:"Resim yapmak en sevdiğim hobi.",cat:"Hobiler",level:"A2"},
+  {id:48,en:"music",tr:"müzik",ex:"I listen to music every day.",exTr:"Her gün müzik dinlerim.",cat:"Hobiler",level:"A2"},
+  {id:49,en:"movie",tr:"film",ex:"We watched a movie last night.",exTr:"Dün gece bir film izledik.",cat:"Hobiler",level:"A2"},
+  {id:50,en:"travel",tr:"seyahat etmek",ex:"I love to travel in summer.",exTr:"Yazın seyahat etmeyi severim.",cat:"Hobiler",level:"A2"},
+  {id:51,en:"holiday",tr:"tatil",ex:"We are planning a holiday.",exTr:"Bir tatil planlıyoruz.",cat:"Hobiler",level:"A2"},
+  {id:52,en:"busy",tr:"meşgul",ex:"I am busy this week.",exTr:"Bu hafta meşgulüm.",cat:"Alışkanlıklar",level:"A2"},
+  {id:53,en:"early",tr:"erken",ex:"She wakes up early.",exTr:"O erken uyanır.",cat:"Alışkanlıklar",level:"A2"},
+  {id:54,en:"late",tr:"geç",ex:"He arrived late again.",exTr:"O yine geç geldi.",cat:"Alışkanlıklar",level:"A2"},
+  {id:55,en:"remember",tr:"hatırlamak",ex:"I can't remember his name.",exTr:"Onun adını hatırlayamıyorum.",cat:"Alışkanlıklar",level:"A2"},
+  {id:56,en:"forget",tr:"unutmak",ex:"Don't forget your keys.",exTr:"Anahtarlarını unutma.",cat:"Alışkanlıklar",level:"A2"},
+  // ---- B1 ----
+  {id:57,en:"opinion",tr:"görüş",ex:"In my opinion, this is a good idea.",exTr:"Bence bu iyi bir fikir.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:58,en:"decide",tr:"karar vermek",ex:"We need to decide today.",exTr:"Bugün karar vermemiz gerekiyor.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:59,en:"improve",tr:"geliştirmek",ex:"I want to improve my English.",exTr:"İngilizcemi geliştirmek istiyorum.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:60,en:"experience",tr:"deneyim",ex:"She has a lot of experience.",exTr:"Onun çok deneyimi var.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:61,en:"successful",tr:"başarılı",ex:"He is a successful businessman.",exTr:"O başarılı bir iş insanı.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:62,en:"difficult",tr:"zor",ex:"This exercise is quite difficult.",exTr:"Bu alıştırma oldukça zor.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:63,en:"simple",tr:"basit",ex:"The instructions are simple.",exTr:"Talimatlar basit.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:64,en:"important",tr:"önemli",ex:"It's important to sleep well.",exTr:"İyi uyumak önemlidir.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:65,en:"environment",tr:"çevre",ex:"We should protect the environment.",exTr:"Çevreyi korumalıyız.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:66,en:"society",tr:"toplum",ex:"Technology has changed society.",exTr:"Teknoloji toplumu değiştirdi.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:67,en:"relationship",tr:"ilişki",ex:"They have a strong relationship.",exTr:"Güçlü bir ilişkileri var.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:68,en:"behaviour",tr:"davranış",ex:"His behaviour surprised everyone.",exTr:"Onun davranışı herkesi şaşırttı.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:69,en:"achieve",tr:"başarmak",ex:"She worked hard to achieve her goal.",exTr:"Hedefine ulaşmak için çok çalıştı.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:70,en:"avoid",tr:"kaçınmak",ex:"You should avoid junk food.",exTr:"Hazır gıdalardan kaçınmalısın.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:71,en:"suggest",tr:"önermek",ex:"I suggest we leave early.",exTr:"Erken çıkmamızı öneriyorum.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:72,en:"compare",tr:"karşılaştırmak",ex:"Let's compare the two options.",exTr:"İki seçeneği karşılaştıralım.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:73,en:"increase",tr:"artmak",ex:"Prices continue to increase.",exTr:"Fiyatlar artmaya devam ediyor.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:74,en:"decrease",tr:"azalmak",ex:"Sales decreased last month.",exTr:"Satışlar geçen ay azaldı.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:75,en:"responsible",tr:"sorumlu",ex:"She is responsible for the project.",exTr:"Projeden o sorumlu.",cat:"Soyut Kavramlar",level:"B1"},
+  {id:76,en:"confident",tr:"kendinden emin",ex:"He felt confident during the interview.",exTr:"Mülakat sırasında kendinden emindi.",cat:"Soyut Kavramlar",level:"B1"},
+  // ---- B2 ----
+  {id:77,en:"accomplish",tr:"başarmak",ex:"She accomplished all her goals this year.",exTr:"Bu yıl tüm hedeflerine ulaştı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:78,en:"inevitable",tr:"kaçınılmaz",ex:"Change is inevitable in life.",exTr:"Hayatta değişim kaçınılmazdır.",cat:"İleri Kelimeler",level:"B2"},
+  {id:79,en:"perspective",tr:"bakış açısı",ex:"Try to see it from her perspective.",exTr:"Onun bakış açısından bakmayı dene.",cat:"İleri Kelimeler",level:"B2"},
+  {id:80,en:"assumption",tr:"varsayım",ex:"That's a dangerous assumption to make.",exTr:"Bu tehlikeli bir varsayım.",cat:"İleri Kelimeler",level:"B2"},
+  {id:81,en:"contradict",tr:"çelişmek",ex:"His actions contradict his words.",exTr:"Davranışları sözleriyle çelişiyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:82,en:"sustainable",tr:"sürdürülebilir",ex:"We need a sustainable solution.",exTr:"Sürdürülebilir bir çözüme ihtiyacımız var.",cat:"İleri Kelimeler",level:"B2"},
+  {id:83,en:"reluctant",tr:"isteksiz",ex:"He was reluctant to accept the offer.",exTr:"Teklifi kabul etmekte isteksizdi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:84,en:"controversial",tr:"tartışmalı",ex:"It's a controversial topic.",exTr:"Bu tartışmalı bir konu.",cat:"İleri Kelimeler",level:"B2"},
+  {id:85,en:"justify",tr:"haklı çıkarmak",ex:"Can you justify this decision?",exTr:"Bu kararı haklı çıkarabilir misin?",cat:"İleri Kelimeler",level:"B2"},
+  {id:86,en:"eventually",tr:"sonunda",ex:"Eventually, they found a solution.",exTr:"Sonunda bir çözüm buldular.",cat:"İleri Kelimeler",level:"B2"},
+  {id:87,en:"thorough",tr:"kapsamlı",ex:"She did a thorough investigation.",exTr:"Kapsamlı bir araştırma yaptı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:88,en:"ambiguous",tr:"belirsiz",ex:"The instructions were ambiguous.",exTr:"Talimatlar belirsizdi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:89,en:"persuade",tr:"ikna etmek",ex:"I tried to persuade him to stay.",exTr:"Onu kalması için ikna etmeye çalıştım.",cat:"İleri Kelimeler",level:"B2"},
+  {id:90,en:"genuine",tr:"samimi",ex:"She gave a genuine apology.",exTr:"Samimi bir özür diledi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:91,en:"overwhelmed",tr:"bunalmış",ex:"I felt overwhelmed by the workload.",exTr:"İş yükünden dolayı bunalmış hissettim.",cat:"İleri Kelimeler",level:"B2"},
+  {id:92,en:"undermine",tr:"baltalamak",ex:"Don't undermine your own efforts.",exTr:"Kendi çabalarını baltalama.",cat:"İleri Kelimeler",level:"B2"}
+];
+
+/* ---------------- DATA: GRAMMAR ---------------- */
+const GRAMMAR = [
+  {topic:"To Be (am / is / are)", level:"A1", qs:[
+    {q:"I ___ a student.", opts:["am","is","are"], a:"am", exp:"Özne 'I' olduğunda 'am' kullanılır."},
+    {q:"She ___ my sister.", opts:["am","is","are"], a:"is", exp:"Tekil özneler (he/she/it) için 'is' kullanılır."},
+    {q:"They ___ from Turkey.", opts:["am","is","are"], a:"are", exp:"Çoğul özneler (we/you/they) için 'are' kullanılır."},
+    {q:"We ___ happy today.", opts:["am","is","are"], a:"are", exp:"'We' çoğul olduğu için 'are' alır."}
+  ]},
+  {topic:"Present Simple", level:"A1", qs:[
+    {q:"He ___ to school every day.", opts:["go","goes","going"], a:"goes", exp:"He/she/it ile fiile -s/-es eklenir: goes."},
+    {q:"I ___ coffee every morning.", opts:["like","likes","liking"], a:"like", exp:"I/you/we/they ile fiil yalın halde kullanılır."},
+    {q:"She ___ eat meat.", opts:["doesn't","don't","not"], a:"doesn't", exp:"He/she/it olumsuzunda 'doesn't' kullanılır."},
+    {q:"___ you speak English?", opts:["Do","Does","Are"], a:"Do", exp:"You ile soru kurarken 'Do' kullanılır."}
+  ]},
+  {topic:"Articles (a / an / the)", level:"A1", qs:[
+    {q:"I have ___ apple.", opts:["a","an","the"], a:"an", exp:"Sesli harfle başlayan kelimelerden önce 'an' kullanılır."},
+    {q:"She lives in ___ big house.", opts:["a","an","the"], a:"a", exp:"'Big' sessiz harfle başladığı için 'a' kullanılır."},
+    {q:"___ sun is very hot today.", opts:["A","An","The"], a:"The", exp:"Tek olan, bilinen şeyler için 'the' kullanılır."},
+    {q:"He is ___ engineer.", opts:["a","an","the"], a:"an", exp:"'Engineer' sesli harfle başladığı için 'an' kullanılır."}
+  ]},
+  {topic:"Çoğul (Plurals)", level:"A2", qs:[
+    {q:"I have two ___ (book).", opts:["book","books","bookes"], a:"books", exp:"Çoğu kelimeye çoğul için -s eklenir."},
+    {q:"There are three ___ (child) in the room.", opts:["childs","childen","children"], a:"children", exp:"'Child' düzensiz çoğul alır: children."},
+    {q:"She has many ___ (friend).", opts:["friend","friends","friendes"], a:"friends", exp:"'Friend' düzenli çoğuldur: friends."},
+    {q:"We saw five ___ (house) on the street.", opts:["house","houses","housees"], a:"houses", exp:"'House' düzenli çoğuldur: houses."}
+  ]},
+  {topic:"Prepositions (on / in / at)", level:"A2", qs:[
+    {q:"The book is ___ the table.", opts:["on","in","at"], a:"on", exp:"Bir yüzeyin üzerinde olduğunu belirtmek için 'on' kullanılır."},
+    {q:"She lives ___ Istanbul.", opts:["on","in","at"], a:"in", exp:"Şehir/ülke gibi büyük yerler için 'in' kullanılır."},
+    {q:"We will meet ___ 9 o'clock.", opts:["on","in","at"], a:"at", exp:"Saat belirtirken 'at' kullanılır."},
+    {q:"The cat is ___ the box.", opts:["in","on","at"], a:"in", exp:"Bir şeyin içinde olduğunu belirtmek için 'in' kullanılır."}
+  ]},
+  {topic:"Past Simple", level:"B1", qs:[
+    {q:"I ___ (go) to the cinema yesterday.", opts:["go","went","goed"], a:"went", exp:"'Go' düzensiz bir fiildir, geçmiş hali 'went'tir."},
+    {q:"She ___ (not/watch) TV last night.", opts:["didn't watch","doesn't watch","not watched"], a:"didn't watch", exp:"Geçmiş zaman olumsuzunda 'didn't + fiil' kullanılır."},
+    {q:"___ you call him yesterday?", opts:["Did","Do","Were"], a:"Did", exp:"Geçmiş zaman sorularında 'Did' kullanılır."},
+    {q:"They ___ (be) at home last weekend.", opts:["was","were","are"], a:"were", exp:"'They' ile geçmişte 'were' kullanılır."}
+  ]},
+  {topic:"Present Continuous", level:"B1", qs:[
+    {q:"I ___ (study) English right now.", opts:["study","am studying","studies"], a:"am studying", exp:"Şu anda olan eylemler için 'am/is/are + -ing' kullanılır."},
+    {q:"She ___ (not/work) at the moment.", opts:["isn't working","doesn't work","not working"], a:"isn't working", exp:"Şimdiki zaman olumsuzu 'isn't/aren't + -ing' şeklindedir."},
+    {q:"___ they watching a movie?", opts:["Are","Is","Do"], a:"Are", exp:"'They' ile soru kurarken 'Are' kullanılır."},
+    {q:"Look! It ___ (rain).", opts:["rains","is raining","rained"], a:"is raining", exp:"Konuşma anında olan bir eylem: 'is raining'."}
+  ]},
+  {topic:"Karşılaştırma (Comparatives)", level:"B1", qs:[
+    {q:"This book is ___ (interesting) than that one.", opts:["interesting","more interesting","most interesting"], a:"more interesting", exp:"Uzun sıfatlarda karşılaştırma için 'more + sıfat' kullanılır."},
+    {q:"She is the ___ (tall) student in the class.", opts:["taller","tallest","more tall"], a:"tallest", exp:"En üstünlük için kısa sıfatlara '-est' eklenir."},
+    {q:"My car is ___ (fast) than yours.", opts:["faster","fastest","more fast"], a:"faster", exp:"Kısa sıfatlarda karşılaştırma için '-er' eklenir."},
+    {q:"This is the ___ (good) restaurant in town.", opts:["better","best","goodest"], a:"best", exp:"'Good' düzensizdir: good – better – best."}
+  ]},
+  {topic:"Present Perfect", level:"B2", qs:[
+    {q:"I ___ (visit) Paris three times.", opts:["visited","have visited","has visited"], a:"have visited", exp:"'I' ile present perfect: have + 3. hal."},
+    {q:"She ___ (never/be) to Japan.", opts:["has never been","have never been","never was"], a:"has never been", exp:"'She' ile present perfect: has + 3. hal."},
+    {q:"___ you ever tried sushi?", opts:["Have","Has","Did"], a:"Have", exp:"'You' ile present perfect soru: Have + özne + 3. hal."},
+    {q:"They ___ (just/finish) their homework.", opts:["have just finished","has just finished","just finished"], a:"have just finished", exp:"'They' ile present perfect: have + 3. hal."}
+  ]},
+  {topic:"Modal Fiiller (can/must/should)", level:"B2", qs:[
+    {q:"You ___ wear a seatbelt in the car.", opts:["must","mustn't","can"], a:"must", exp:"Zorunluluk belirtmek için 'must' kullanılır."},
+    {q:"She ___ speak three languages.", opts:["can","must","should"], a:"can", exp:"Yetenek belirtmek için 'can' kullanılır."},
+    {q:"You ___ smoke here, it's not allowed.", opts:["mustn't","don't have to","can"], a:"mustn't", exp:"Yasak belirtmek için 'mustn't' kullanılır."},
+    {q:"You ___ see a doctor if you feel sick.", opts:["should","must not","can't"], a:"should", exp:"Tavsiye vermek için 'should' kullanılır."}
+  ]}
+];
+
+/* ---------------- DATA: SENTENCES ---------------- */
+const SENTENCES = [
+  {words:["I","go","to","school","every","day"], full:"I go to school every day.", hint:"Her gün okula giderim.", level:"A1"},
+  {words:["She","drinks","coffee","in","the","morning"], full:"She drinks coffee in the morning.", hint:"O sabahları kahve içer.", level:"A1"},
+  {words:["My","father","works","in","a","bank"], full:"My father works in a bank.", hint:"Babam bir bankada çalışır.", level:"A1"},
+  {words:["They","live","in","a","big","house"], full:"They live in a big house.", hint:"Onlar büyük bir evde yaşarlar.", level:"A1"},
+  {words:["He","speaks","English","very","well"], full:"He speaks English very well.", hint:"O çok iyi İngilizce konuşuyor.", level:"A1"},
+  {words:["We","have","dinner","at","seven"], full:"We have dinner at seven.", hint:"Saat yedide akşam yemeği yeriz.", level:"A1"},
+  {words:["I","am","tired","after","work"], full:"I am tired after work.", hint:"İşten sonra yorgunum.", level:"A1"},
+  {words:["The","child","is","playing","outside"], full:"The child is playing outside.", hint:"Çocuk dışarıda oynuyor.", level:"A1"},
+  {words:["She","wants","a","new","phone"], full:"She wants a new phone.", hint:"O yeni bir telefon istiyor.", level:"A1"},
+  {words:["He","never","eats","meat"], full:"He never eats meat.", hint:"O hiç et yemez.", level:"A1"},
+  {words:["I","read","a","book","every","night"], full:"I read a book every night.", hint:"Her gece bir kitap okurum.", level:"A1"},
+  {words:["We","will","travel","tomorrow"], full:"We will travel tomorrow.", hint:"Yarın seyahat edeceğiz.", level:"A1"},
+  {words:["The","weather","is","very","cold","today"], full:"The weather is very cold today.", hint:"Bugün hava çok soğuk.", level:"A2"},
+  {words:["I","want","to","buy","a","new","phone"], full:"I want to buy a new phone.", hint:"Yeni bir telefon almak istiyorum.", level:"A2"},
+  {words:["We","are","planning","a","holiday","in","July"], full:"We are planning a holiday in July.", hint:"Temmuzda bir tatil planlıyoruz.", level:"A2"},
+  {words:["In","my","opinion","this","book","is","very","good"], full:"In my opinion, this book is very good.", hint:"Bence bu kitap çok iyi.", level:"B1"},
+  {words:["She","worked","hard","to","achieve","her","goal"], full:"She worked hard to achieve her goal.", hint:"Hedefine ulaşmak için çok çalıştı.", level:"B1"},
+  {words:["We","should","protect","the","environment"], full:"We should protect the environment.", hint:"Çevreyi korumalıyız.", level:"B1"},
+  {words:["Eventually","they","found","a","solution"], full:"Eventually, they found a solution.", hint:"Sonunda bir çözüm buldular.", level:"B2"},
+  {words:["I","felt","overwhelmed","by","the","workload"], full:"I felt overwhelmed by the workload.", hint:"İş yükünden dolayı bunalmış hissettim.", level:"B2"}
+];
+
+/* ---------------- DATA: PLACEMENT TEST ---------------- */
+const PLACEMENT_TEST = [
+  // A1
+  {q:"'house' ne demektir?", opts:["araba","ev","kitap","okul"], a:"ev"},
+  {q:"I ___ a student.", opts:["am","is","are"], a:"am"},
+  {q:"'eat' ne demektir?", opts:["içmek","yemek yemek","uyumak","okumak"], a:"yemek yemek"},
+  {q:"She ___ my sister.", opts:["am","is","are"], a:"is"},
+  {q:"They ___ from Turkey.", opts:["am","is","are"], a:"are"},
+  // A2
+  {q:"'expensive' ne demektir?", opts:["ucuz","pahalı","hızlı","yavaş"], a:"pahalı"},
+  {q:"He ___ to school every day.", opts:["go","goes","going"], a:"goes"},
+  {q:"'forget' ne demektir?", opts:["hatırlamak","unutmak","bulmak","kaybetmek"], a:"unutmak"},
+  {q:"The book is ___ the table.", opts:["on","in","at"], a:"on"},
+  {q:"She ___ eat meat.", opts:["doesn't","don't","not"], a:"doesn't"},
+  // B1
+  {q:"'achieve' ne demektir?", opts:["başarmak","kaçınmak","önermek","karşılaştırmak"], a:"başarmak"},
+  {q:"I ___ (go) to the cinema yesterday.", opts:["go","went","goed"], a:"went"},
+  {q:"This book is ___ (interesting) than that one.", opts:["interesting","more interesting","most interesting"], a:"more interesting"},
+  {q:"'environment' ne demektir?", opts:["toplum","çevre","deneyim","davranış"], a:"çevre"},
+  {q:"I ___ (study) English right now.", opts:["study","am studying","studies"], a:"am studying"},
+  // B2
+  {q:"'inevitable' ne demektir?", opts:["kaçınılmaz","tartışmalı","belirsiz","sürdürülebilir"], a:"kaçınılmaz"},
+  {q:"I ___ (visit) Paris three times.", opts:["visited","have visited","has visited"], a:"have visited"},
+  {q:"You ___ smoke here, it's not allowed.", opts:["mustn't","don't have to","can"], a:"mustn't"},
+  {q:"\"Even though she was tired, she finished the report before the deadline.\" Bu cümleye göre ne söylenebilir?", opts:["Yorgun olmasına rağmen işi bitirdi","Yorgunluktan işi bıraktı","Rapor asla bitmedi","Zamanında gelemedi"], a:"Yorgun olmasına rağmen işi bitirdi"},
+  {q:"\"Despite the rain, the match continued.\" Cümledeki 'despite' ne anlam katar?", opts:["Sebep","Zıtlık / rağmen","Zaman","Sonuç"], a:"Zıtlık / rağmen"}
+];
+function levelFromScore(score){
+  if(score<=4) return 0;
+  if(score<=9) return 1;
+  if(score<=14) return 2;
+  return 3;
+}
+
+/* ---------------- DATA: RANKS & BADGES (gamification) ---------------- */
+const RANKS = [
+  {min:0, title:'Çaylak', emoji:'🌱'},
+  {min:100, title:'Kelime Avcısı', emoji:'🏹'},
+  {min:300, title:'Sözcük Ustası', emoji:'⚡'},
+  {min:600, title:'Dil Kâşifi', emoji:'🧭'},
+  {min:1000, title:'İngilizce Şampiyonu', emoji:'🏆'}
+];
+function getRank(xp){
+  let r = RANKS[0];
+  for(const rk of RANKS){ if(xp>=rk.min) r=rk; }
+  return r;
+}
+function nextRankThreshold(xp){
+  const idx = RANKS.indexOf(getRank(xp));
+  return idx < RANKS.length-1 ? RANKS[idx+1].min : null;
+}
+const BADGES = [
+  {id:'first_word', emoji:'🌟', name:'İlk Adım', check:p=>Object.values(p.flashcards).filter(v=>v==='known').length>=1},
+  {id:'hunter25', emoji:'🏹', name:'Kelime Avcısı', check:p=>Object.values(p.flashcards).filter(v=>v==='known').length>=25},
+  {id:'master50', emoji:'👑', name:'Kelime Ustası', check:p=>Object.values(p.flashcards).filter(v=>v==='known').length>=50},
+  {id:'streak3', emoji:'🔥', name:'Seri Başladı', check:p=>(p.quiz.streak||0)>=3},
+  {id:'streak7', emoji:'💥', name:'Ateşli Seri', check:p=>(p.quiz.streak||0)>=7},
+  {id:'grammar_first', emoji:'📘', name:'Gramer Kâşifi', check:p=>Object.keys(p.grammarDone).length>=1},
+  {id:'writer20', emoji:'✍️', name:'Yazı Ustası', check:p=>p.writing.correct>=20},
+  {id:'sentence5', emoji:'🧩', name:'Cümle Mimarı', check:p=>Object.keys(p.sentenceDone).length>=5},
+  {id:'reader1', emoji:'📖', name:'Okuma Meraklısı', check:p=>Object.keys(p.readingDone||{}).length>=3},
+  {id:'level_a2', emoji:'🚀', name:'A2 Seviyesi', check:p=>p.level>=1},
+  {id:'level_b1', emoji:'🎯', name:'B1 Seviyesi', check:p=>p.level>=2},
+  {id:'level_b2', emoji:'🏆', name:'B2 Seviyesi', check:p=>p.level>=3}
+];
+
+/* ---------------- DATA: READINGS ---------------- */
+const READINGS = [
+  {level:"A1", title:"My Day",
+   text:"My name is Elif. I wake up at seven o'clock. I eat breakfast with my family. Then I go to school by bus. In the evening, I read a book and sleep at ten.",
+   textTr:"Adım Elif. Saat yedide uyanıyorum. Ailemle kahvaltı yapıyorum. Sonra otobüsle okula gidiyorum. Akşam bir kitap okuyorum ve saat onda uyuyorum.",
+   qs:[
+     {q:"Elif kaçta uyanıyor?", opts:["Altıda","Yedide","Sekizde","Dokuzda"], a:"Yedide"},
+     {q:"Elif okula nasıl gidiyor?", opts:["Yürüyerek","Arabayla","Otobüsle","Bisikletle"], a:"Otobüsle"},
+     {q:"Elif akşam ne yapıyor?", opts:["Televizyon izliyor","Kitap okuyor","Yemek yapıyor","Spor yapıyor"], a:"Kitap okuyor"}
+   ]},
+  {level:"A2", title:"A Trip to the Market",
+   text:"Last weekend, Mert went to the market with his mother. They bought fresh bread, apples, and cheese. The prices were not expensive. After shopping, they had coffee at a small café near the market.",
+   textTr:"Geçen hafta sonu Mert annesiyle pazara gitti. Taze ekmek, elma ve peynir aldılar. Fiyatlar pahalı değildi. Alışverişten sonra pazarın yakınındaki küçük bir kafede kahve içtiler.",
+   qs:[
+     {q:"Mert pazara kiminle gitti?", opts:["Babasıyla","Annesiyle","Arkadaşıyla","Yalnız"], a:"Annesiyle"},
+     {q:"Fiyatlar nasıldı?", opts:["Çok pahalıydı","Pahalı değildi","Belli değil","Ücretsizdi"], a:"Pahalı değildi"},
+     {q:"Alışverişten sonra ne yaptılar?", opts:["Eve gittiler","Sinemaya gittiler","Kahve içtiler","Uyudular"], a:"Kahve içtiler"}
+   ]},
+  {level:"B1", title:"Learning a New Skill",
+   text:"Many people believe that learning a new skill becomes harder with age, but research suggests this isn't always true. What matters most is consistent practice and a genuine interest in the subject. Someone who practices for twenty minutes every day often improves faster than someone who studies for hours only once a week.",
+   textTr:"Birçok insan yaşla birlikte yeni bir beceri öğrenmenin zorlaştığına inanır, ama araştırmalar bunun her zaman doğru olmadığını gösteriyor. En önemli şey düzenli pratik ve konuya gerçek bir ilgi duymaktır. Her gün yirmi dakika pratik yapan biri, haftada sadece bir kez saatlerce çalışan birinden genellikle daha hızlı ilerler.",
+   qs:[
+     {q:"Metne göre yaş, öğrenmeyi her zaman zorlaştırır mı?", opts:["Evet, her zaman","Hayır, her zaman değil","Sadece gençlerde","Metinde belirtilmemiş"], a:"Hayır, her zaman değil"},
+     {q:"En önemli faktör nedir?", opts:["Zeka seviyesi","Düzenli pratik ve ilgi","Para","Öğretmenin kalitesi"], a:"Düzenli pratik ve ilgi"},
+     {q:"Kim genellikle daha hızlı ilerler?", opts:["Haftada bir saatlerce çalışan","Her gün 20 dakika çalışan","Hiç çalışmayan","Sadece izleyen"], a:"Her gün 20 dakika çalışan"}
+   ]},
+  {level:"B2", title:"The Cost of Convenience",
+   text:"Modern technology has made everyday life more convenient, yet this convenience often comes with hidden costs. Instant messaging, for instance, has reduced the amount of time people spend having deep, uninterrupted conversations. Some researchers argue that although we are more connected than ever, many people report feeling increasingly isolated. This apparent contradiction raises an important question: does constant connectivity actually bring us closer together, or does it merely create an illusion of closeness?",
+   textTr:"Modern teknoloji günlük hayatı daha pratik hale getirdi, ancak bu pratiklik genellikle gizli bedeller getiriyor. Örneğin anlık mesajlaşma, insanların derin ve kesintisiz sohbetlere ayırdığı zamanı azalttı. Bazı araştırmacılar, her zamankinden daha bağlantılı olsak da birçok insanın giderek daha yalnız hissettiğini öne sürüyor. Bu görünen çelişki önemli bir soruyu gündeme getiriyor: sürekli bağlantılı olmak bizi gerçekten birbirimize mi yaklaştırıyor, yoksa sadece bir yakınlık illüzyonu mu yaratıyor?",
+   qs:[
+     {q:"Metne göre anlık mesajlaşmanın bir etkisi nedir?", opts:["Derin sohbetleri artırdı","Derin sohbetlere ayrılan zamanı azalttı","Hiçbir etkisi olmadı","İnsanları daha az bağlantılı yaptı"], a:"Derin sohbetlere ayrılan zamanı azalttı"},
+     {q:"Metindeki 'görünen çelişki' ne ile ilgilidir?", opts:["Bağlantılı olmak ama yalnız hissetmek","Zengin olmak ama mutsuz olmak","Çok çalışmak ama başarısız olmak","Genç olmak ama deneyimsiz olmak"], a:"Bağlantılı olmak ama yalnız hissetmek"},
+     {q:"Metnin sonundaki soru neyi sorguluyor?", opts:["Teknolojinin fiyatını","Bağlantının gerçek mi illüzyon mu olduğunu","İnternetin hızını","Mesajlaşma uygulamalarını"], a:"Bağlantının gerçek mi illüzyon mu olduğunu"}
+   ]}
+];
+
+/* ---------------- STATE ---------------- */
+function defaultProgress(){
+  return {
+    level:0,
+    placementDone:false,
+    xp:0,
+    badges:{},
+    flashcards:{},
+    quiz:{total:0, correct:0, lastDate:null, streak:0},
+    writing:{total:0, correct:0},
+    grammarDone:{},
+    sentenceDone:{},
+    readingDone:{}
+  };
+}
+let progress = defaultProgress();
+let activeTab = "flash";
+let flashFilter = "Tümü";
+let flashLevelFilter = null;
+let readingLevelFilter = null;
+let flashIndex = 0;
+let flashFlipped = false;
+let quizState = null;
+let sbState = null;
+let writeState = null;
+let openTopic = null;
+let placementState = null;
+
+/* ---------------- STORAGE (local cache + cloud sync) ---------------- */
+const STORAGE_KEY = 'ingilizce-calisma-kutum-progress';
+let memoryFallback = null;
+let saveTimer = null;
+
+async function loadCloudProgress(){
+  progress = defaultProgress();
+  if(supabaseClient && currentUser){
+    try{
+      const { data, error } = await supabaseClient
+        .from('progress')
+        .select('data')
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+      if(data && data.data){
+        progress = Object.assign(progress, data.data);
+      }
+    }catch(e){
+      // offline or network error — fall back to the last local cache for this device
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(raw) progress = Object.assign(progress, JSON.parse(raw));
+      }catch(e2){}
+    }
+  }
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }catch(e){}
+}
+function saveProgress(){
+  const data = JSON.stringify(progress);
+  try{ localStorage.setItem(STORAGE_KEY, data); }
+  catch(e){ memoryFallback = JSON.parse(data); }
+  if(saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(syncCloud, 800);
+}
+async function syncCloud(){
+  if(!supabaseClient || !currentUser) return;
+  try{
+    await supabaseClient.from('progress').upsert({
+      user_id: currentUser.id,
+      data: progress,
+      updated_at: new Date().toISOString()
+    });
+  }catch(e){ console.error('Cloud sync failed', e); }
+}
+
+/* ---------------- HELPERS ---------------- */
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+}
+function unlockedVocab(){ return VOCAB.filter(w=>levelIdx(w.level) <= progress.level); }
+function currentTierWords(){ return VOCAB.filter(w=>levelIdx(w.level) === progress.level); }
+function unlockedSentences(){
+  const all = SENTENCES.filter(s=>levelIdx(s.level) <= progress.level);
+  const curCode = LEVELS[progress.level].code;
+  const cur = all.filter(s=>s.level===curCode);
+  const rest = all.filter(s=>s.level!==curCode);
+  return [...cur, ...rest];
+}
+function normalize(str){
+  return (str||'').toLowerCase().trim().replace(/[.,!?;:]/g,'').replace(/\s+/g,' ');
+}
+function checkLevelUp(){
+  if(progress.level >= LEVELS.length-1) return false;
+  const tier = currentTierWords();
+  if(tier.length===0) return false;
+  const known = tier.filter(w=>progress.flashcards[w.id]==='known').length;
+  if(known/tier.length >= 0.7){
+    progress.level++;
+    saveProgress();
+    return true;
+  }
+  return false;
+}
+function showLevelToast(msg){
+  const t=document.createElement('div');
+  t.className='level-toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2800);
+}
+function addXp(n){
+  progress.xp = (progress.xp||0) + n;
+  saveProgress();
+}
+function checkBadges(){
+  const newly = [];
+  BADGES.forEach(b=>{
+    if(!progress.badges[b.id] && b.check(progress)){
+      progress.badges[b.id] = true;
+      newly.push(b);
+    }
+  });
+  if(newly.length){
+    saveProgress();
+    newly.forEach((b,i)=> setTimeout(()=>showBadgeToast(b), i*1700));
+  }
+  return newly;
+}
+function showBadgeToast(b){
+  const t=document.createElement('div');
+  t.className='level-toast';
+  t.style.background = 'var(--navy)';
+  t.textContent = `${b.emoji} Yeni rozet: ${b.name}`;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  burstConfetti(window.innerWidth/2, 110, 16);
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2600);
+}
+function burstConfetti(x, y, count){
+  count = count || 12;
+  const colors = ['#E39A34','#4C8C6F','#C1577B','#2B3A67','#6FA8DC','#F2C14E'];
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    document.body.appendChild(el);
+    const angle = Math.random()*Math.PI*2;
+    const dist = 50 + Math.random()*80;
+    const dx = Math.cos(angle)*dist;
+    const dy = Math.sin(angle)*dist - 30;
+    const rot = Math.floor(Math.random()*360);
+    try{
+      el.animate([
+        {transform:'translate(0,0) rotate(0deg)', opacity:1},
+        {transform:`translate(${dx}px, ${dy+130}px) rotate(${rot}deg)`, opacity:0}
+      ], {duration:700+Math.random()*350, easing:'cubic-bezier(.2,.8,.3,1)'});
+    }catch(e){}
+    setTimeout(()=>el.remove(), 1150);
+  }
+}
+function afterProgress(leveledUp){
+  updateHeaderStats();
+  if(leveledUp) showLevelToast(`🎉 Tebrikler! ${LEVELS[progress.level].code} seviyesine geçtin, yeni kelimeler açıldı.`);
+  checkBadges();
+}
+function updateHeaderStats(){
+  document.getElementById('streakCount').textContent = progress.quiz.streak || 0;
+  const known = Object.values(progress.flashcards).filter(v=>v==='known').length;
+  document.getElementById('knownCount').textContent = known;
+  const totalAnswered = progress.quiz.total + progress.writing.total;
+  const totalCorrect = progress.quiz.correct + progress.writing.correct;
+  const avg = totalAnswered > 0 ? Math.round(100*totalCorrect/totalAnswered)+'%' : '–';
+  document.getElementById('quizAvg').textContent = avg;
+  document.getElementById('levelBadge').textContent = 'Seviye: ' + LEVELS[progress.level].code;
+  const xp = progress.xp || 0;
+  const rank = getRank(xp);
+  document.getElementById('rankEmoji').textContent = rank.emoji;
+  document.getElementById('rankTitle').textContent = rank.title;
+  document.getElementById('xpText').textContent = xp + ' XP';
+  const nextT = nextRankThreshold(xp);
+  const prevT = rank.min;
+  const pct = nextT===null ? 100 : Math.min(100, Math.round(100*(xp-prevT)/(nextT-prevT)));
+  document.getElementById('xpBarFill').style.width = pct + '%';
+}
+
+/* ---------------- TAB NAV ---------------- */
+document.querySelectorAll('.tabbar button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+    render();
+  });
+});
+
+/* ---------------- RENDER ROUTER ---------------- */
+function render(){
+  const main = document.getElementById('main');
+  if(activeTab==='flash') renderFlash(main);
+  else if(activeTab==='grammar') renderGrammar(main);
+  else if(activeTab==='write') renderWrite(main);
+  else if(activeTab==='wod') renderWod(main);
+  else if(activeTab==='sentence') renderSentence(main);
+  else if(activeTab==='reading') renderReading(main);
+}
+
+/* ---------------- AUTH (sign up / log in / email verification) ---------------- */
+function renderAuth(){
+  document.getElementById('tabbar').style.display = 'none';
+  document.getElementById('authRow').style.display = 'none';
+  const main = document.getElementById('main');
+  if(authMode === 'verify'){
+    main.innerHTML = `
+      <div class="pt-wrap pt-intro">
+        <h2>E-postanı doğrula</h2>
+        <p><strong>${pendingEmail}</strong> adresine gönderdiğimiz 6 haneli kodu gir.</p>
+        <input class="write-input" id="verifyCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456" style="text-align:center;font-size:1.4rem;letter-spacing:8px;">
+        ${authError ? `<div class="write-feedback no show">${authError}</div>` : ''}
+        <button class="btn-full" id="verifyBtn">Doğrula ve Devam Et</button>
+        <span class="pt-skip" id="resendBtn">Kodu tekrar gönder</span>
+        <span class="pt-skip" id="backToLogin">Geri dön</span>
+      </div>
+    `;
+    document.getElementById('verifyBtn').addEventListener('click', doVerify);
+    document.getElementById('verifyCode').addEventListener('keydown', (e)=>{ if(e.key==='Enter') doVerify(); });
+    document.getElementById('resendBtn').addEventListener('click', doResend);
+    document.getElementById('backToLogin').addEventListener('click', ()=>{ authMode='login'; authError=''; renderAuth(); });
+  } else {
+    const isLogin = authMode === 'login';
+    main.innerHTML = `
+      <div class="pt-wrap pt-intro">
+        <h2>${isLogin ? 'Giriş Yap' : 'Hesap Oluştur'}</h2>
+        <p>${isLogin ? 'İlerlemen buluta kayıtlı — e-posta ve şifrenle devam et.' : 'E-posta ve şifre belirle, sana bir doğrulama kodu göndereceğiz.'}</p>
+        <input class="write-input" id="authEmail" type="email" placeholder="E-posta adresin" autocomplete="email">
+        <input class="write-input" id="authPassword" type="password" placeholder="Şifre (en az 6 karakter)" autocomplete="${isLogin?'current-password':'new-password'}">
+        ${authError ? `<div class="write-feedback no show">${authError}</div>` : ''}
+        <button class="btn-full" id="authSubmit">${isLogin ? 'Giriş Yap' : 'Kayıt Ol'}</button>
+        <span class="pt-skip" id="authSwitch">${isLogin ? 'Hesabın yok mu? Kayıt ol' : 'Zaten hesabın var mı? Giriş yap'}</span>
+      </div>
+    `;
+    document.getElementById('authSubmit').addEventListener('click', isLogin ? doLogin : doSignup);
+    document.getElementById('authPassword').addEventListener('keydown', (e)=>{ if(e.key==='Enter') (isLogin?doLogin:doSignup)(); });
+    document.getElementById('authSwitch').addEventListener('click', ()=>{
+      authMode = isLogin ? 'signup' : 'login';
+      authError = '';
+      renderAuth();
+    });
+  }
+}
+function setAuthBusy(btnId, busyText){
+  const btn = document.getElementById(btnId);
+  if(btn){ btn.textContent = busyText; btn.disabled = true; }
+}
+async function doSignup(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  authError = '';
+  if(!email || !password || password.length < 6){
+    authError = 'Geçerli bir e-posta ve en az 6 karakterli bir şifre gir.';
+    renderAuth();
+    return;
+  }
+  setAuthBusy('authSubmit', 'Gönderiliyor...');
+  try{
+    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+    if(error){ authError = error.message; renderAuth(); return; }
+    pendingEmail = email;
+    authMode = 'verify';
+    authError = '';
+    renderAuth();
+  }catch(e){
+    authError = 'Bağlantı hatası, tekrar dene.';
+    renderAuth();
+  }
+}
+async function doLogin(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  authError = '';
+  if(!email || !password){ authError = 'E-posta ve şifreni gir.'; renderAuth(); return; }
+  setAuthBusy('authSubmit', 'Giriş yapılıyor...');
+  try{
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if(error){
+      if(error.message && error.message.toLowerCase().includes('confirm')){
+        pendingEmail = email;
+        authMode = 'verify';
+        authError = 'Önce e-postanı doğrulaman gerekiyor.';
+        renderAuth();
+        return;
+      }
+      authError = error.message;
+      renderAuth();
+      return;
+    }
+    await onAuthed(data.user);
+  }catch(e){
+    authError = 'Bağlantı hatası, tekrar dene.';
+    renderAuth();
+  }
+}
+async function doVerify(){
+  const code = document.getElementById('verifyCode').value.trim();
+  authError = '';
+  if(!code){ authError = 'Kodu gir.'; renderAuth(); return; }
+  setAuthBusy('verifyBtn', 'Doğrulanıyor...');
+  try{
+    const { data, error } = await supabaseClient.auth.verifyOtp({ email: pendingEmail, token: code, type: 'signup' });
+    if(error){
+      authError = 'Kod hatalı ya da süresi dolmuş. Tekrar dene.';
+      renderAuth();
+      return;
+    }
+    await onAuthed(data.user);
+  }catch(e){
+    authError = 'Bağlantı hatası, tekrar dene.';
+    renderAuth();
+  }
+}
+async function doResend(){
+  try{
+    await supabaseClient.auth.resend({ type: 'signup', email: pendingEmail });
+    authError = 'Kod tekrar gönderildi, e-postanı kontrol et.';
+  }catch(e){
+    authError = 'Kod gönderilemedi, tekrar dene.';
+  }
+  renderAuth();
+}
+async function onAuthed(user){
+  currentUser = user;
+  document.getElementById('authRow').style.display = 'flex';
+  document.getElementById('headerLevelRow').style.display = 'flex';
+  document.getElementById('rankRow').style.display = 'flex';
+  document.getElementById('xpBarTrack').style.display = 'block';
+  document.getElementById('streakRow').style.display = 'flex';
+  document.getElementById('userEmailLabel').textContent = user.email;
+  await loadCloudProgress();
+  if(!progress.placementDone){
+    showPlacementIntro();
+  } else {
+    flashLevelFilter = LEVELS[progress.level].code;
+    readingLevelFilter = LEVELS[progress.level].code;
+    document.getElementById('tabbar').style.display = 'flex';
+    updateHeaderStats();
+    activeTab = 'flash';
+    document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab==='flash'));
+    render();
+  }
+}
+async function doLogout(){
+  try{ await supabaseClient.auth.signOut(); }catch(e){}
+  currentUser = null;
+  progress = defaultProgress();
+  document.getElementById('authRow').style.display = 'none';
+  document.getElementById('headerLevelRow').style.display = 'none';
+  document.getElementById('rankRow').style.display = 'none';
+  document.getElementById('xpBarTrack').style.display = 'none';
+  document.getElementById('streakRow').style.display = 'none';
+  document.getElementById('tabbar').style.display = 'none';
+  authMode = 'login';
+  authError = '';
+  renderAuth();
+}
+
+/* ---------------- PLACEMENT TEST ---------------- */
+function showPlacementIntro(){
+  document.getElementById('tabbar').style.display='none';
+  const main = document.getElementById('main');
+  main.innerHTML = `
+    <div class="pt-wrap pt-intro">
+      <h2>Önce seviyeni bulalım</h2>
+      <p>20 soruluk daha kapsamlı bir test ile İngilizce seviyeni doğru tahmin edelim. Sorular kolaydan zora doğru ilerliyor. Sana en uygun kelime ve grammar içerikleriyle, tam olman gereken seviyeden başlayacaksın — yaklaşık 4-5 dakika sürer.</p>
+      <button class="btn-full" id="ptStart">Teste Başla</button>
+      <span class="pt-skip" id="ptSkip">Testi atla, A1'den başlayayım</span>
+    </div>
+  `;
+  document.getElementById('ptStart').addEventListener('click', startPlacement);
+  document.getElementById('ptSkip').addEventListener('click', ()=>{
+    progress.level=0; progress.placementDone=true; saveProgress();
+    flashLevelFilter = LEVELS[0].code;
+    readingLevelFilter = LEVELS[0].code;
+    finishPlacementUI();
+  });
+}
+function startPlacement(){
+  placementState = {idx:0, correct:0, answered:false};
+  renderPlacementQ();
+}
+function renderPlacementQ(){
+  const main = document.getElementById('main');
+  const item = PLACEMENT_TEST[placementState.idx];
+  main.innerHTML = `
+    <div class="pt-wrap">
+      <div class="pt-progress">Soru ${placementState.idx+1} / ${PLACEMENT_TEST.length}</div>
+      <div class="pt-q">${item.q}</div>
+      <div class="q-options">
+        ${item.opts.map(o=>`<div class="q-option" data-opt="${o}">${o}</div>`).join('')}
+      </div>
+    </div>
+  `;
+  main.querySelectorAll('.q-option').forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      if(placementState.answered) return;
+      placementState.answered = true;
+      const chosen = opt.dataset.opt;
+      main.querySelectorAll('.q-option').forEach(o=>{
+        o.classList.remove('correct','incorrect');
+        if(o.dataset.opt===item.a) o.classList.add('correct');
+      });
+      if(chosen!==item.a) opt.classList.add('incorrect');
+      else placementState.correct++;
+      setTimeout(()=>{
+        placementState.idx++;
+        placementState.answered = false;
+        if(placementState.idx >= PLACEMENT_TEST.length){
+          const lvl = levelFromScore(placementState.correct);
+          progress.level = lvl; progress.placementDone = true; saveProgress();
+          renderPlacementResult(lvl);
+        } else {
+          renderPlacementQ();
+        }
+      }, 700);
+    });
+  });
+}
+function renderPlacementResult(lvl){
+  const main = document.getElementById('main');
+  main.innerHTML = `
+    <div class="pt-wrap pt-result">
+      <div class="level-big">${LEVELS[lvl].code}</div>
+      <div class="level-name">${LEVELS[lvl].label} seviyesi</div>
+      <p class="section-sub">Kelime kartların ve grammar konuların bu seviyeye göre ayarlandı. Kelimeleri öğrendikçe daha zor seviyeler otomatik olarak açılacak.</p>
+      <button class="btn-full" id="ptDone">Başlamaya Hazırım</button>
+    </div>
+  `;
+  document.getElementById('ptDone').addEventListener('click', finishPlacementUI);
+}
+function finishPlacementUI(){
+  document.getElementById('tabbar').style.display='flex';
+  flashLevelFilter = LEVELS[progress.level].code;
+  readingLevelFilter = LEVELS[progress.level].code;
+  updateHeaderStats();
+  activeTab = 'flash';
+  document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab==='flash'));
+  render();
+}
+
+/* ---------------- FLASHCARDS ---------------- */
+function currentDeck(){
+  let pool = unlockedVocab();
+  if(flashLevelFilter && flashLevelFilter!=='Tümü'){
+    pool = pool.filter(w=>w.level===flashLevelFilter);
+  }
+  return flashFilter==='Tümü' ? pool : pool.filter(w=>w.cat===flashFilter);
+}
+function renderFlash(main){
+  if(!flashLevelFilter) flashLevelFilter = LEVELS[progress.level].code;
+  const levelOptions = LEVELS.filter((l,idx)=>idx<=progress.level).map(l=>l.code);
+  const levelPool = flashLevelFilter==='Tümü' ? unlockedVocab() : unlockedVocab().filter(w=>w.level===flashLevelFilter);
+  const cats = ["Tümü", ...new Set(levelPool.map(w=>w.cat))];
+  const deck = currentDeck();
+  if(flashIndex >= deck.length) flashIndex = 0;
+  const word = deck[flashIndex];
+  const known = Object.values(progress.flashcards).filter(v=>v==='known').length;
+  const learning = Object.values(progress.flashcards).filter(v=>v==='learning').length;
+  const tier = currentTierWords();
+  const tierKnown = tier.filter(w=>progress.flashcards[w.id]==='known').length;
+  const ratio = tier.length ? tierKnown/tier.length : 0;
+  const nextLevel = progress.level < LEVELS.length-1 ? LEVELS[progress.level+1].code : null;
+  const circumference = 2*Math.PI*24;
+  const offset = circumference*(1-Math.min(1,ratio));
+
+  main.innerHTML = `
+    <h2 class="section-title">Kelime Kartları</h2>
+    <p class="section-sub">Karta dokun, çeviriyi gör. Sonra bildiğini ya da tekrar edeceğini işaretle.</p>
+    <div class="badge-strip" id="badgeStrip">
+      ${BADGES.map(b=>`<div class="badge-item ${progress.badges[b.id]?'earned':''}"><span class="b-emoji">${b.emoji}</span><span class="b-name">${b.name}</span></div>`).join('')}
+    </div>
+    <div class="chip-row" id="levelRow">
+      ${levelOptions.map(lv=>`<div class="chip ${lv===flashLevelFilter?'active':''}" data-lvl="${lv}">${lv} ${lv===LEVELS[progress.level].code?'(seviyen)':''}</div>`).join('')}
+      <div class="chip ${flashLevelFilter==='Tümü'?'active':''}" data-lvl="Tümü">Tüm Seviyeler</div>
+    </div>
+    <div class="chip-row" id="catRow">
+      ${cats.map(c=>`<div class="chip ${c===flashFilter?'active':''}" data-cat="${c}">${c}</div>`).join('')}
+    </div>
+    <div class="progress-strip">
+      <div class="progress-box"><strong>${known}</strong><span>Biliyorum</span></div>
+      <div class="progress-box learning"><strong>${learning}</strong><span>Öğreniyorum</span></div>
+    </div>
+    <div class="tier-ring-wrap">
+      <svg width="56" height="56" viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="24" fill="none" stroke="#DEE3D9" stroke-width="6"/>
+        <circle cx="28" cy="28" r="24" fill="none" stroke="#4C8C6F" stroke-width="6" stroke-linecap="round"
+          stroke-dasharray="${circumference.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}" transform="rotate(-90 28 28)"/>
+      </svg>
+      <div class="tier-ring-text">
+        <strong>${tierKnown}/${tier.length}</strong> ${LEVELS[progress.level].code} kelimesi öğrenildi<br>
+        ${nextLevel ? `%70'e ulaşınca ${nextLevel} açılır 🚀` : 'En üst seviyedesin, tebrikler! 🏆'}
+      </div>
+    </div>
+    ${deck.length ? `
+    <div class="deck-status">${flashIndex+1} / ${deck.length} — ${word.cat}</div>
+    <div class="flashcard" id="flashCard">
+      <span class="cat-label">${word.cat}</span>
+      <span class="lvl-label">${word.level}</span>
+      ${flashFlipped ? `
+        <div class="word-tr">${word.tr}</div>
+        <div class="example">${word.ex}<br>${word.exTr}</div>
+      ` : `
+        <div class="word-en">${word.en}</div>
+        <div class="hint">Çeviriyi görmek için dokun</div>
+      `}
+    </div>
+    <div class="card-actions">
+      <button class="btn btn-secondary" id="btnLearning">Tekrar Edeceğim</button>
+      <button class="btn btn-primary" id="btnKnown">Biliyorum</button>
+    </div>
+    ` : `<p class="section-sub">Bu kategoride kart yok.</p>`}
+  `;
+
+  document.querySelectorAll('#levelRow .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      flashLevelFilter = chip.dataset.lvl;
+      flashFilter = 'Tümü';
+      flashIndex = 0;
+      flashFlipped = false;
+      renderFlash(main);
+    });
+  });
+  document.querySelectorAll('#catRow .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      flashFilter = chip.dataset.cat;
+      flashIndex = 0;
+      flashFlipped = false;
+      renderFlash(main);
+    });
+  });
+  const card = document.getElementById('flashCard');
+  if(card){
+    card.addEventListener('click', ()=>{
+      flashFlipped = !flashFlipped;
+      renderFlash(main);
+    });
+  }
+  const btnKnown = document.getElementById('btnKnown');
+  const btnLearning = document.getElementById('btnLearning');
+  if(btnKnown){
+    btnKnown.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      progress.flashcards[word.id] = 'known';
+      addXp(10);
+      burstConfetti(e.clientX, e.clientY, 12);
+      const leveledUp = checkLevelUp();
+      afterProgress(leveledUp);
+      nextCard(main, currentDeck());
+    });
+  }
+  if(btnLearning){
+    btnLearning.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      progress.flashcards[word.id] = 'learning';
+      addXp(2);
+      afterProgress(false);
+      nextCard(main, currentDeck());
+    });
+  }
+}
+function nextCard(main, deck){
+  flashIndex = deck.length ? (flashIndex+1) % deck.length : 0;
+  flashFlipped = false;
+  renderFlash(main);
+}
+
+/* ---------------- GRAMMAR ---------------- */
+function renderGrammar(main){
+  main.innerHTML = `
+    <h2 class="section-title">Grammar Alıştırmaları</h2>
+    <p class="section-sub">Konuya dokun, soruları çöz, doğru cevabı işaretle. Kilitli konular seviyen yükseldikçe açılır.</p>
+    <div id="topicList"></div>
+  `;
+  const list = document.getElementById('topicList');
+  GRAMMAR.forEach((topic, tIdx)=>{
+    const locked = levelIdx(topic.level) > progress.level;
+    const doneCount = topic.qs.filter((q,qIdx)=>progress.grammarDone[tIdx+'-'+qIdx]).length;
+    const pct = Math.round(100*doneCount/topic.qs.length);
+    const card = document.createElement('div');
+    card.className = 'topic-card' + (locked ? ' locked' : '');
+    card.innerHTML = `
+      <div class="topic-head" data-t="${tIdx}">
+        <div>
+          <h3>${locked ? '🔒 ' : ''}${topic.topic}</h3>
+          ${locked ? `<div class="tier-note" style="margin:4px 0 0;text-align:left;">${topic.level} seviyesinde açılır</div>` : `<div class="topic-progress-bar"><div class="topic-progress-fill" style="width:${pct}%"></div></div>`}
+        </div>
+        <span style="font-size:0.75rem;color:var(--ink-soft)">${locked ? '' : doneCount+'/'+topic.qs.length}</span>
+      </div>
+      <div class="topic-body ${openTopic===tIdx?'open':''}" id="topicBody${tIdx}"></div>
+    `;
+    list.appendChild(card);
+    card.querySelector('.topic-head').addEventListener('click', ()=>{
+      if(locked){
+        showLevelToast(`🔒 Bu konu ${topic.level} seviyesinde açılıyor. Önce ${LEVELS[progress.level].code} kelimelerinin %70'ini öğren.`);
+        return;
+      }
+      openTopic = openTopic===tIdx ? null : tIdx;
+      renderGrammar(main);
+    });
+    if(!locked && openTopic===tIdx){
+      const body = card.querySelector('.topic-body');
+      topic.qs.forEach((q, qIdx)=>{
+        const key = tIdx+'-'+qIdx;
+        const block = document.createElement('div');
+        block.className = 'q-block';
+        block.innerHTML = `
+          <div class="q-text">${qIdx+1}. ${q.q}</div>
+          <div class="q-options">
+            ${q.opts.map(o=>`<div class="q-option" data-opt="${o}">${o}</div>`).join('')}
+          </div>
+          <div class="q-explain" id="explain-${key}">${q.exp}</div>
+        `;
+        body.appendChild(block);
+        block.querySelectorAll('.q-option').forEach(opt=>{
+          opt.addEventListener('click', ()=>{
+            const chosen = opt.dataset.opt;
+            block.querySelectorAll('.q-option').forEach(o=>{
+              o.classList.remove('correct','incorrect');
+              if(o.dataset.opt===q.a) o.classList.add('correct');
+            });
+            if(chosen!==q.a) opt.classList.add('incorrect');
+            else { addXp(10); burstConfetti(opt.getBoundingClientRect().left+20, opt.getBoundingClientRect().top, 8); }
+            document.getElementById('explain-'+key).classList.add('show');
+            progress.grammarDone[key] = true;
+            saveProgress();
+            updateHeaderStats();
+            checkBadges();
+            const pctBar = card.querySelector('.topic-progress-fill');
+            const newDone = topic.qs.filter((qq,qi)=>progress.grammarDone[tIdx+'-'+qi]).length;
+            if(pctBar) pctBar.style.width = Math.round(100*newDone/topic.qs.length)+'%';
+            const countLabel = card.querySelector('.topic-head span');
+            if(countLabel) countLabel.textContent = newDone+'/'+topic.qs.length;
+          });
+        });
+      });
+    }
+  });
+}
+
+/* ---------------- WRITING PRACTICE ---------------- */
+function pickPool(n){
+  const curCode = LEVELS[progress.level].code;
+  const tierNotKnown = VOCAB.filter(w=>w.level===curCode && progress.flashcards[w.id]!=='known');
+  if(tierNotKnown.length>=n) return [...tierNotKnown].sort(()=>Math.random()-0.5).slice(0,n);
+  const otherNotKnown = unlockedVocab().filter(w=>w.level!==curCode && progress.flashcards[w.id]!=='known');
+  const combined = [...tierNotKnown, ...[...otherNotKnown].sort(()=>Math.random()-0.5)];
+  if(combined.length>=n) return combined.slice(0,n);
+  const pool = unlockedVocab();
+  const source = combined.length ? combined : pool;
+  return [...source].sort(()=>Math.random()-0.5).slice(0, Math.min(n, pool.length));
+}
+function buildWriting(){
+  const words = pickPool(8);
+  const items = words.map(w=>({w, direction: Math.random()<0.5 ? 'en-tr' : 'tr-en'}));
+  writeState = {items, idx:0, correctCount:0, finished:false, answered:false};
+}
+function renderWrite(main){
+  main.innerHTML = `
+    <h2 class="section-title">Yazarak Çalış</h2>
+    <p class="section-sub">Kelimenin karşılığını doğru dilde yaz, anında geri bildirim al.</p>
+    <div class="quiz-score-row">
+      <div class="stat-box"><strong>${progress.writing.total}</strong><span>Toplam Soru</span></div>
+      <div class="stat-box"><strong>${progress.writing.total?Math.round(100*progress.writing.correct/progress.writing.total):0}%</strong><span>Başarı</span></div>
+    </div>
+    <div id="writeArea"></div>
+  `;
+  if(!writeState) renderWriteStart();
+  else if(writeState.finished) renderWriteResult();
+  else renderWriteQ();
+}
+function renderWriteStart(){
+  const area = document.getElementById('writeArea');
+  if(!area) return;
+  area.innerHTML = `<button class="btn-full" id="startWrite">8 Kelimelik Yazma Turu Başlat</button>`;
+  document.getElementById('startWrite').addEventListener('click', ()=>{ buildWriting(); render(); });
+}
+function renderWriteQ(){
+  const area = document.getElementById('writeArea');
+  if(!area) return;
+  const item = writeState.items[writeState.idx];
+  const prompt = item.direction==='en-tr' ? item.w.en : item.w.tr;
+  area.innerHTML = `
+    <div class="quiz-progress">Soru ${writeState.idx+1} / ${writeState.items.length}</div>
+    <div class="write-card">
+      <div class="write-prompt-label">${item.direction==='en-tr' ? 'İngilizce ➜ Türkçe yaz' : 'Türkçe ➜ İngilizce yaz'}</div>
+      <div class="write-prompt">${prompt}</div>
+    </div>
+    <input class="write-input" id="writeInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Cevabını yaz...">
+    <div class="write-feedback" id="writeFeedback"></div>
+    <button class="btn-full" id="writeCheck">Kontrol Et</button>
+  `;
+  const input = document.getElementById('writeInput');
+  input.focus();
+  const doCheck = ()=>{
+    if(writeState.answered) return;
+    writeState.answered = true;
+    const answer = item.direction==='en-tr' ? item.w.tr : item.w.en;
+    const isCorrect = normalize(input.value) === normalize(answer);
+    input.classList.add(isCorrect ? 'correct' : 'incorrect');
+    input.disabled = true;
+    const fb = document.getElementById('writeFeedback');
+    fb.className = 'write-feedback ' + (isCorrect ? 'ok' : 'no');
+    fb.textContent = isCorrect ? '✓ Doğru!' : ('✗ Doğrusu: ' + answer);
+    progress.writing.total++;
+    progress.flashcards[item.w.id] = isCorrect ? 'known' : (progress.flashcards[item.w.id]==='known' ? 'known' : 'learning');
+    if(isCorrect){ progress.writing.correct++; writeState.correctCount++; addXp(15); burstConfetti(window.innerWidth/2, 220, 10); }
+    else { addXp(3); }
+    const leveledUp = checkLevelUp();
+    afterProgress(leveledUp);
+    setTimeout(()=>{
+      writeState.idx++;
+      writeState.answered = false;
+      if(writeState.idx >= writeState.items.length) writeState.finished = true;
+      render();
+    }, 1100);
+  };
+  document.getElementById('writeCheck').addEventListener('click', doCheck);
+  input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') doCheck(); });
+}
+function renderWriteResult(){
+  const area = document.getElementById('writeArea');
+  if(!area) return;
+  area.innerHTML = `
+    <div class="quiz-result">
+      <div class="big">${writeState.correctCount}/${writeState.items.length}</div>
+      <p class="section-sub">doğru cevap</p>
+      <button class="btn-full" id="retryWrite">Yeni Tur</button>
+    </div>
+  `;
+  document.getElementById('retryWrite').addEventListener('click', ()=>{ writeState = null; render(); });
+}
+
+/* ---------------- WORD OF THE DAY + QUIZ ---------------- */
+function dayIndex(){
+  const now = new Date();
+  const start = new Date(now.getFullYear(),0,0);
+  const diff = now - start;
+  const oneDay = 1000*60*60*24;
+  return Math.floor(diff/oneDay);
+}
+function speak(text){
+  try{
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    speechSynthesis.speak(utter);
+  }catch(e){}
+}
+function renderWod(main){
+  const pool = currentTierWords().length ? currentTierWords() : unlockedVocab();
+  const word = pool[dayIndex() % pool.length];
+  main.innerHTML = `
+    <h2 class="section-title">Günün Kelimesi</h2>
+    <p class="section-sub">Her gün yeni bir kelime, ardından küçük bir quiz.</p>
+    <div class="wod-card">
+      <div class="label">BUGÜNÜN KELİMESİ · ${word.level}</div>
+      <div class="word">${word.en}</div>
+      <div class="tr">${word.tr}</div>
+      <div class="example">${word.ex}<br>${word.exTr}</div>
+      <button class="sound-btn" id="speakWod">🔊 Dinle</button>
+    </div>
+    <div class="quiz-score-row">
+      <div class="stat-box"><strong>${progress.quiz.total}</strong><span>Toplam Soru</span></div>
+      <div class="stat-box"><strong>${progress.quiz.total?Math.round(100*progress.quiz.correct/progress.quiz.total):0}%</strong><span>Başarı</span></div>
+      <div class="stat-box"><strong>${progress.quiz.streak||0}</strong><span>Gün Seri</span></div>
+    </div>
+    <div id="quizArea"></div>
+  `;
+  document.getElementById('speakWod').addEventListener('click', ()=>speak(word.en));
+  if(!quizState){
+    renderQuizStart();
+  } else if(quizState.finished){
+    renderQuizResult();
+  } else {
+    renderQuizQuestion();
+  }
+}
+function buildQuiz(){
+  const words = pickPool(5);
+  const pool = unlockedVocab();
+  const questions = words.map(w=>{
+    const direction = Math.random() < 0.5 ? 'en-tr' : 'tr-en';
+    const correct = direction==='en-tr' ? w.tr : w.en;
+    const distractorPool = pool.filter(x=>x.id!==w.id).sort(()=>Math.random()-0.5).slice(0,3);
+    const distractors = distractorPool.map(x=> direction==='en-tr' ? x.tr : x.en);
+    const options = [...distractors, correct].sort(()=>Math.random()-0.5);
+    return { prompt: direction==='en-tr' ? w.en : w.tr, direction, options, answer: correct, wordId: w.id };
+  });
+  quizState = {questions, idx:0, correctCount:0, finished:false, answered:false};
+}
+function renderQuizStart(){
+  const area = document.getElementById('quizArea');
+  if(!area) return;
+  area.innerHTML = `<button class="btn-full" id="startQuiz">5 Soruluk Quiz Başlat</button>`;
+  document.getElementById('startQuiz').addEventListener('click', ()=>{
+    buildQuiz();
+    render();
+  });
+}
+function renderQuizQuestion(){
+  const area = document.getElementById('quizArea');
+  if(!area) return;
+  const q = quizState.questions[quizState.idx];
+  area.innerHTML = `
+    <div class="quiz-progress">Soru ${quizState.idx+1} / ${quizState.questions.length}</div>
+    <div class="quiz-q">${q.prompt}</div>
+    <div class="q-options">
+      ${q.options.map(o=>`<div class="q-option" data-opt="${o}">${o}</div>`).join('')}
+    </div>
+  `;
+  area.querySelectorAll('.q-option').forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      if(quizState.answered) return;
+      quizState.answered = true;
+      const chosen = opt.dataset.opt;
+      area.querySelectorAll('.q-option').forEach(o=>{
+        o.classList.remove('correct','incorrect');
+        if(o.dataset.opt===q.answer) o.classList.add('correct');
+      });
+      let correct = false;
+      if(chosen!==q.answer) opt.classList.add('incorrect');
+      else { quizState.correctCount++; correct = true; addXp(15); burstConfetti(opt.getBoundingClientRect().left+30, opt.getBoundingClientRect().top, 8); }
+      progress.flashcards[q.wordId] = correct ? 'known' : (progress.flashcards[q.wordId]==='known' ? 'known' : 'learning');
+      setTimeout(()=>{
+        quizState.idx++;
+        quizState.answered = false;
+        if(quizState.idx >= quizState.questions.length){
+          finishQuiz();
+        }
+        render();
+      }, 900);
+    });
+  });
+}
+function finishQuiz(){
+  quizState.finished = true;
+  progress.quiz.total += quizState.questions.length;
+  progress.quiz.correct += quizState.correctCount;
+  const today = todayStr();
+  if(progress.quiz.lastDate !== today){
+    const last = progress.quiz.lastDate;
+    if(last){
+      const parts = last.split('-');
+      const lastDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+      const now = new Date();
+      const diffDays = Math.round((new Date(now.getFullYear(),now.getMonth(),now.getDate()) - new Date(lastDate.getFullYear(),lastDate.getMonth(),lastDate.getDate()))/(1000*60*60*24));
+      progress.quiz.streak = diffDays === 1 ? (progress.quiz.streak||0)+1 : 1;
+    } else {
+      progress.quiz.streak = 1;
+    }
+    progress.quiz.lastDate = today;
+  }
+  saveProgress();
+  const leveledUp = checkLevelUp();
+  afterProgress(leveledUp);
+}
+function renderQuizResult(){
+  const area = document.getElementById('quizArea');
+  if(!area) return;
+  area.innerHTML = `
+    <div class="quiz-result">
+      <div class="big">${quizState.correctCount}/${quizState.questions.length}</div>
+      <p class="section-sub">doğru cevap</p>
+      <button class="btn-full" id="retryQuiz">Yeni Quiz</button>
+    </div>
+  `;
+  document.getElementById('retryQuiz').addEventListener('click', ()=>{
+    quizState = null;
+    render();
+  });
+}
+
+/* ---------------- SENTENCE BUILDER ---------------- */
+function initSb(idx){
+  const list = unlockedSentences();
+  const s = list[idx % list.length];
+  const pool = [...s.words].sort(()=>Math.random()-0.5);
+  sbState = {idx: idx % list.length, pool, built:[], checked:false, correct:false};
+}
+function renderSentence(main){
+  const list = unlockedSentences();
+  if(!sbState || sbState.idx >= list.length) initSb(0);
+  const doneCount = Object.keys(progress.sentenceDone).filter(k=>list.some((s,i)=>i===parseInt(k))).length;
+  const s = list[sbState.idx];
+  main.innerHTML = `
+    <h2 class="section-title">Cümle Kur</h2>
+    <p class="section-sub">Kelimelere doğru sırada dokunarak cümleyi oluştur. Seviyen yükseldikçe daha zor cümleler açılır.</p>
+    <div class="sb-counter">Bu seviyede tamamlanan: ${doneCount} / ${list.length}</div>
+    <div class="sb-hint">💡 ${s.hint}</div>
+    <div class="sb-answer-row" id="sbAnswer">
+      ${sbState.built.map((w,i)=>`<div class="sb-chip" data-i="${i}">${w}</div>`).join('')}
+    </div>
+    <div class="sb-pool" id="sbPool">
+      ${sbState.pool.map((w,i)=>`<div class="sb-chip" data-i="${i}">${w}</div>`).join('')}
+    </div>
+    <div class="sb-feedback ${sbState.checked?'show':''} ${sbState.correct?'ok':'no'}" id="sbFeedback">
+      ${sbState.checked ? (sbState.correct ? '✓ Doğru! ' + s.full : '✗ Tekrar dene. Doğrusu: ' + s.full) : ''}
+    </div>
+    <div class="card-actions">
+      <button class="btn btn-secondary" id="sbReset">Sıfırla</button>
+      <button class="btn btn-primary" id="sbCheck">Kontrol Et</button>
+    </div>
+    <button class="btn-full" id="sbNext">Sonraki Cümle</button>
+  `;
+  document.querySelectorAll('#sbPool .sb-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const i = parseInt(chip.dataset.i);
+      sbState.built.push(sbState.pool[i]);
+      sbState.pool.splice(i,1);
+      sbState.checked = false;
+      renderSentence(main);
+    });
+  });
+  document.querySelectorAll('#sbAnswer .sb-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const i = parseInt(chip.dataset.i);
+      sbState.pool.push(sbState.built[i]);
+      sbState.built.splice(i,1);
+      sbState.checked = false;
+      renderSentence(main);
+    });
+  });
+  document.getElementById('sbReset').addEventListener('click', ()=>{
+    initSb(sbState.idx);
+    renderSentence(main);
+  });
+  document.getElementById('sbCheck').addEventListener('click', ()=>{
+    sbState.checked = true;
+    sbState.correct = JSON.stringify(sbState.built) === JSON.stringify(s.words);
+    if(sbState.correct){
+      progress.sentenceDone[sbState.idx] = true;
+      addXp(20);
+      burstConfetti(window.innerWidth/2, 260, 14);
+      updateHeaderStats();
+      checkBadges();
+    }
+    renderSentence(main);
+  });
+  document.getElementById('sbNext').addEventListener('click', ()=>{
+    const nextList = unlockedSentences();
+    const nextIdx = (sbState.idx+1) % nextList.length;
+    initSb(nextIdx);
+    renderSentence(main);
+  });
+}
+
+/* ---------------- READING COMPREHENSION ---------------- */
+function renderReading(main){
+  if(!readingLevelFilter) readingLevelFilter = LEVELS[progress.level].code;
+  const levelOptions = LEVELS.filter((l,idx)=>idx<=progress.level).map(l=>l.code);
+  const reading = READINGS.find(r=>r.level===readingLevelFilter) || READINGS[0];
+  const doneInThis = reading.qs.filter((q,qi)=>progress.readingDone[reading.level+'-'+qi]).length;
+  main.innerHTML = `
+    <h2 class="section-title">Okuma Parçası</h2>
+    <p class="section-sub">Metni oku, anlamını çıkar, sorulara cevap ver. Takılırsan Türkçe çevirisine bakabilirsin.</p>
+    <div class="chip-row" id="readLevelRow">
+      ${levelOptions.map(lv=>`<div class="chip ${lv===readingLevelFilter?'active':''}" data-lvl="${lv}">${lv} ${lv===LEVELS[progress.level].code?'(seviyen)':''}</div>`).join('')}
+    </div>
+    <div class="reading-card">
+      <div class="reading-title">${reading.title}</div>
+      <div class="reading-text">${reading.text}</div>
+      <div class="reading-tr" id="readingTr">${reading.textTr}</div>
+      <button class="reveal-btn" id="revealTr">Türkçe Çeviriyi Göster</button>
+    </div>
+    <div class="deck-status">${doneInThis}/${reading.qs.length} soru tamamlandı</div>
+    <div id="readingQs"></div>
+  `;
+  document.querySelectorAll('#readLevelRow .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      readingLevelFilter = chip.dataset.lvl;
+      renderReading(main);
+    });
+  });
+  const revealBtn = document.getElementById('revealTr');
+  revealBtn.addEventListener('click', ()=>{
+    const tr = document.getElementById('readingTr');
+    tr.classList.toggle('show');
+    revealBtn.textContent = tr.classList.contains('show') ? 'Türkçe Çeviriyi Gizle' : 'Türkçe Çeviriyi Göster';
+  });
+  const qArea = document.getElementById('readingQs');
+  reading.qs.forEach((q, qIdx)=>{
+    const key = reading.level+'-'+qIdx;
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    block.innerHTML = `
+      <div class="q-text">${qIdx+1}. ${q.q}</div>
+      <div class="q-options">
+        ${q.opts.map(o=>`<div class="q-option" data-opt="${o}">${o}</div>`).join('')}
+      </div>
+    `;
+    qArea.appendChild(block);
+    block.querySelectorAll('.q-option').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        if(progress.readingDone[key]) return;
+        const chosen = opt.dataset.opt;
+        block.querySelectorAll('.q-option').forEach(o=>{
+          o.classList.remove('correct','incorrect');
+          if(o.dataset.opt===q.a) o.classList.add('correct');
+        });
+        if(chosen!==q.a){
+          opt.classList.add('incorrect');
+          addXp(2);
+        } else {
+          addXp(12);
+          burstConfetti(opt.getBoundingClientRect().left+20, opt.getBoundingClientRect().top, 8);
+        }
+        progress.readingDone[key] = true;
+        updateHeaderStats();
+        checkBadges();
+      });
+    });
+  });
+}
+
+
+(async function init(){
+  document.getElementById('retestBtn').addEventListener('click', ()=>{
+    progress.placementDone = false;
+    showPlacementIntro();
+  });
+  document.getElementById('logoutBtn').addEventListener('click', doLogout);
+
+  if(!window.supabase){
+    document.getElementById('main').innerHTML = `
+      <div class="pt-wrap pt-intro">
+        <h2>Bağlantı kurulamadı</h2>
+        <p>Hesap sistemi için internete ihtiyaç var. Bağlantını kontrol edip sayfayı yenile.</p>
+      </div>`;
+    return;
+  }
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  try{
+    const { data } = await supabaseClient.auth.getSession();
+    if(data && data.session && data.session.user){
+      await onAuthed(data.session.user);
+    } else {
+      authMode = 'login';
+      renderAuth();
+    }
+  }catch(e){
+    authMode = 'login';
+    authError = 'Bağlantı kurulamadı, tekrar dene.';
+    renderAuth();
+  }
+})();
+</script>
+</body>
+</html>

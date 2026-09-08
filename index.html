@@ -11,6 +11,9 @@
 <meta name="apple-mobile-web-app-title" content="İngilizce Kutum">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232B3A67'/%3E%3Ctext x='50' y='64' font-size='46' text-anchor='middle' fill='%23E39A34' font-family='Georgia,serif' font-weight='700'%3EEn%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232B3A67'/%3E%3Ctext x='50' y='64' font-size='46' text-anchor='middle' fill='%23E39A34' font-family='Georgia,serif' font-weight='700'%3EEn%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<!-- GoatCounter analytics — ücretsiz, çerezsiz. -->
+<script data-goatcounter="https://english-box.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -725,6 +728,47 @@
   .write-feedback{font-size:0.84rem;text-align:center;margin-bottom:8px;min-height:20px;font-weight:600;}
   .write-feedback.ok{color:var(--green);}
   .write-feedback.no{color:var(--rose);}
+
+  /* Notification panel */
+  .notif-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(31,42,68,0.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.25s ease;
+    z-index:1000;
+  }
+  .notif-modal.show{opacity:1;pointer-events:auto;}
+  .notif-card{
+    background:var(--surface);
+    border-radius:18px;
+    padding:22px 20px;
+    max-width:360px;
+    width:100%;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+  }
+  .notif-card h3{
+    font-family:'Fraunces',serif;
+    margin:0 0 8px;
+    color:var(--navy);
+    font-size:1.15rem;
+  }
+  .notif-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--bg);
+    border-radius:10px;
+    padding:9px 12px;
+    font-size:0.8rem;
+    margin-bottom:8px;
+  }
+  .notif-row strong{color:var(--navy);}
 </style>
 </head>
 <body>
@@ -734,7 +778,10 @@
     <p>Kelime kelime, gün gün İngilizceni büyüt 🌱</p>
     <div class="auth-row" id="authRow" style="display:none">
       <span class="user-email" id="userEmailLabel"></span>
-      <span class="retest-link" id="logoutBtn">Çıkış Yap</span>
+      <span style="display:flex;gap:12px;align-items:center;">
+        <span class="retest-link" id="notifBtn" style="text-decoration:none;">🔔</span>
+        <span class="retest-link" id="logoutBtn">Çıkış Yap</span>
+      </span>
     </div>
     <div class="level-row" id="headerLevelRow" style="display:none">
       <span class="level-badge" id="levelBadge">Seviye: A1</span>
@@ -778,6 +825,10 @@
     <button data-tab="reading">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4H6.5A2.5 2.5 0 004 6.5v13z"/><path d="M8 8h8M8 11h8"/></svg>
       Okuma
+    </button>
+    <button data-tab="exam">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Sınav
     </button>
   </nav>
 </div>
@@ -1053,7 +1104,9 @@ const BADGES = [
   {id:'reader1', emoji:'📖', name:'Okuma Meraklısı', check:p=>Object.keys(p.readingDone||{}).length>=3},
   {id:'level_a2', emoji:'🚀', name:'A2 Seviyesi', check:p=>p.level>=1},
   {id:'level_b1', emoji:'🎯', name:'B1 Seviyesi', check:p=>p.level>=2},
-  {id:'level_b2', emoji:'🏆', name:'B2 Seviyesi', check:p=>p.level>=3}
+  {id:'level_b2', emoji:'🏆', name:'B2 Seviyesi', check:p=>p.level>=3},
+  {id:'exam1', emoji:'🧠', name:'Sınav Ustası', check:p=>(p.examHistory||[]).length>=1},
+  {id:'exam5', emoji:'🎓', name:'Sınav Kâşifi', check:p=>(p.examHistory||[]).length>=5}
 ];
 
 /* ---------------- DATA: READINGS ---------------- */
@@ -1104,7 +1157,11 @@ function defaultProgress(){
     writing:{total:0, correct:0},
     grammarDone:{},
     sentenceDone:{},
-    readingDone:{}
+    readingDone:{},
+    wordStats:{},
+    studyLog:[],
+    examHistory:[],
+    notif:{enabled:false, hour:null, lastPromptDate:null}
   };
 }
 let progress = defaultProgress();
@@ -1119,6 +1176,7 @@ let sbState = null;
 let writeState = null;
 let openTopic = null;
 let placementState = null;
+let examState = null;
 
 /* ---------------- STORAGE (local cache + cloud sync) ---------------- */
 const STORAGE_KEY = 'ingilizce-calisma-kutum-progress';
@@ -1206,6 +1264,110 @@ function addXp(n){
   progress.xp = (progress.xp||0) + n;
   saveProgress();
 }
+function trackEvent(path, title){
+  try{
+    if(window.goatcounter && typeof window.goatcounter.count === 'function'){
+      window.goatcounter.count({ path: path, title: title || path, event: true });
+    }
+  }catch(e){}
+}
+function recordWord(id, correct){
+  if(!progress.wordStats) progress.wordStats = {};
+  if(!progress.wordStats[id]) progress.wordStats[id] = {right:0, wrong:0};
+  if(correct) progress.wordStats[id].right++;
+  else progress.wordStats[id].wrong++;
+}
+function logStudySession(){
+  const hour = new Date().getHours();
+  progress.studyLog = progress.studyLog || [];
+  progress.studyLog.push(hour);
+  if(progress.studyLog.length>40) progress.studyLog = progress.studyLog.slice(-40);
+  saveProgress();
+}
+function preferredHour(){
+  const log = progress.studyLog||[];
+  if(!log.length) return null;
+  const buckets = {};
+  log.forEach(h=>{ buckets[h]=(buckets[h]||0)+1; });
+  let best=null, bestCount=-1;
+  Object.entries(buckets).forEach(([h,c])=>{ if(c>bestCount){best=parseInt(h); bestCount=c;} });
+  return best;
+}
+async function enableNotifications(){
+  if(!('Notification' in window)){ alert('Bu tarayıcı bildirimleri desteklemiyor.'); return; }
+  try{
+    const perm = await Notification.requestPermission();
+    if(perm === 'granted'){
+      progress.notif.enabled = true;
+      progress.notif.hour = preferredHour();
+      saveProgress();
+      trackEvent('/notifications/enabled', 'Bildirimler açıldı');
+      if('serviceWorker' in navigator){
+        try{ await navigator.serviceWorker.register('sw.js'); }catch(e){}
+      }
+    } else {
+      progress.notif.enabled = false;
+      saveProgress();
+    }
+  }catch(e){}
+  showNotifPanel();
+}
+function disableNotifications(){
+  progress.notif.enabled = false;
+  saveProgress();
+  showNotifPanel();
+}
+function showNotifPanel(){
+  let modal = document.getElementById('notifModal');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.className = 'notif-modal';
+    modal.id = 'notifModal';
+    document.body.appendChild(modal);
+  }
+  const hour = progress.notif ? progress.notif.hour : null;
+  const hourText = (hour===null||hour===undefined) ? 'Henüz belirlenmedi — birkaç gün çalış, otomatik öğrenilir' : `${hour}:00 civarı`;
+  const supported = 'Notification' in window;
+  const permission = supported ? Notification.permission : 'unsupported';
+  modal.innerHTML = `
+    <div class="notif-card">
+      <h3>🔔 Akıllı Hatırlatmalar</h3>
+      <p class="section-sub">Uygulama en sık hangi saatte çalıştığını öğrenir ve o saatlere yakın seni hatırlatır. Serini korumak için de gün bitmeden bildirim gönderir. (Uygulama açıkken veya ana ekrana eklenmişken çalışır.)</p>
+      <div class="notif-row"><span>Tahmini en aktif saatin</span><strong>${hourText}</strong></div>
+      <div class="notif-row"><span>Bildirim durumu</span><strong>${progress.notif && progress.notif.enabled ? 'Açık ✅' : 'Kapalı'}</strong></div>
+      ${permission==='denied' ? `<p class="write-feedback no show">Tarayıcı ayarlarından bu site için bildirim izni vermen gerekiyor.</p>` : ''}
+      <button class="btn-full" id="notifToggleBtn">${progress.notif && progress.notif.enabled ? 'Bildirimleri Kapat' : 'Bildirimleri Aç'}</button>
+      <span class="pt-skip" id="notifCloseBtn">Kapat</span>
+    </div>
+  `;
+  modal.classList.add('show');
+  document.getElementById('notifToggleBtn').addEventListener('click', ()=>{
+    if(progress.notif && progress.notif.enabled) disableNotifications(); else enableNotifications();
+  });
+  document.getElementById('notifCloseBtn').addEventListener('click', ()=>{
+    modal.classList.remove('show');
+  });
+}
+function checkDailyReminder(force){
+  if(!progress.notif || !progress.notif.enabled) return;
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  const today = todayStr();
+  const practicedToday = progress.quiz.lastDate === today;
+  if(practicedToday && !force) return;
+  const hour = new Date().getHours();
+  const pref = progress.notif.hour;
+  const closeToPreferred = (pref===null||pref===undefined) ? true : Math.abs(hour-pref) <= 1;
+  if(!closeToPreferred && !force) return;
+  if(progress.notif.lastPromptDate === today && !force) return;
+  try{
+    new Notification('İngilizce Çalışma Kutum', {
+      body: practicedToday ? 'Harika gidiyorsun, bugünkü serini korudun! 🔥' : 'Bugün henüz çalışmadın — birkaç dakikan yeter, serini bozma. 🌱',
+      tag: 'daily-reminder'
+    });
+  }catch(e){}
+  progress.notif.lastPromptDate = today;
+  saveProgress();
+}
 function checkBadges(){
   const newly = [];
   BADGES.forEach(b=>{
@@ -1256,7 +1418,10 @@ function burstConfetti(x, y, count){
 }
 function afterProgress(leveledUp){
   updateHeaderStats();
-  if(leveledUp) showLevelToast(`🎉 Tebrikler! ${LEVELS[progress.level].code} seviyesine geçtin, yeni kelimeler açıldı.`);
+  if(leveledUp){
+    showLevelToast(`🎉 Tebrikler! ${LEVELS[progress.level].code} seviyesine geçtin, yeni kelimeler açıldı.`);
+    trackEvent('/level-up/'+LEVELS[progress.level].code, 'Seviye atlandı');
+  }
   checkBadges();
 }
 function updateHeaderStats(){
@@ -1285,6 +1450,7 @@ document.querySelectorAll('.tabbar button').forEach(btn=>{
     document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     activeTab = btn.dataset.tab;
+    trackEvent('/tab/'+activeTab, 'Sekme: '+activeTab);
     render();
   });
 });
@@ -1298,6 +1464,7 @@ function render(){
   else if(activeTab==='wod') renderWod(main);
   else if(activeTab==='sentence') renderSentence(main);
   else if(activeTab==='reading') renderReading(main);
+  else if(activeTab==='exam') renderExam(main);
 }
 
 /* ---------------- AUTH (sign up / log in / email verification) ---------------- */
@@ -1431,6 +1598,12 @@ async function onAuthed(user){
   document.getElementById('streakRow').style.display = 'flex';
   document.getElementById('userEmailLabel').textContent = user.email;
   await loadCloudProgress();
+  trackEvent(progress.placementDone ? '/session/returning-user' : '/session/new-user', 'Oturum');
+  logStudySession();
+  checkDailyReminder(false);
+  if(!window._reminderInterval){
+    window._reminderInterval = setInterval(()=>checkDailyReminder(false), 5*60*1000);
+  }
   if(!progress.placementDone){
     showPlacementIntro();
   } else {
@@ -1511,6 +1684,7 @@ function renderPlacementQ(){
         if(placementState.idx >= PLACEMENT_TEST.length){
           const lvl = levelFromScore(placementState.correct);
           progress.level = lvl; progress.placementDone = true; saveProgress();
+          trackEvent('/placement-test/level-'+LEVELS[lvl].code, 'Yerleştirme testi tamamlandı');
           renderPlacementResult(lvl);
         } else {
           renderPlacementQ();
@@ -1644,6 +1818,7 @@ function renderFlash(main){
     btnKnown.addEventListener('click', (e)=>{
       e.stopPropagation();
       progress.flashcards[word.id] = 'known';
+      recordWord(word.id, true);
       addXp(10);
       burstConfetti(e.clientX, e.clientY, 12);
       const leveledUp = checkLevelUp();
@@ -1655,6 +1830,7 @@ function renderFlash(main){
     btnLearning.addEventListener('click', (e)=>{
       e.stopPropagation();
       progress.flashcards[word.id] = 'learning';
+      recordWord(word.id, false);
       addXp(2);
       afterProgress(false);
       nextCard(main, currentDeck());
@@ -1806,6 +1982,7 @@ function renderWriteQ(){
     fb.textContent = isCorrect ? '✓ Doğru!' : ('✗ Doğrusu: ' + answer);
     progress.writing.total++;
     progress.flashcards[item.w.id] = isCorrect ? 'known' : (progress.flashcards[item.w.id]==='known' ? 'known' : 'learning');
+    recordWord(item.w.id, isCorrect);
     if(isCorrect){ progress.writing.correct++; writeState.correctCount++; addXp(15); burstConfetti(window.innerWidth/2, 220, 10); }
     else { addXp(3); }
     const leveledUp = checkLevelUp();
@@ -1923,6 +2100,7 @@ function renderQuizQuestion(){
       if(chosen!==q.answer) opt.classList.add('incorrect');
       else { quizState.correctCount++; correct = true; addXp(15); burstConfetti(opt.getBoundingClientRect().left+30, opt.getBoundingClientRect().top, 8); }
       progress.flashcards[q.wordId] = correct ? 'known' : (progress.flashcards[q.wordId]==='known' ? 'known' : 'learning');
+      recordWord(q.wordId, correct);
       setTimeout(()=>{
         quizState.idx++;
         quizState.answered = false;
@@ -2046,6 +2224,144 @@ function renderSentence(main){
   });
 }
 
+/* ---------------- ADAPTIVE MIXED EXAM ---------------- */
+function wordWeight(w){
+  const st = progress.wordStats[w.id];
+  if(!st) return 3;
+  const total = st.right+st.wrong;
+  if(total===0) return 3;
+  return 1 + (st.wrong/total)*4;
+}
+function weightedSample(arr, weightFn, n){
+  const pool = [...arr];
+  const picked = [];
+  for(let i=0;i<n && pool.length;i++){
+    const weights = pool.map(weightFn);
+    const total = weights.reduce((a,b)=>a+b,0) || 1;
+    let r = Math.random()*total;
+    let idx = 0;
+    for(;idx<weights.length;idx++){ r -= weights[idx]; if(r<=0) break; }
+    idx = Math.min(idx, pool.length-1);
+    picked.push(pool[idx]);
+    pool.splice(idx,1);
+  }
+  return picked;
+}
+function buildAdaptiveExam(){
+  const vocabPool = unlockedVocab();
+  const vocabPicks = weightedSample(vocabPool, wordWeight, Math.min(7, vocabPool.length));
+  const vocabQs = vocabPicks.map(w=>{
+    const direction = Math.random()<0.5 ? 'en-tr' : 'tr-en';
+    const correct = direction==='en-tr' ? w.tr : w.en;
+    const distractors = vocabPool.filter(x=>x.id!==w.id).sort(()=>Math.random()-0.5).slice(0,3).map(x=> direction==='en-tr'?x.tr:x.en);
+    const options = [...distractors, correct].sort(()=>Math.random()-0.5);
+    return {type:'vocab', prompt: direction==='en-tr'?w.en:w.tr, options, answer:correct, wordId:w.id};
+  });
+  const grammarFlat = [];
+  GRAMMAR.filter(t=>levelIdx(t.level)<=progress.level).forEach((topic,tIdx)=>{
+    topic.qs.forEach((q,qIdx)=>{
+      const key = tIdx+'-'+qIdx;
+      grammarFlat.push({q, key, weight: progress.grammarDone[key] ? 0.6 : 2.2});
+    });
+  });
+  const grammarPicks = weightedSample(grammarFlat, g=>g.weight, Math.min(5, grammarFlat.length));
+  const grammarQs = grammarPicks.map(g=>({type:'grammar', prompt:g.q.q, options:g.q.opts, answer:g.q.a, key:g.key, exp:g.q.exp}));
+  const all = [...vocabQs, ...grammarQs].sort(()=>Math.random()-0.5);
+  examState = {questions:all, idx:0, correctCount:0, byType:{vocab:{c:0,t:0}, grammar:{c:0,t:0}}, finished:false, answered:false};
+}
+function renderExam(main){
+  const history = progress.examHistory||[];
+  const last = history[history.length-1];
+  const best = history.length ? Math.max(...history.map(h=>Math.round(100*h.correct/h.total))) : null;
+  main.innerHTML = `
+    <h2 class="section-title">Karma Sınav</h2>
+    <p class="section-sub">Kelime ve grammar sorularını karıştırır; en çok zorlandığın kelime ve konulara daha sık yer verir. Her sınav farklı olur.</p>
+    <div class="quiz-score-row">
+      <div class="stat-box"><strong>${history.length}</strong><span>Toplam Sınav</span></div>
+      <div class="stat-box"><strong>${last ? Math.round(100*last.correct/last.total)+'%' : '–'}</strong><span>Son Skor</span></div>
+      <div class="stat-box"><strong>${best!==null ? best+'%' : '–'}</strong><span>En İyi</span></div>
+    </div>
+    <div id="examArea"></div>
+  `;
+  const area = document.getElementById('examArea');
+  if(!examState){
+    area.innerHTML = `<button class="btn-full" id="startExam">12 Soruluk Karma Sınav Başlat</button>`;
+    document.getElementById('startExam').addEventListener('click', ()=>{ buildAdaptiveExam(); render(); });
+  } else if(examState.finished){
+    renderExamResult(area);
+  } else {
+    renderExamQ(area);
+  }
+}
+function renderExamQ(area){
+  const q = examState.questions[examState.idx];
+  area.innerHTML = `
+    <div class="quiz-progress">Soru ${examState.idx+1} / ${examState.questions.length} · ${q.type==='vocab'?'Kelime':'Grammar'}</div>
+    <div class="quiz-q">${q.prompt}</div>
+    <div class="q-options">
+      ${q.options.map(o=>`<div class="q-option" data-opt="${o}">${o}</div>`).join('')}
+    </div>
+    ${q.type==='grammar' ? `<div class="q-explain" id="examExplain"></div>` : ''}
+  `;
+  area.querySelectorAll('.q-option').forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      if(examState.answered) return;
+      examState.answered = true;
+      const chosen = opt.dataset.opt;
+      area.querySelectorAll('.q-option').forEach(o=>{
+        o.classList.remove('correct','incorrect');
+        if(o.dataset.opt===q.answer) o.classList.add('correct');
+      });
+      const correct = chosen===q.answer;
+      if(!correct) opt.classList.add('incorrect');
+      examState.byType[q.type].t++;
+      if(correct){ examState.correctCount++; examState.byType[q.type].c++; addXp(12); burstConfetti(opt.getBoundingClientRect().left+30, opt.getBoundingClientRect().top, 8); }
+      if(q.type==='vocab'){
+        recordWord(q.wordId, correct);
+        progress.flashcards[q.wordId] = correct ? 'known' : (progress.flashcards[q.wordId]==='known'?'known':'learning');
+      } else {
+        progress.grammarDone[q.key] = true;
+        const exp = document.getElementById('examExplain');
+        if(exp){ exp.textContent = q.exp; exp.classList.add('show'); }
+      }
+      setTimeout(()=>{
+        examState.idx++;
+        examState.answered = false;
+        if(examState.idx>=examState.questions.length) finishExam();
+        render();
+      }, q.type==='grammar' ? 1400 : 900);
+    });
+  });
+}
+function finishExam(){
+  examState.finished = true;
+  const total = examState.questions.length;
+  const correct = examState.correctCount;
+  progress.examHistory = progress.examHistory || [];
+  progress.examHistory.push({date: todayStr(), correct, total, level: LEVELS[progress.level].code});
+  if(progress.examHistory.length>20) progress.examHistory = progress.examHistory.slice(-20);
+  saveProgress();
+  trackEvent('/exam/completed', 'Sınav tamamlandı');
+  const leveledUp = checkLevelUp();
+  afterProgress(leveledUp);
+  checkBadges();
+}
+function renderExamResult(area){
+  const pct = Math.round(100*examState.correctCount/examState.questions.length);
+  const vocabPct = examState.byType.vocab.t ? Math.round(100*examState.byType.vocab.c/examState.byType.vocab.t) : null;
+  const grammarPct = examState.byType.grammar.t ? Math.round(100*examState.byType.grammar.c/examState.byType.grammar.t) : null;
+  const suggestRetest = pct>=85 && progress.level < LEVELS.length-1;
+  area.innerHTML = `
+    <div class="quiz-result">
+      <div class="big">${examState.correctCount}/${examState.questions.length}</div>
+      <p class="section-sub">%${pct} başarı${vocabPct!==null?` · Kelime %${vocabPct}`:''}${grammarPct!==null?` · Grammar %${grammarPct}`:''}</p>
+      ${suggestRetest ? `<p class="write-feedback ok show">🚀 Harika gidiyorsun! Seviye testini tekrar çözmeyi düşünebilirsin.</p>` : ''}
+      <button class="btn-full" id="retryExam">Yeni Sınav</button>
+    </div>
+  `;
+  document.getElementById('retryExam').addEventListener('click', ()=>{ examState = null; render(); });
+}
+
 /* ---------------- READING COMPREHENSION ---------------- */
 function renderReading(main){
   if(!readingLevelFilter) readingLevelFilter = LEVELS[progress.level].code;
@@ -2121,6 +2437,10 @@ function renderReading(main){
     showPlacementIntro();
   });
   document.getElementById('logoutBtn').addEventListener('click', doLogout);
+  document.getElementById('notifBtn').addEventListener('click', showNotifPanel);
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
 
   if(!window.supabase){
     document.getElementById('main').innerHTML = `

@@ -879,6 +879,78 @@
     color:var(--navy);
     line-height:1.5;
   }
+  /* Sub-tabs */
+  .subtabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    margin-bottom:4px;
+    scrollbar-width:none;
+  }
+  .subtabs::-webkit-scrollbar{display:none;}
+  .subtab{
+    flex:0 0 auto;
+    background:var(--bg);
+    border:1.5px solid var(--border);
+    color:var(--ink-soft);
+    border-radius:999px;
+    padding:7px 14px;
+    font-size:0.8rem;
+    font-family:inherit;
+    font-weight:500;
+    cursor:pointer;
+    transition:all 0.18s ease;
+  }
+  .subtab.active{
+    background:var(--navy);
+    border-color:var(--navy);
+    color:#fff;
+  }
+  .auth-divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:16px 0 12px;
+    color:var(--ink-soft);
+    font-size:0.78rem;
+  }
+  .auth-divider::before,
+  .auth-divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--border);
+  }
+  .btn-google{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    background:#fff;
+    color:#3c4043;
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    padding:13px 16px;
+    font-family:inherit;
+    font-size:0.92rem;
+    font-weight:500;
+    cursor:pointer;
+    transition:background 0.18s ease, border-color 0.18s ease;
+  }
+  .btn-google:hover{
+    background:#f7f8f7;
+    border-color:#c8cec4;
+  }
+  .lang-toggle{
+    border:1.5px solid var(--border);
+    border-radius:999px;
+    padding:2px 9px;
+    font-size:0.7rem;
+    font-weight:600;
+    letter-spacing:0.5px;
+  }
   .cloze-tr{
     font-size:0.82rem;
     color:var(--ink-soft);
@@ -889,18 +961,19 @@
 <body>
 <div class="app">
   <header class="topbar">
-    <h1>İngilizce Çalışma Kutum</h1>
-    <p>Kelime kelime, gün gün İngilizceni büyüt 🌱</p>
+    <h1 data-i18n="app.title">My English Study Box</h1>
+    <p data-i18n="app.tagline">Grow your English word by word, day by day 🌱</p>
     <div class="auth-row" id="authRow" style="display:none">
       <span class="user-email" id="userEmailLabel"></span>
       <span style="display:flex;gap:12px;align-items:center;">
+        <span class="retest-link lang-toggle" id="langBtn" style="text-decoration:none;">EN</span>
         <span class="retest-link" id="notifBtn" style="text-decoration:none;">🔔</span>
-        <span class="retest-link" id="logoutBtn">Çıkış Yap</span>
+        <span class="retest-link" id="logoutBtn" data-i18n="btn.logout">Log Out</span>
       </span>
     </div>
     <div class="level-row" id="headerLevelRow" style="display:none">
       <span class="level-badge" id="levelBadge">Seviye: A1</span>
-      <span class="retest-link" id="retestBtn">Yeniden test et</span>
+      <span class="retest-link" id="retestBtn" data-i18n="btn.retest">Retake test</span>
     </div>
     <div class="rank-row" id="rankRow" style="display:none">
       <span class="rank-chip"><span class="emoji" id="rankEmoji">🌱</span><span id="rankTitle">Çaylak</span></span>
@@ -908,58 +981,30 @@
     </div>
     <div class="xp-bar-track" id="xpBarTrack" style="display:none"><div class="xp-bar-fill" id="xpBarFill"></div></div>
     <div class="streak-row" id="streakRow" style="display:none">
-      <div class="streak-pill"><strong id="streakCount">0</strong>🔥 gün seri</div>
-      <div class="streak-pill"><strong id="knownCount">0</strong>öğrenilen kelime</div>
-      <div class="streak-pill"><strong id="quizAvg">–</strong>başarı oranı</div>
+      <div class="streak-pill"><strong id="streakCount">0</strong><span data-i18n="stat.streak">🔥 day streak</span></div>
+      <div class="streak-pill"><strong id="knownCount">0</strong><span data-i18n="stat.known">words learned</span></div>
+      <div class="streak-pill"><strong id="quizAvg">–</strong><span data-i18n="stat.accuracy">accuracy</span></div>
     </div>
   </header>
 
   <main id="main"></main>
 
   <nav class="tabbar" id="tabbar" style="display:none">
-    <button data-tab="flash" class="active">
+    <button data-group="learn" class="active">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 6V4a1 1 0 011-1h8a1 1 0 011 1v2"/></svg>
-      Kelime
+      <span data-i18n="nav.learn">Learn</span>
     </button>
-    <button data-tab="grammar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-      Grammar
-    </button>
-    <button data-tab="write">
+    <button data-group="practice">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-      Yazma
+      <span data-i18n="nav.practice">Practice</span>
     </button>
-    <button data-tab="wod">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-      Günlük
-    </button>
-    <button data-tab="sentence">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h13"/></svg>
-      Cümle
-    </button>
-    <button data-tab="reading">
+    <button data-group="study">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4H6.5A2.5 2.5 0 004 6.5v13z"/><path d="M8 8h8M8 11h8"/></svg>
-      Okuma
+      <span data-i18n="nav.study">Study</span>
     </button>
-    <button data-tab="exam">
+    <button data-group="test">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Sınav
-    </button>
-    <button data-tab="dict">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
-      Sözlük
-    </button>
-    <button data-tab="match">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="9" height="5" rx="1.5"/><rect x="13" y="12" width="9" height="5" rx="1.5"/><path d="M11 9.5h2M13 14.5H11"/></svg>
-      Eşleştir
-    </button>
-    <button data-tab="listen">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10v4h4l5 5V5L8 10H4z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg>
-      Dinle
-    </button>
-    <button data-tab="cloze">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h4M16 12h4"/><rect x="8" y="9" width="8" height="6" rx="1" stroke-dasharray="2 2"/></svg>
-      Boşluk
+      <span data-i18n="nav.test">Test</span>
     </button>
   </nav>
 </div>
@@ -2053,265 +2098,329 @@ const VOCAB = [
   {id:1009,en:"optimistic",tr:"iyimser",ex:"She stayed optimistic despite the setbacks.",exTr:"Aksiliklere rağmen iyimser kaldı.",cat:"İleri Kelimeler",level:"B2"},
   {id:1010,en:"cynical",tr:"alaycı, kötümser",ex:"He has become quite cynical about politics.",exTr:"Siyaset konusunda oldukça kötümser oldu.",cat:"İleri Kelimeler",level:"B2"},
   {id:1011,en:"naive",tr:"saf, deneyimsiz",ex:"It was naive of him to trust that offer.",exTr:"O teklife güvenmesi saflıktı.",cat:"İleri Kelimeler",level:"B2"},
-  {id:1012,en:"sophisticated",tr:"gelişmiş, incelikli",ex:"The software uses a sophisticated algorithm.",exTr:"Yazılım gelişmiş bir algoritma kullanıyor.",cat:"İleri Kelimeler",level:"B2"}
+  {id:1012,en:"sophisticated",tr:"gelişmiş, incelikli",ex:"The software uses a sophisticated algorithm.",exTr:"Yazılım gelişmiş bir algoritma kullanıyor.",cat:"İleri Kelimeler",level:"B2"},
+  // ---- A1 (14. ek) ----
+  {id:1013,en:"Monday",tr:"Pazartesi",ex:"I have a meeting on Monday.",exTr:"Pazartesi bir toplantım var.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1014,en:"Tuesday",tr:"Salı",ex:"We usually clean the house on Tuesday.",exTr:"Genelde Salı günleri evi temizleriz.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1015,en:"Wednesday",tr:"Çarşamba",ex:"The class starts on Wednesday.",exTr:"Ders Çarşamba başlıyor.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1016,en:"Thursday",tr:"Perşembe",ex:"I have a doctor's appointment on Thursday.",exTr:"Perşembe günü doktor randevum var.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1017,en:"Friday",tr:"Cuma",ex:"We often go out on Friday nights.",exTr:"Cuma geceleri sık sık dışarı çıkarız.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1018,en:"Saturday",tr:"Cumartesi",ex:"The market is busy on Saturday mornings.",exTr:"Cumartesi sabahları pazar kalabalık olur.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1019,en:"Sunday",tr:"Pazar",ex:"We have a big family lunch on Sunday.",exTr:"Pazar günü büyük bir aile yemeği yaparız.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1020,en:"January",tr:"Ocak",ex:"It usually snows in January.",exTr:"Genelde Ocak ayında kar yağar.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1021,en:"February",tr:"Şubat",ex:"Her birthday is in February.",exTr:"Doğum günü Şubat ayında.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1022,en:"March",tr:"Mart",ex:"Spring starts in March.",exTr:"İlkbahar Mart'ta başlar.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1023,en:"April",tr:"Nisan",ex:"It often rains in April.",exTr:"Nisan'da sık sık yağmur yağar.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1024,en:"May",tr:"Mayıs",ex:"The weather is warm in May.",exTr:"Mayıs'ta hava ılık olur.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1025,en:"June",tr:"Haziran",ex:"School ends in June.",exTr:"Okul Haziran'da biter.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1026,en:"July",tr:"Temmuz",ex:"We go on vacation in July.",exTr:"Temmuz'da tatile gideriz.",cat:"Günler ve Aylar",level:"A1"},
+  {id:1027,en:"August",tr:"Ağustos",ex:"August is the hottest month here.",exTr:"Ağustos buranın en sıcak ayı.",cat:"Günler ve Aylar",level:"A1"},
+  // ---- A2 (14. ek) ----
+  {id:1028,en:"September",tr:"Eylül",ex:"School starts again in September.",exTr:"Okul Eylül'de yeniden başlar.",cat:"Günler ve Aylar",level:"A2"},
+  {id:1029,en:"October",tr:"Ekim",ex:"The leaves change color in October.",exTr:"Yapraklar Ekim'de renk değiştirir.",cat:"Günler ve Aylar",level:"A2"},
+  {id:1030,en:"November",tr:"Kasım",ex:"It gets cold in November.",exTr:"Kasım'da hava soğuyor.",cat:"Günler ve Aylar",level:"A2"},
+  {id:1031,en:"December",tr:"Aralık",ex:"We decorate the house in December.",exTr:"Aralık'ta evi süsleriz.",cat:"Günler ve Aylar",level:"A2"},
+  {id:1032,en:"festival",tr:"festival",ex:"The city hosts a music festival every summer.",exTr:"Şehir her yaz bir müzik festivaline ev sahipliği yapar.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1033,en:"tradition",tr:"gelenek",ex:"This is an old family tradition.",exTr:"Bu eski bir aile geleneği.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1034,en:"custom",tr:"âdet, gelenek",ex:"It's a local custom to greet elders first.",exTr:"Önce büyüklerle selamlaşmak yerel bir âdettir.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1035,en:"ceremony",tr:"tören",ex:"The graduation ceremony was very emotional.",exTr:"Mezuniyet töreni çok duygusaldı.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1036,en:"wedding",tr:"düğün",ex:"We danced all night at the wedding.",exTr:"Düğünde bütün gece dans ettik.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1037,en:"funeral",tr:"cenaze",ex:"The funeral was held on Friday.",exTr:"Cenaze Cuma günü yapıldı.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1038,en:"anniversary",tr:"yıldönümü",ex:"They celebrated their tenth anniversary.",exTr:"Onuncu yıldönümlerini kutladılar.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1039,en:"New Year",tr:"Yeni Yıl",ex:"We watched fireworks on New Year's Eve.",exTr:"Yeni Yıl arifesinde havai fişek izledik.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1040,en:"religion",tr:"din",ex:"They discussed religion and philosophy.",exTr:"Din ve felsefe hakkında konuştular.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1041,en:"culture",tr:"kültür",ex:"I love learning about different cultures.",exTr:"Farklı kültürleri öğrenmeyi seviyorum.",cat:"Kültür ve Gelenek",level:"A2"},
+  {id:1042,en:"heritage",tr:"miras (kültürel)",ex:"The old town is part of our cultural heritage.",exTr:"Eski şehir kültürel mirasımızın bir parçası.",cat:"Kültür ve Gelenek",level:"A2"},
+  // ---- B1 (14. ek) ----
+  {id:1043,en:"look after",tr:"bakmak (birine/bir şeye)",ex:"Can you look after my dog this weekend?",exTr:"Bu hafta sonu köpeğime bakabilir misin?",cat:"Phrasal Verbs",level:"B1"},
+  {id:1044,en:"look forward to",tr:"dört gözle beklemek",ex:"I'm looking forward to the holiday.",exTr:"Tatili dört gözle bekliyorum.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1045,en:"put off",tr:"ertelemek",ex:"Don't put off your homework until the last minute.",exTr:"Ödevini son ana ertelemeyi bırak.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1046,en:"come across",tr:"rastlamak, tesadüfen karşılaşmak",ex:"I came across an old photo of us.",exTr:"Bizim eski bir fotoğrafımıza rastladım.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1047,en:"run out of",tr:"tükenmek, bitmek",ex:"We ran out of milk this morning.",exTr:"Bu sabah sütümüz bitti.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1048,en:"take off",tr:"kalkmak (uçak) / çıkarmak (giysi)",ex:"The plane took off on time.",exTr:"Uçak zamanında kalktı.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1049,en:"set up",tr:"kurmak (bir şeyi)",ex:"They set up a new office in the city.",exTr:"Şehirde yeni bir ofis kurdular.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1050,en:"break down",tr:"bozulmak (araç/makine)",ex:"Our car broke down on the highway.",exTr:"Arabamız otoyolda bozuldu.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1051,en:"figure out",tr:"çözmek, anlamak",ex:"I finally figured out the problem.",exTr:"Sonunda sorunu çözdüm.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1052,en:"deal with",tr:"ile başa çıkmak, halletmek",ex:"She deals with difficult customers calmly.",exTr:"Zor müşterilerle sakin bir şekilde başa çıkıyor.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1053,en:"rely on",tr:"güvenmek, bel bağlamak",ex:"You can always rely on your family.",exTr:"Ailene her zaman güvenebilirsin.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1054,en:"count on",tr:"güvenmek, hesaba katmak",ex:"I know I can count on you.",exTr:"Sana güvenebileceğimi biliyorum.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1055,en:"catch up",tr:"yetişmek, ara kapatmak",ex:"I need to catch up on my sleep.",exTr:"Uykumu almam gerekiyor.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1056,en:"keep up with",tr:"ayak uydurmak, takip etmek",ex:"It's hard to keep up with all the news.",exTr:"Tüm haberlere ayak uydurmak zor.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1057,en:"bring up",tr:"yetiştirmek (çocuk) / konuyu açmak",ex:"They brought up their kids in a small town.",exTr:"Çocuklarını küçük bir kasabada yetiştirdiler.",cat:"Phrasal Verbs",level:"B1"},
+  // ---- B2 (14. ek) ----
+  {id:1058,en:"obscure",tr:"belirsiz, karanlık",ex:"The origin of this custom is obscure.",exTr:"Bu geleneğin kökeni belirsizdir.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1059,en:"elusive",tr:"yakalanması zor, ele avuca sığmaz",ex:"Success remained elusive despite their efforts.",exTr:"Çabalarına rağmen başarı ele geçmedi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1060,en:"enigmatic",tr:"gizemli, esrarengiz",ex:"She gave an enigmatic smile and said nothing.",exTr:"Gizemli bir gülümseme yaptı ve hiçbir şey söylemedi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1061,en:"paradoxical",tr:"paradoksal, çelişkili",ex:"It's paradoxical that the richer he gets, the less happy he seems.",exTr:"Zenginleştikçe daha mutsuz görünmesi paradoksal.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1062,en:"contentious",tr:"tartışmalı, ihtilaflı",ex:"This is a contentious issue in politics.",exTr:"Bu, siyasette tartışmalı bir konu.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1063,en:"divisive",tr:"bölücü, ayrıştırıcı",ex:"The proposal proved to be very divisive.",exTr:"Öneri oldukça bölücü olduğunu kanıtladı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1064,en:"polarizing",tr:"kutuplaştırıcı",ex:"The topic is polarizing among voters.",exTr:"Konu seçmenler arasında kutuplaştırıcı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1065,en:"unanimous",tr:"oybirliğiyle",ex:"The committee reached a unanimous decision.",exTr:"Komite oybirliğiyle bir karara vardı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1066,en:"impartial",tr:"tarafsız",ex:"Judges must remain impartial.",exTr:"Hakimler tarafsız kalmalıdır.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1067,en:"partisan",tr:"taraf tutan, partizan",ex:"The debate quickly became partisan.",exTr:"Tartışma hızla partizan bir hal aldı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1068,en:"dogmatic",tr:"dogmatik, katı görüşlü",ex:"He is quite dogmatic about his beliefs.",exTr:"İnançları konusunda oldukça dogmatik.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1069,en:"authoritarian",tr:"otoriter",ex:"The country had an authoritarian government for decades.",exTr:"Ülke onlarca yıl otoriter bir hükümete sahipti.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1070,en:"egalitarian",tr:"eşitlikçi",ex:"They believe in an egalitarian society.",exTr:"Eşitlikçi bir topluma inanıyorlar.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1071,en:"progressive",tr:"ilerici",ex:"She holds fairly progressive views.",exTr:"Oldukça ilerici görüşlere sahip.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1072,en:"conservative",tr:"muhafazakar",ex:"His parents have more conservative values.",exTr:"Ailesinin daha muhafazakar değerleri var.",cat:"İleri Kelimeler",level:"B2"}
 ];
 
 /* ---------------- DATA: GRAMMAR ---------------- */
 const GRAMMAR = [
   {topic:"To Be (am / is / are)", level:"A1", qs:[
-    {q:"I ___ a student.", opts:["am","is","are"], a:"am", exp:"Özne 'I' olduğunda 'am' kullanılır."},
-    {q:"She ___ my sister.", opts:["am","is","are"], a:"is", exp:"Tekil özneler (he/she/it) için 'is' kullanılır."},
-    {q:"They ___ from Turkey.", opts:["am","is","are"], a:"are", exp:"Çoğul özneler (we/you/they) için 'are' kullanılır."},
-    {q:"We ___ happy today.", opts:["am","is","are"], a:"are", exp:"'We' çoğul olduğu için 'are' alır."},
-    {q:"You ___ my friend.", opts:["am","is","are"], a:"are", exp:"'You' ile her zaman 'are' kullanılır."},
-    {q:"It ___ a nice day.", opts:["am","is","are"], a:"is", exp:"'It' tekil olduğu için 'is' alır."},
-    {q:"We ___ students.", opts:["am","is","are"], a:"are", exp:"'We' çoğul olduğu için 'are' alır."},
-    {q:"The soup ___ too hot.", opts:["am","is","are"], a:"is", exp:"'The soup' tekil olduğu için 'is' kullanılır."},
-    {q:"My shoes ___ dirty.", opts:["am","is","are"], a:"are", exp:"'Shoes' çoğul olduğu için 'are' kullanılır."},
-    {q:"This puzzle ___ difficult.", opts:["am","is","are"], a:"is", exp:"'This puzzle' tekil olduğu için 'is' kullanılır."}
+    {q:"I ___ a student.", opts:["am","is","are"], a:"am", exp:"Özne 'I' olduğunda 'am' kullanılır.", expEn:"'Am' is used when the subject is 'I'."},
+    {q:"She ___ my sister.", opts:["am","is","are"], a:"is", exp:"Tekil özneler (he/she/it) için 'is' kullanılır.", expEn:"'Is' is used with singular subjects (he/she/it)."},
+    {q:"They ___ from Turkey.", opts:["am","is","are"], a:"are", exp:"Çoğul özneler (we/you/they) için 'are' kullanılır.", expEn:"'Are' is used with plural subjects (we/you/they)."},
+    {q:"We ___ happy today.", opts:["am","is","are"], a:"are", exp:"'We' çoğul olduğu için 'are' alır.", expEn:"'We' is plural, so it takes 'are'."},
+    {q:"You ___ my friend.", opts:["am","is","are"], a:"are", exp:"'You' ile her zaman 'are' kullanılır.", expEn:"'Are' is always used with 'you'."},
+    {q:"It ___ a nice day.", opts:["am","is","are"], a:"is", exp:"'It' tekil olduğu için 'is' alır.", expEn:"'It' is singular, so it takes 'is'."},
+    {q:"We ___ students.", opts:["am","is","are"], a:"are", exp:"'We' çoğul olduğu için 'are' alır.", expEn:"'We' is plural, so it takes 'are'."},
+    {q:"The soup ___ too hot.", opts:["am","is","are"], a:"is", exp:"'The soup' tekil olduğu için 'is' kullanılır.", expEn:"'The soup' is singular, so 'is' is used."},
+    {q:"My shoes ___ dirty.", opts:["am","is","are"], a:"are", exp:"'Shoes' çoğul olduğu için 'are' kullanılır.", expEn:"'Shoes' is plural, so 'are' is used."},
+    {q:"This puzzle ___ difficult.", opts:["am","is","are"], a:"is", exp:"'This puzzle' tekil olduğu için 'is' kullanılır.", expEn:"'This puzzle' is singular, so 'is' is used."}
   ]},
   {topic:"Present Simple", level:"A1", qs:[
-    {q:"He ___ to school every day.", opts:["go","goes","going"], a:"goes", exp:"He/she/it ile fiile -s/-es eklenir: goes."},
-    {q:"I ___ coffee every morning.", opts:["like","likes","liking"], a:"like", exp:"I/you/we/they ile fiil yalın halde kullanılır."},
-    {q:"She ___ eat meat.", opts:["doesn't","don't","not"], a:"doesn't", exp:"He/she/it olumsuzunda 'doesn't' kullanılır."},
-    {q:"___ you speak English?", opts:["Do","Does","Are"], a:"Do", exp:"You ile soru kurarken 'Do' kullanılır."},
-    {q:"They ___ football on Sundays.", opts:["play","plays","playing"], a:"play", exp:"'They' ile fiil yalın halde kullanılır: play."},
-    {q:"My mother ___ dinner every evening.", opts:["cook","cooks","cooking"], a:"cooks", exp:"He/she/it ile fiile -s eklenir: cooks."},
-    {q:"___ she like tea?", opts:["Do","Does","Is"], a:"Does", exp:"He/she/it ile soru kurarken 'Does' kullanılır."},
-    {q:"She ___ (cook) dinner every evening.", opts:["cook","cooks","cooking"], a:"cooks", exp:"He/she/it ile fiile -s eklenir: cooks."},
-    {q:"I ___ (draw) pictures in my free time.", opts:["draw","draws","drawing"], a:"draw", exp:"I ile fiil yalın halde kullanılır."},
-    {q:"___ he sing well?", opts:["Do","Does","Is"], a:"Does", exp:"He ile soru kurarken 'Does' kullanılır."}
+    {q:"He ___ to school every day.", opts:["go","goes","going"], a:"goes", exp:"He/she/it ile fiile -s/-es eklenir: goes.", expEn:"Add '-s' or '-es' to the verb with he/she/it: goes."},
+    {q:"I ___ coffee every morning.", opts:["like","likes","liking"], a:"like", exp:"I/you/we/they ile fiil yalın halde kullanılır.", expEn:"With I/you/we/they the verb stays in its base form."},
+    {q:"She ___ eat meat.", opts:["doesn't","don't","not"], a:"doesn't", exp:"He/she/it olumsuzunda 'doesn't' kullanılır.", expEn:"Use 'doesn't' for the negative with he/she/it."},
+    {q:"___ you speak English?", opts:["Do","Does","Are"], a:"Do", exp:"You ile soru kurarken 'Do' kullanılır.", expEn:"Use 'Do' to form a question with 'you'."},
+    {q:"They ___ football on Sundays.", opts:["play","plays","playing"], a:"play", exp:"'They' ile fiil yalın halde kullanılır: play.", expEn:"With 'they' the verb stays in its base form: play."},
+    {q:"My mother ___ dinner every evening.", opts:["cook","cooks","cooking"], a:"cooks", exp:"He/she/it ile fiile -s eklenir: cooks.", expEn:"Add '-s' to the verb with he/she/it: cooks."},
+    {q:"___ she like tea?", opts:["Do","Does","Is"], a:"Does", exp:"He/she/it ile soru kurarken 'Does' kullanılır.", expEn:"Use 'Does' to form a question with he/she/it."},
+    {q:"She ___ (cook) dinner every evening.", opts:["cook","cooks","cooking"], a:"cooks", exp:"He/she/it ile fiile -s eklenir: cooks.", expEn:"Add '-s' to the verb with he/she/it: cooks."},
+    {q:"I ___ (draw) pictures in my free time.", opts:["draw","draws","drawing"], a:"draw", exp:"I ile fiil yalın halde kullanılır.", expEn:"With 'I' the verb stays in its base form."},
+    {q:"___ he sing well?", opts:["Do","Does","Is"], a:"Does", exp:"He ile soru kurarken 'Does' kullanılır.", expEn:"Use 'Does' to form a question with 'he'."}
   ]},
   {topic:"Articles (a / an / the)", level:"A1", qs:[
-    {q:"I have ___ apple.", opts:["a","an","the"], a:"an", exp:"Sesli harfle başlayan kelimelerden önce 'an' kullanılır."},
-    {q:"She lives in ___ big house.", opts:["a","an","the"], a:"a", exp:"'Big' sessiz harfle başladığı için 'a' kullanılır."},
-    {q:"___ sun is very hot today.", opts:["A","An","The"], a:"The", exp:"Tek olan, bilinen şeyler için 'the' kullanılır."},
-    {q:"He is ___ engineer.", opts:["a","an","the"], a:"an", exp:"'Engineer' sesli harfle başladığı için 'an' kullanılır."},
-    {q:"I need ___ umbrella today.", opts:["a","an","the"], a:"an", exp:"'Umbrella' sesli harfle başladığı için 'an' kullanılır."},
-    {q:"Can you close ___ door, please?", opts:["a","an","the"], a:"the", exp:"Belirli, bilinen bir kapıdan bahsedildiği için 'the' kullanılır."},
-    {q:"She is ___ university student.", opts:["a","an","the"], a:"a", exp:"'University' ünsüz /j/ sesiyle başladığı için 'a' kullanılır."},
-    {q:"She bought ___ orange dress.", opts:["a","an","the"], a:"an", exp:"'Orange' sesli harfle başladığı için 'an' kullanılır."},
-    {q:"He is ___ honest person.", opts:["a","an","the"], a:"an", exp:"'Honest' kelimesinde 'h' sessiz okunduğu ve sesli harfle başladığı için 'an' kullanılır."},
-    {q:"Can you pass me ___ fork?", opts:["a","an","the"], a:"the", exp:"Belirli, bilinen bir çataldan bahsedildiği için 'the' kullanılır."}
+    {q:"I have ___ apple.", opts:["a","an","the"], a:"an", exp:"Sesli harfle başlayan kelimelerden önce 'an' kullanılır.", expEn:"'An' is used before words starting with a vowel sound."},
+    {q:"She lives in ___ big house.", opts:["a","an","the"], a:"a", exp:"'Big' sessiz harfle başladığı için 'a' kullanılır.", expEn:"'Big' starts with a consonant sound, so 'a' is used."},
+    {q:"___ sun is very hot today.", opts:["A","An","The"], a:"The", exp:"Tek olan, bilinen şeyler için 'the' kullanılır.", expEn:"'The' is used for unique, known things."},
+    {q:"He is ___ engineer.", opts:["a","an","the"], a:"an", exp:"'Engineer' sesli harfle başladığı için 'an' kullanılır.", expEn:"'Engineer' starts with a vowel sound, so 'an' is used."},
+    {q:"I need ___ umbrella today.", opts:["a","an","the"], a:"an", exp:"'Umbrella' sesli harfle başladığı için 'an' kullanılır.", expEn:"'Umbrella' starts with a vowel sound, so 'an' is used."},
+    {q:"Can you close ___ door, please?", opts:["a","an","the"], a:"the", exp:"Belirli, bilinen bir kapıdan bahsedildiği için 'the' kullanılır.", expEn:"'The' is used because a specific, known door is meant."},
+    {q:"She is ___ university student.", opts:["a","an","the"], a:"a", exp:"'University' ünsüz /j/ sesiyle başladığı için 'a' kullanılır.", expEn:"'University' starts with the consonant sound /j/, so 'a' is used."},
+    {q:"She bought ___ orange dress.", opts:["a","an","the"], a:"an", exp:"'Orange' sesli harfle başladığı için 'an' kullanılır.", expEn:"'Orange' starts with a vowel sound, so 'an' is used."},
+    {q:"He is ___ honest person.", opts:["a","an","the"], a:"an", exp:"'Honest' kelimesinde 'h' sessiz okunduğu ve sesli harfle başladığı için 'an' kullanılır.", expEn:"In 'honest' the 'h' is silent, so it starts with a vowel sound and takes 'an'."},
+    {q:"Can you pass me ___ fork?", opts:["a","an","the"], a:"the", exp:"Belirli, bilinen bir çataldan bahsedildiği için 'the' kullanılır.", expEn:"'The' is used because a specific, known fork is meant."}
   ]},
   {topic:"Çoğul (Plurals)", level:"A2", qs:[
-    {q:"I have two ___ (book).", opts:["book","books","bookes"], a:"books", exp:"Çoğu kelimeye çoğul için -s eklenir."},
-    {q:"There are three ___ (child) in the room.", opts:["childs","childen","children"], a:"children", exp:"'Child' düzensiz çoğul alır: children."},
-    {q:"She has many ___ (friend).", opts:["friend","friends","friendes"], a:"friends", exp:"'Friend' düzenli çoğuldur: friends."},
-    {q:"We saw five ___ (house) on the street.", opts:["house","houses","housees"], a:"houses", exp:"'House' düzenli çoğuldur: houses."},
-    {q:"There are two ___ (man) in the room.", opts:["mans","men","mens"], a:"men", exp:"'Man' düzensiz çoğul alır: men."},
-    {q:"I bought three ___ (box).", opts:["boxs","boxes","box"], a:"boxes", exp:"'-x' ile biten kelimelere '-es' eklenir: boxes."},
-    {q:"She has two ___ (city) to visit.", opts:["citys","cities","cityes"], a:"cities", exp:"Sessiz harf + y ile biten kelimelerde y, 'ies' olur: cities."},
-    {q:"There are two ___ (knife) on the table.", opts:["knifes","knives","knifees"], a:"knives", exp:"'Knife' düzensiz çoğul alır: knives."},
-    {q:"She bought three ___ (dress).", opts:["dress","dresses","dresss"], a:"dresses", exp:"'-s' ile biten kelimelere '-es' eklenir: dresses."},
-    {q:"I have two ___ (photo) of the trip.", opts:["photoes","photos","photo"], a:"photos", exp:"'Photo' düzenli çoğuldur: photos."}
+    {q:"I have two ___ (book).", opts:["book","books","bookes"], a:"books", exp:"Çoğu kelimeye çoğul için -s eklenir.", expEn:"Most words add '-s' to form the plural."},
+    {q:"There are three ___ (child) in the room.", opts:["childs","childen","children"], a:"children", exp:"'Child' düzensiz çoğul alır: children.", expEn:"'Child' has an irregular plural: children."},
+    {q:"She has many ___ (friend).", opts:["friend","friends","friendes"], a:"friends", exp:"'Friend' düzenli çoğuldur: friends.", expEn:"'Friend' is a regular plural: friends."},
+    {q:"We saw five ___ (house) on the street.", opts:["house","houses","housees"], a:"houses", exp:"'House' düzenli çoğuldur: houses.", expEn:"'House' is a regular plural: houses."},
+    {q:"There are two ___ (man) in the room.", opts:["mans","men","mens"], a:"men", exp:"'Man' düzensiz çoğul alır: men.", expEn:"'Man' has an irregular plural: men."},
+    {q:"I bought three ___ (box).", opts:["boxs","boxes","box"], a:"boxes", exp:"'-x' ile biten kelimelere '-es' eklenir: boxes.", expEn:"Words ending in '-x' take '-es': boxes."},
+    {q:"She has two ___ (city) to visit.", opts:["citys","cities","cityes"], a:"cities", exp:"Sessiz harf + y ile biten kelimelerde y, 'ies' olur: cities.", expEn:"When a word ends in consonant + y, the y becomes 'ies': cities."},
+    {q:"There are two ___ (knife) on the table.", opts:["knifes","knives","knifees"], a:"knives", exp:"'Knife' düzensiz çoğul alır: knives.", expEn:"'Knife' has an irregular plural: knives."},
+    {q:"She bought three ___ (dress).", opts:["dress","dresses","dresss"], a:"dresses", exp:"'-s' ile biten kelimelere '-es' eklenir: dresses.", expEn:"Words ending in '-s' take '-es': dresses."},
+    {q:"I have two ___ (photo) of the trip.", opts:["photoes","photos","photo"], a:"photos", exp:"'Photo' düzenli çoğuldur: photos.", expEn:"'Photo' is a regular plural: photos."}
   ]},
   {topic:"Prepositions (on / in / at)", level:"A2", qs:[
-    {q:"The book is ___ the table.", opts:["on","in","at"], a:"on", exp:"Bir yüzeyin üzerinde olduğunu belirtmek için 'on' kullanılır."},
-    {q:"She lives ___ Istanbul.", opts:["on","in","at"], a:"in", exp:"Şehir/ülke gibi büyük yerler için 'in' kullanılır."},
-    {q:"We will meet ___ 9 o'clock.", opts:["on","in","at"], a:"at", exp:"Saat belirtirken 'at' kullanılır."},
-    {q:"The cat is ___ the box.", opts:["in","on","at"], a:"in", exp:"Bir şeyin içinde olduğunu belirtmek için 'in' kullanılır."},
-    {q:"We arrived ___ the airport early.", opts:["on","in","at"], a:"at", exp:"Belirli bir nokta/mekan için 'at' kullanılır."},
-    {q:"The keys are ___ my bag.", opts:["on","in","at"], a:"in", exp:"Bir şeyin içinde olduğu için 'in' kullanılır."},
-    {q:"See you ___ Monday.", opts:["on","in","at"], a:"on", exp:"Günler için 'on' kullanılır."},
-    {q:"The bank is ___ the corner.", opts:["on","in","at"], a:"on", exp:"Köşe belirtirken 'on the corner' kalıbı kullanılır."},
-    {q:"We will meet ___ noon.", opts:["on","in","at"], a:"at", exp:"Belirli bir an/saat belirtirken 'at' kullanılır."},
-    {q:"She lives ___ the north of the city.", opts:["on","in","at"], a:"in", exp:"Bir bölge belirtirken 'in' kullanılır."}
+    {q:"The book is ___ the table.", opts:["on","in","at"], a:"on", exp:"Bir yüzeyin üzerinde olduğunu belirtmek için 'on' kullanılır.", expEn:"'On' shows that something is on a surface."},
+    {q:"She lives ___ Istanbul.", opts:["on","in","at"], a:"in", exp:"Şehir/ülke gibi büyük yerler için 'in' kullanılır.", expEn:"'In' is used for large places such as cities and countries."},
+    {q:"We will meet ___ 9 o'clock.", opts:["on","in","at"], a:"at", exp:"Saat belirtirken 'at' kullanılır.", expEn:"'At' is used with clock times."},
+    {q:"The cat is ___ the box.", opts:["in","on","at"], a:"in", exp:"Bir şeyin içinde olduğunu belirtmek için 'in' kullanılır.", expEn:"'In' shows that something is inside."},
+    {q:"We arrived ___ the airport early.", opts:["on","in","at"], a:"at", exp:"Belirli bir nokta/mekan için 'at' kullanılır.", expEn:"'At' is used for a specific point or place."},
+    {q:"The keys are ___ my bag.", opts:["on","in","at"], a:"in", exp:"Bir şeyin içinde olduğu için 'in' kullanılır.", expEn:"'In' is used because something is inside."},
+    {q:"See you ___ Monday.", opts:["on","in","at"], a:"on", exp:"Günler için 'on' kullanılır.", expEn:"'On' is used with days."},
+    {q:"The bank is ___ the corner.", opts:["on","in","at"], a:"on", exp:"Köşe belirtirken 'on the corner' kalıbı kullanılır.", expEn:"The set phrase for a corner is 'on the corner'."},
+    {q:"We will meet ___ noon.", opts:["on","in","at"], a:"at", exp:"Belirli bir an/saat belirtirken 'at' kullanılır.", expEn:"'At' is used for a specific moment or clock time."},
+    {q:"She lives ___ the north of the city.", opts:["on","in","at"], a:"in", exp:"Bir bölge belirtirken 'in' kullanılır.", expEn:"'In' is used for a region or area."}
   ]},
   {topic:"Past Simple", level:"B1", qs:[
-    {q:"I ___ (go) to the cinema yesterday.", opts:["go","went","goed"], a:"went", exp:"'Go' düzensiz bir fiildir, geçmiş hali 'went'tir."},
-    {q:"She ___ (not/watch) TV last night.", opts:["didn't watch","doesn't watch","not watched"], a:"didn't watch", exp:"Geçmiş zaman olumsuzunda 'didn't + fiil' kullanılır."},
-    {q:"___ you call him yesterday?", opts:["Did","Do","Were"], a:"Did", exp:"Geçmiş zaman sorularında 'Did' kullanılır."},
-    {q:"They ___ (be) at home last weekend.", opts:["was","were","are"], a:"were", exp:"'They' ile geçmişte 'were' kullanılır."},
-    {q:"We ___ (see) a great movie last week.", opts:["seed","saw","seen"], a:"saw", exp:"'See' düzensiz fiildir, geçmiş hali 'saw'dır."},
-    {q:"He ___ (not/finish) his homework yesterday.", opts:["didn't finish","doesn't finish","not finished"], a:"didn't finish", exp:"Geçmiş zaman olumsuzunda 'didn't + fiil' kullanılır."},
-    {q:"___ they arrive on time?", opts:["Did","Do","Were"], a:"Did", exp:"Geçmiş zaman sorularında 'Did' kullanılır."},
-    {q:"They ___ (agree) with the plan yesterday.", opts:["agreed","agree","agreeing"], a:"agreed", exp:"Düzenli fiillere geçmişte '-ed' eklenir: agreed."},
-    {q:"She ___ (not/mention) the problem.", opts:["didn't mention","doesn't mention","not mentioned"], a:"didn't mention", exp:"Geçmiş zaman olumsuzunda 'didn't + fiil' kullanılır."},
-    {q:"___ you win the match?", opts:["Did","Do","Were"], a:"Did", exp:"Geçmiş zaman sorularında 'Did' kullanılır."}
+    {q:"I ___ (go) to the cinema yesterday.", opts:["go","went","goed"], a:"went", exp:"'Go' düzensiz bir fiildir, geçmiş hali 'went'tir.", expEn:"'Go' is irregular; its past form is 'went'."},
+    {q:"She ___ (not/watch) TV last night.", opts:["didn't watch","doesn't watch","not watched"], a:"didn't watch", exp:"Geçmiş zaman olumsuzunda 'didn't + fiil' kullanılır.", expEn:"The past simple negative uses 'didn't + verb'."},
+    {q:"___ you call him yesterday?", opts:["Did","Do","Were"], a:"Did", exp:"Geçmiş zaman sorularında 'Did' kullanılır.", expEn:"'Did' is used for past simple questions."},
+    {q:"They ___ (be) at home last weekend.", opts:["was","were","are"], a:"were", exp:"'They' ile geçmişte 'were' kullanılır.", expEn:"'Were' is used with 'they' in the past."},
+    {q:"We ___ (see) a great movie last week.", opts:["seed","saw","seen"], a:"saw", exp:"'See' düzensiz fiildir, geçmiş hali 'saw'dır.", expEn:"'See' is irregular; its past form is 'saw'."},
+    {q:"He ___ (not/finish) his homework yesterday.", opts:["didn't finish","doesn't finish","not finished"], a:"didn't finish", exp:"Geçmiş zaman olumsuzunda 'didn't + fiil' kullanılır.", expEn:"The past simple negative uses 'didn't + verb'."},
+    {q:"___ they arrive on time?", opts:["Did","Do","Were"], a:"Did", exp:"Geçmiş zaman sorularında 'Did' kullanılır.", expEn:"'Did' is used for past simple questions."},
+    {q:"They ___ (agree) with the plan yesterday.", opts:["agreed","agree","agreeing"], a:"agreed", exp:"Düzenli fiillere geçmişte '-ed' eklenir: agreed.", expEn:"Regular verbs take '-ed' in the past: agreed."},
+    {q:"She ___ (not/mention) the problem.", opts:["didn't mention","doesn't mention","not mentioned"], a:"didn't mention", exp:"Geçmiş zaman olumsuzunda 'didn't + fiil' kullanılır.", expEn:"The past simple negative uses 'didn't + verb'."},
+    {q:"___ you win the match?", opts:["Did","Do","Were"], a:"Did", exp:"Geçmiş zaman sorularında 'Did' kullanılır.", expEn:"'Did' is used for past simple questions."}
   ]},
   {topic:"Present Continuous", level:"B1", qs:[
-    {q:"I ___ (study) English right now.", opts:["study","am studying","studies"], a:"am studying", exp:"Şu anda olan eylemler için 'am/is/are + -ing' kullanılır."},
-    {q:"She ___ (not/work) at the moment.", opts:["isn't working","doesn't work","not working"], a:"isn't working", exp:"Şimdiki zaman olumsuzu 'isn't/aren't + -ing' şeklindedir."},
-    {q:"___ they watching a movie?", opts:["Are","Is","Do"], a:"Are", exp:"'They' ile soru kurarken 'Are' kullanılır."},
-    {q:"Look! It ___ (rain).", opts:["rains","is raining","rained"], a:"is raining", exp:"Konuşma anında olan bir eylem: 'is raining'."},
-    {q:"We ___ (have) dinner at the moment.", opts:["have","are having","has"], a:"are having", exp:"Şu anda süren eylem: 'are having'."},
-    {q:"___ he working today?", opts:["Is","Are","Does"], a:"Is", exp:"'He' ile soru kurarken 'Is' kullanılır."},
-    {q:"They ___ (not/listen) right now.", opts:["aren't listening","don't listen","isn't listening"], a:"aren't listening", exp:"'They' ile olumsuz: 'aren't + -ing'."},
-    {q:"She ___ (bake) a cake right now.", opts:["bakes","is baking","baked"], a:"is baking", exp:"Şu anda süren eylem: 'is baking'."},
-    {q:"They ___ (practice) for the match.", opts:["practice","are practicing","practices"], a:"are practicing", exp:"'They' ile şu anki eylem: 'are + -ing'."},
-    {q:"___ you checking the notification?", opts:["Are","Is","Do"], a:"Are", exp:"'You' ile soru kurarken 'Are' kullanılır."}
+    {q:"I ___ (study) English right now.", opts:["study","am studying","studies"], a:"am studying", exp:"Şu anda olan eylemler için 'am/is/are + -ing' kullanılır.", expEn:"'Am/is/are + -ing' is used for actions happening now."},
+    {q:"She ___ (not/work) at the moment.", opts:["isn't working","doesn't work","not working"], a:"isn't working", exp:"Şimdiki zaman olumsuzu 'isn't/aren't + -ing' şeklindedir.", expEn:"The present continuous negative is 'isn't/aren't + -ing'."},
+    {q:"___ they watching a movie?", opts:["Are","Is","Do"], a:"Are", exp:"'They' ile soru kurarken 'Are' kullanılır.", expEn:"Use 'Are' to form a question with 'they'."},
+    {q:"Look! It ___ (rain).", opts:["rains","is raining","rained"], a:"is raining", exp:"Konuşma anında olan bir eylem: 'is raining'.", expEn:"An action happening at the moment of speaking: 'is raining'."},
+    {q:"We ___ (have) dinner at the moment.", opts:["have","are having","has"], a:"are having", exp:"Şu anda süren eylem: 'are having'.", expEn:"An action happening right now: 'are having'."},
+    {q:"___ he working today?", opts:["Is","Are","Does"], a:"Is", exp:"'He' ile soru kurarken 'Is' kullanılır.", expEn:"Use 'Is' to form a question with 'he'."},
+    {q:"They ___ (not/listen) right now.", opts:["aren't listening","don't listen","isn't listening"], a:"aren't listening", exp:"'They' ile olumsuz: 'aren't + -ing'.", expEn:"Negative with 'they': aren't + -ing."},
+    {q:"She ___ (bake) a cake right now.", opts:["bakes","is baking","baked"], a:"is baking", exp:"Şu anda süren eylem: 'is baking'.", expEn:"An action happening right now: 'is baking'."},
+    {q:"They ___ (practice) for the match.", opts:["practice","are practicing","practices"], a:"are practicing", exp:"'They' ile şu anki eylem: 'are + -ing'.", expEn:"Current action with 'they': are + -ing."},
+    {q:"___ you checking the notification?", opts:["Are","Is","Do"], a:"Are", exp:"'You' ile soru kurarken 'Are' kullanılır.", expEn:"Use 'Are' to form a question with 'you'."}
   ]},
   {topic:"Karşılaştırma (Comparatives)", level:"B1", qs:[
-    {q:"This book is ___ (interesting) than that one.", opts:["interesting","more interesting","most interesting"], a:"more interesting", exp:"Uzun sıfatlarda karşılaştırma için 'more + sıfat' kullanılır."},
-    {q:"She is the ___ (tall) student in the class.", opts:["taller","tallest","more tall"], a:"tallest", exp:"En üstünlük için kısa sıfatlara '-est' eklenir."},
-    {q:"My car is ___ (fast) than yours.", opts:["faster","fastest","more fast"], a:"faster", exp:"Kısa sıfatlarda karşılaştırma için '-er' eklenir."},
-    {q:"This is the ___ (good) restaurant in town.", opts:["better","best","goodest"], a:"best", exp:"'Good' düzensizdir: good – better – best."},
-    {q:"This exercise is ___ (difficult) than the last one.", opts:["difficulter","more difficult","most difficult"], a:"more difficult", exp:"Uzun sıfatlarda 'more' kullanılır."},
-    {q:"She is ___ (young) than her brother.", opts:["younger","more young","youngest"], a:"younger", exp:"Kısa sıfatlarda '-er' eklenir."},
-    {q:"This is ___ (bad) day of my life.", opts:["worse","the worst","baddest"], a:"the worst", exp:"'Bad' düzensizdir: bad – worse – the worst."},
-    {q:"This coach is ___ (reliable) than the last one.", opts:["reliabler","more reliable","most reliable"], a:"more reliable", exp:"Uzun sıfatlarda karşılaştırma için 'more' kullanılır."},
-    {q:"She is ___ (generous) person I know.", opts:["the most generous","more generous","generousest"], a:"the most generous", exp:"Üstünlük belirtmek için uzun sıfatlarda 'the most' kullanılır."},
-    {q:"This recipe is ___ (easy) than the other one.", opts:["easier","more easy","easiest"], a:"easier", exp:"Kısa sıfatlarda karşılaştırma için '-er' eklenir."}
+    {q:"This book is ___ (interesting) than that one.", opts:["interesting","more interesting","most interesting"], a:"more interesting", exp:"Uzun sıfatlarda karşılaştırma için 'more + sıfat' kullanılır.", expEn:"Long adjectives use 'more + adjective' for comparison."},
+    {q:"She is the ___ (tall) student in the class.", opts:["taller","tallest","more tall"], a:"tallest", exp:"En üstünlük için kısa sıfatlara '-est' eklenir.", expEn:"Short adjectives take '-est' for the superlative."},
+    {q:"My car is ___ (fast) than yours.", opts:["faster","fastest","more fast"], a:"faster", exp:"Kısa sıfatlarda karşılaştırma için '-er' eklenir.", expEn:"Short adjectives take '-er' for comparison."},
+    {q:"This is the ___ (good) restaurant in town.", opts:["better","best","goodest"], a:"best", exp:"'Good' düzensizdir: good – better – best.", expEn:"'Good' is irregular: good – better – best."},
+    {q:"This exercise is ___ (difficult) than the last one.", opts:["difficulter","more difficult","most difficult"], a:"more difficult", exp:"Uzun sıfatlarda 'more' kullanılır.", expEn:"Long adjectives use 'more'."},
+    {q:"She is ___ (young) than her brother.", opts:["younger","more young","youngest"], a:"younger", exp:"Kısa sıfatlarda '-er' eklenir.", expEn:"Short adjectives take '-er'."},
+    {q:"This is ___ (bad) day of my life.", opts:["worse","the worst","baddest"], a:"the worst", exp:"'Bad' düzensizdir: bad – worse – the worst.", expEn:"'Bad' is irregular: bad – worse – the worst."},
+    {q:"This coach is ___ (reliable) than the last one.", opts:["reliabler","more reliable","most reliable"], a:"more reliable", exp:"Uzun sıfatlarda karşılaştırma için 'more' kullanılır.", expEn:"Long adjectives use 'more' for comparison."},
+    {q:"She is ___ (generous) person I know.", opts:["the most generous","more generous","generousest"], a:"the most generous", exp:"Üstünlük belirtmek için uzun sıfatlarda 'the most' kullanılır.", expEn:"Long adjectives use 'the most' for the superlative."},
+    {q:"This recipe is ___ (easy) than the other one.", opts:["easier","more easy","easiest"], a:"easier", exp:"Kısa sıfatlarda karşılaştırma için '-er' eklenir.", expEn:"Short adjectives take '-er' for comparison."}
   ]},
   {topic:"Present Perfect", level:"B2", qs:[
-    {q:"I ___ (visit) Paris three times.", opts:["visited","have visited","has visited"], a:"have visited", exp:"'I' ile present perfect: have + 3. hal."},
-    {q:"She ___ (never/be) to Japan.", opts:["has never been","have never been","never was"], a:"has never been", exp:"'She' ile present perfect: has + 3. hal."},
-    {q:"___ you ever tried sushi?", opts:["Have","Has","Did"], a:"Have", exp:"'You' ile present perfect soru: Have + özne + 3. hal."},
-    {q:"They ___ (just/finish) their homework.", opts:["have just finished","has just finished","just finished"], a:"have just finished", exp:"'They' ile present perfect: have + 3. hal."},
-    {q:"We ___ (already/finish) the project.", opts:["have already finished","has already finished","already finished"], a:"have already finished", exp:"'We' ile present perfect: have + 3. hal."},
-    {q:"___ you ever been to London?", opts:["Have","Has","Did"], a:"Have", exp:"'You' ile present perfect soru: Have + özne + 3. hal."},
-    {q:"He ___ (not/call) me yet.", opts:["hasn't called","haven't called","didn't call"], a:"hasn't called", exp:"'He' ile olumsuz present perfect: hasn't + 3. hal."},
-    {q:"I ___ (never/taste) this flavor before.", opts:["have never tasted","has never tasted","never tasted"], a:"have never tasted", exp:"'I' ile present perfect: have + 3. hal."},
-    {q:"She ___ (already/subscribe) to the channel.", opts:["has already subscribed","have already subscribed","already subscribed"], a:"has already subscribed", exp:"'She' ile present perfect: has + 3. hal."},
-    {q:"___ they finished the assignment yet?", opts:["Have","Has","Did"], a:"Have", exp:"'They' ile present perfect soru: Have + özne + 3. hal."}
+    {q:"I ___ (visit) Paris three times.", opts:["visited","have visited","has visited"], a:"have visited", exp:"'I' ile present perfect: have + 3. hal.", expEn:"Present perfect with 'I': have + past participle."},
+    {q:"She ___ (never/be) to Japan.", opts:["has never been","have never been","never was"], a:"has never been", exp:"'She' ile present perfect: has + 3. hal.", expEn:"Present perfect with 'she': has + past participle."},
+    {q:"___ you ever tried sushi?", opts:["Have","Has","Did"], a:"Have", exp:"'You' ile present perfect soru: Have + özne + 3. hal.", expEn:"Present perfect question with 'you': Have + subject + past participle."},
+    {q:"They ___ (just/finish) their homework.", opts:["have just finished","has just finished","just finished"], a:"have just finished", exp:"'They' ile present perfect: have + 3. hal.", expEn:"Present perfect with 'they': have + past participle."},
+    {q:"We ___ (already/finish) the project.", opts:["have already finished","has already finished","already finished"], a:"have already finished", exp:"'We' ile present perfect: have + 3. hal.", expEn:"Present perfect with 'we': have + past participle."},
+    {q:"___ you ever been to London?", opts:["Have","Has","Did"], a:"Have", exp:"'You' ile present perfect soru: Have + özne + 3. hal.", expEn:"Present perfect question with 'you': Have + subject + past participle."},
+    {q:"He ___ (not/call) me yet.", opts:["hasn't called","haven't called","didn't call"], a:"hasn't called", exp:"'He' ile olumsuz present perfect: hasn't + 3. hal.", expEn:"Negative present perfect with 'he': hasn't + past participle."},
+    {q:"I ___ (never/taste) this flavor before.", opts:["have never tasted","has never tasted","never tasted"], a:"have never tasted", exp:"'I' ile present perfect: have + 3. hal.", expEn:"Present perfect with 'I': have + past participle."},
+    {q:"She ___ (already/subscribe) to the channel.", opts:["has already subscribed","have already subscribed","already subscribed"], a:"has already subscribed", exp:"'She' ile present perfect: has + 3. hal.", expEn:"Present perfect with 'she': has + past participle."},
+    {q:"___ they finished the assignment yet?", opts:["Have","Has","Did"], a:"Have", exp:"'They' ile present perfect soru: Have + özne + 3. hal.", expEn:"Present perfect question with 'they': Have + subject + past participle."}
   ]},
   {topic:"Modal Fiiller (can/must/should)", level:"B2", qs:[
-    {q:"You ___ wear a seatbelt in the car.", opts:["must","mustn't","can"], a:"must", exp:"Zorunluluk belirtmek için 'must' kullanılır."},
-    {q:"She ___ speak three languages.", opts:["can","must","should"], a:"can", exp:"Yetenek belirtmek için 'can' kullanılır."},
-    {q:"You ___ smoke here, it's not allowed.", opts:["mustn't","don't have to","can"], a:"mustn't", exp:"Yasak belirtmek için 'mustn't' kullanılır."},
-    {q:"You ___ see a doctor if you feel sick.", opts:["should","must not","can't"], a:"should", exp:"Tavsiye vermek için 'should' kullanılır."},
-    {q:"You ___ finish this today; tomorrow is fine.", opts:["don't have to","mustn't","can't"], a:"don't have to", exp:"Zorunluluk olmadığını belirtmek için 'don't have to' kullanılır."},
-    {q:"___ I open the window?", opts:["Can","Must","Should"], a:"Can", exp:"İzin istemek için 'can' kullanılır."},
-    {q:"You ___ eat more vegetables for better health.", opts:["should","must not","can't"], a:"should", exp:"Tavsiye vermek için 'should' kullanılır."},
-    {q:"You ___ recommend this restaurant, it's excellent.", opts:["should","mustn't","can't"], a:"should", exp:"Tavsiye vermek için 'should' kullanılır."},
-    {q:"We ___ reduce emissions to protect the planet.", opts:["must","mustn't","can't"], a:"must", exp:"Zorunluluk belirtmek için 'must' kullanılır."},
-    {q:"___ I subscribe to this newsletter?", opts:["Can","Must","Should"], a:"Can", exp:"İzin/olasılık belirtmek için 'can' kullanılır."}
+    {q:"You ___ wear a seatbelt in the car.", opts:["must","mustn't","can"], a:"must", exp:"Zorunluluk belirtmek için 'must' kullanılır.", expEn:"'Must' expresses obligation."},
+    {q:"She ___ speak three languages.", opts:["can","must","should"], a:"can", exp:"Yetenek belirtmek için 'can' kullanılır.", expEn:"'Can' expresses ability."},
+    {q:"You ___ smoke here, it's not allowed.", opts:["mustn't","don't have to","can"], a:"mustn't", exp:"Yasak belirtmek için 'mustn't' kullanılır.", expEn:"'Mustn't' expresses prohibition."},
+    {q:"You ___ see a doctor if you feel sick.", opts:["should","must not","can't"], a:"should", exp:"Tavsiye vermek için 'should' kullanılır.", expEn:"'Should' is used to give advice."},
+    {q:"You ___ finish this today; tomorrow is fine.", opts:["don't have to","mustn't","can't"], a:"don't have to", exp:"Zorunluluk olmadığını belirtmek için 'don't have to' kullanılır.", expEn:"'Don't have to' shows there is no obligation."},
+    {q:"___ I open the window?", opts:["Can","Must","Should"], a:"Can", exp:"İzin istemek için 'can' kullanılır.", expEn:"'Can' is used to ask for permission."},
+    {q:"You ___ eat more vegetables for better health.", opts:["should","must not","can't"], a:"should", exp:"Tavsiye vermek için 'should' kullanılır.", expEn:"'Should' is used to give advice."},
+    {q:"You ___ recommend this restaurant, it's excellent.", opts:["should","mustn't","can't"], a:"should", exp:"Tavsiye vermek için 'should' kullanılır.", expEn:"'Should' is used to give advice."},
+    {q:"We ___ reduce emissions to protect the planet.", opts:["must","mustn't","can't"], a:"must", exp:"Zorunluluk belirtmek için 'must' kullanılır.", expEn:"'Must' expresses obligation."},
+    {q:"___ I subscribe to this newsletter?", opts:["Can","Must","Should"], a:"Can", exp:"İzin/olasılık belirtmek için 'can' kullanılır.", expEn:"'Can' expresses permission or possibility."}
   ]},
   {topic:"Gelecek Zaman (will / going to)", level:"B1", qs:[
-    {q:"I ___ (call) you as soon as I arrive.", opts:["will call","am calling","calls"], a:"will call", exp:"Anlık kararlar için 'will + fiil' kullanılır."},
-    {q:"Look at those clouds! It ___ (rain).", opts:["will rain","is going to rain","rains"], a:"is going to rain", exp:"Şu anki kanıtlara dayalı tahminlerde 'going to' kullanılır."},
-    {q:"We have already booked the tickets; we ___ (travel) next week.", opts:["will travel","are going to travel","travel"], a:"are going to travel", exp:"Önceden planlanmış eylemler için 'going to' kullanılır."},
-    {q:"___ you help me carry this bag?", opts:["Will","Are going to","Do"], a:"Will", exp:"Anlık istek/teklif için 'will' kullanılır."},
-    {q:"She ___ (not/come) to the party tonight.", opts:["won't come","isn't going to come","doesn't come"], a:"won't come", exp:"'Will not' kısaltması 'won't' şeklindedir."},
-    {q:"I'm sure they ___ (win) the match.", opts:["will win","are winning","win"], a:"will win", exp:"Kişisel tahmin/inanç belirtirken 'will' kullanılır."},
-    {q:"He has already decided; he ___ (apply) for the job.", opts:["will apply","is going to apply","applies"], a:"is going to apply", exp:"Önceden verilmiş bir karar için 'going to' kullanılır."}
+    {q:"I ___ (call) you as soon as I arrive.", opts:["will call","am calling","calls"], a:"will call", exp:"Anlık kararlar için 'will + fiil' kullanılır.", expEn:"'Will + verb' is used for decisions made at the moment of speaking."},
+    {q:"Look at those clouds! It ___ (rain).", opts:["will rain","is going to rain","rains"], a:"is going to rain", exp:"Şu anki kanıtlara dayalı tahminlerde 'going to' kullanılır.", expEn:"'Going to' is used for predictions based on present evidence."},
+    {q:"We have already booked the tickets; we ___ (travel) next week.", opts:["will travel","are going to travel","travel"], a:"are going to travel", exp:"Önceden planlanmış eylemler için 'going to' kullanılır.", expEn:"'Going to' is used for pre-planned actions."},
+    {q:"___ you help me carry this bag?", opts:["Will","Are going to","Do"], a:"Will", exp:"Anlık istek/teklif için 'will' kullanılır.", expEn:"'Will' is used for instant requests and offers."},
+    {q:"She ___ (not/come) to the party tonight.", opts:["won't come","isn't going to come","doesn't come"], a:"won't come", exp:"'Will not' kısaltması 'won't' şeklindedir.", expEn:"The contraction of 'will not' is 'won't'."},
+    {q:"I'm sure they ___ (win) the match.", opts:["will win","are winning","win"], a:"will win", exp:"Kişisel tahmin/inanç belirtirken 'will' kullanılır.", expEn:"'Will' is used for personal predictions and beliefs."},
+    {q:"He has already decided; he ___ (apply) for the job.", opts:["will apply","is going to apply","applies"], a:"is going to apply", exp:"Önceden verilmiş bir karar için 'going to' kullanılır.", expEn:"'Going to' is used for a decision already made."}
   ]},
   {topic:"Şart Cümleleri (First Conditional)", level:"B2", qs:[
-    {q:"If it rains, we ___ (stay) at home.", opts:["will stay","stay","stayed"], a:"will stay", exp:"Birinci koşul cümlesinde ana cümlede 'will + fiil' kullanılır."},
-    {q:"If you ___ (study) hard, you will pass the exam.", opts:["study","will study","studied"], a:"study", exp:"'If' cümleciğinde present simple kullanılır, 'will' ana cümlede gelir."},
-    {q:"She will be happy if you ___ (come) to the party.", opts:["come","will come","came"], a:"come", exp:"'If' cümleciğinde present simple kullanılır."},
-    {q:"If we don't hurry, we ___ (miss) the train.", opts:["will miss","miss","missed"], a:"will miss", exp:"Ana cümlede 'will + fiil' kullanılır."},
-    {q:"If he apologizes, I ___ (forgive) him.", opts:["will forgive","forgive","forgave"], a:"will forgive", exp:"Ana cümlede 'will + fiil' kullanılır."},
-    {q:"They will be disappointed if the team ___ (lose).", opts:["loses","will lose","lost"], a:"loses", exp:"'If' cümleciğinde present simple; he/she/it için '-s' eklenir: loses."},
-    {q:"If you don't practice, you ___ (not/improve).", opts:["won't improve","don't improve","didn't improve"], a:"won't improve", exp:"Ana cümlede olumsuzluk 'won't + fiil' şeklindedir."}
+    {q:"If it rains, we ___ (stay) at home.", opts:["will stay","stay","stayed"], a:"will stay", exp:"Birinci koşul cümlesinde ana cümlede 'will + fiil' kullanılır.", expEn:"In the first conditional the main clause takes 'will + verb'."},
+    {q:"If you ___ (study) hard, you will pass the exam.", opts:["study","will study","studied"], a:"study", exp:"'If' cümleciğinde present simple kullanılır, 'will' ana cümlede gelir.", expEn:"The present simple goes in the 'if' clause; 'will' goes in the main clause."},
+    {q:"She will be happy if you ___ (come) to the party.", opts:["come","will come","came"], a:"come", exp:"'If' cümleciğinde present simple kullanılır.", expEn:"The present simple is used in the 'if' clause."},
+    {q:"If we don't hurry, we ___ (miss) the train.", opts:["will miss","miss","missed"], a:"will miss", exp:"Ana cümlede 'will + fiil' kullanılır.", expEn:"The main clause takes 'will + verb'."},
+    {q:"If he apologizes, I ___ (forgive) him.", opts:["will forgive","forgive","forgave"], a:"will forgive", exp:"Ana cümlede 'will + fiil' kullanılır.", expEn:"The main clause takes 'will + verb'."},
+    {q:"They will be disappointed if the team ___ (lose).", opts:["loses","will lose","lost"], a:"loses", exp:"'If' cümleciğinde present simple; he/she/it için '-s' eklenir: loses.", expEn:"Present simple in the 'if' clause; add '-s' for he/she/it: loses."},
+    {q:"If you don't practice, you ___ (not/improve).", opts:["won't improve","don't improve","didn't improve"], a:"won't improve", exp:"Ana cümlede olumsuzluk 'won't + fiil' şeklindedir.", expEn:"The negative in the main clause is 'won't + verb'."}
   ]},
   {topic:"Geçmişte Süreklilik (Past Continuous)", level:"B1", qs:[
-    {q:"I ___ (watch) TV when you called.", opts:["was watching","watched","am watching"], a:"was watching", exp:"Geçmişte süren bir eylem: was/were + -ing."},
-    {q:"They ___ (play) football at 5 pm yesterday.", opts:["were playing","played","play"], a:"were playing", exp:"'They' ile geçmişte süren eylem: were + -ing."},
-    {q:"While she ___ (cook), the phone rang.", opts:["was cooking","cooked","cooks"], a:"was cooking", exp:"'While' ile süren bir eylem belirtilir: was + -ing."},
-    {q:"___ you sleeping when I called?", opts:["Were","Was","Did"], a:"Were", exp:"'You' ile geçmiş sürekli soru: Were + özne + -ing."},
-    {q:"He wasn't listening because he ___ (think) about something else.", opts:["was thinking","thought","thinks"], a:"was thinking", exp:"Geçmişte süren düşünce eylemi: was + -ing."},
-    {q:"We ___ (not/work) at that time.", opts:["weren't working","didn't work","don't work"], a:"weren't working", exp:"'We' ile olumsuz geçmiş sürekli: weren't + -ing."},
-    {q:"What ___ you doing at midnight?", opts:["were","was","did"], a:"were", exp:"'You' ile geçmiş sürekli soru kalıbı: What were you doing?"}
+    {q:"I ___ (watch) TV when you called.", opts:["was watching","watched","am watching"], a:"was watching", exp:"Geçmişte süren bir eylem: was/were + -ing.", expEn:"An ongoing past action: was/were + -ing."},
+    {q:"They ___ (play) football at 5 pm yesterday.", opts:["were playing","played","play"], a:"were playing", exp:"'They' ile geçmişte süren eylem: were + -ing.", expEn:"Ongoing past action with 'they': were + -ing."},
+    {q:"While she ___ (cook), the phone rang.", opts:["was cooking","cooked","cooks"], a:"was cooking", exp:"'While' ile süren bir eylem belirtilir: was + -ing.", expEn:"'While' introduces an ongoing action: was + -ing."},
+    {q:"___ you sleeping when I called?", opts:["Were","Was","Did"], a:"Were", exp:"'You' ile geçmiş sürekli soru: Were + özne + -ing.", expEn:"Past continuous question with 'you': Were + subject + -ing."},
+    {q:"He wasn't listening because he ___ (think) about something else.", opts:["was thinking","thought","thinks"], a:"was thinking", exp:"Geçmişte süren düşünce eylemi: was + -ing.", expEn:"An ongoing past mental action: was + -ing."},
+    {q:"We ___ (not/work) at that time.", opts:["weren't working","didn't work","don't work"], a:"weren't working", exp:"'We' ile olumsuz geçmiş sürekli: weren't + -ing.", expEn:"Negative past continuous with 'we': weren't + -ing."},
+    {q:"What ___ you doing at midnight?", opts:["were","was","did"], a:"were", exp:"'You' ile geçmiş sürekli soru kalıbı: What were you doing?", expEn:"Past continuous question with 'you': What were you doing?"}
   ]},
   {topic:"Edilgen Çatı (Passive Voice)", level:"B2", qs:[
-    {q:"The letter ___ (write) by my grandmother.", opts:["was written","wrote","writes"], a:"was written", exp:"Edilgen çatı: was/were + 3. hal."},
-    {q:"This bridge ___ (build) in 1990.", opts:["was built","built","builds"], a:"was built", exp:"Geçmiş edilgen: was + 3. hal."},
-    {q:"English ___ (speak) in many countries.", opts:["is spoken","speaks","spoke"], a:"is spoken", exp:"Geniş zaman edilgen: is/are + 3. hal."},
-    {q:"The report ___ (finish) by tomorrow.", opts:["will be finished","will finish","finishes"], a:"will be finished", exp:"Gelecek zaman edilgen: will be + 3. hal."},
-    {q:"The windows ___ (clean) every week.", opts:["are cleaned","clean","cleaned"], a:"are cleaned", exp:"Çoğul özneyle geniş zaman edilgen: are + 3. hal."},
-    {q:"The cake ___ (not/eat) yet.", opts:["hasn't been eaten","hasn't eaten","didn't eat"], a:"hasn't been eaten", exp:"Present perfect edilgen: has/have + been + 3. hal."},
-    {q:"This song ___ (know) all over the world.", opts:["is known","knows","known"], a:"is known", exp:"Geniş zaman edilgen: is + 3. hal."}
+    {q:"The letter ___ (write) by my grandmother.", opts:["was written","wrote","writes"], a:"was written", exp:"Edilgen çatı: was/were + 3. hal.", expEn:"Passive voice: was/were + past participle."},
+    {q:"This bridge ___ (build) in 1990.", opts:["was built","built","builds"], a:"was built", exp:"Geçmiş edilgen: was + 3. hal.", expEn:"Past passive: was + past participle."},
+    {q:"English ___ (speak) in many countries.", opts:["is spoken","speaks","spoke"], a:"is spoken", exp:"Geniş zaman edilgen: is/are + 3. hal.", expEn:"Present simple passive: is/are + past participle."},
+    {q:"The report ___ (finish) by tomorrow.", opts:["will be finished","will finish","finishes"], a:"will be finished", exp:"Gelecek zaman edilgen: will be + 3. hal.", expEn:"Future passive: will be + past participle."},
+    {q:"The windows ___ (clean) every week.", opts:["are cleaned","clean","cleaned"], a:"are cleaned", exp:"Çoğul özneyle geniş zaman edilgen: are + 3. hal.", expEn:"Present simple passive with a plural subject: are + past participle."},
+    {q:"The cake ___ (not/eat) yet.", opts:["hasn't been eaten","hasn't eaten","didn't eat"], a:"hasn't been eaten", exp:"Present perfect edilgen: has/have + been + 3. hal.", expEn:"Present perfect passive: has/have + been + past participle."},
+    {q:"This song ___ (know) all over the world.", opts:["is known","knows","known"], a:"is known", exp:"Geniş zaman edilgen: is + 3. hal.", expEn:"Present simple passive: is + past participle."}
   ]},
   {topic:"İlgi Cümlecikleri (Relative Clauses)", level:"B2", qs:[
-    {q:"The man ___ lives next door is a doctor.", opts:["who","which","where"], a:"who", exp:"İnsanlar için 'who' kullanılır."},
-    {q:"This is the book ___ I told you about.", opts:["which","who","when"], a:"which", exp:"Nesneler için 'which' kullanılır."},
-    {q:"That's the restaurant ___ we had dinner last night.", opts:["where","who","which"], a:"where", exp:"Yerler için 'where' kullanılır."},
-    {q:"She is the teacher ___ class I really enjoyed.", opts:["whose","who","which"], a:"whose", exp:"Sahiplik belirtmek için 'whose' kullanılır."},
-    {q:"I remember the day ___ we first met.", opts:["when","where","who"], a:"when", exp:"Zaman belirtmek için 'when' kullanılır."},
-    {q:"The car ___ he bought last year broke down.", opts:["that","who","where"], a:"that", exp:"Nesneler için 'that' de kullanılabilir (which yerine)."},
-    {q:"People ___ work hard usually succeed.", opts:["who","which","where"], a:"who", exp:"İnsanlar için 'who' kullanılır."}
+    {q:"The man ___ lives next door is a doctor.", opts:["who","which","where"], a:"who", exp:"İnsanlar için 'who' kullanılır.", expEn:"'Who' is used for people."},
+    {q:"This is the book ___ I told you about.", opts:["which","who","when"], a:"which", exp:"Nesneler için 'which' kullanılır.", expEn:"'Which' is used for things."},
+    {q:"That's the restaurant ___ we had dinner last night.", opts:["where","who","which"], a:"where", exp:"Yerler için 'where' kullanılır.", expEn:"'Where' is used for places."},
+    {q:"She is the teacher ___ class I really enjoyed.", opts:["whose","who","which"], a:"whose", exp:"Sahiplik belirtmek için 'whose' kullanılır.", expEn:"'Whose' is used to show possession."},
+    {q:"I remember the day ___ we first met.", opts:["when","where","who"], a:"when", exp:"Zaman belirtmek için 'when' kullanılır.", expEn:"'When' is used for time."},
+    {q:"The car ___ he bought last year broke down.", opts:["that","who","where"], a:"that", exp:"Nesneler için 'that' de kullanılabilir (which yerine).", expEn:"'That' can also be used for objects (instead of 'which')."},
+    {q:"People ___ work hard usually succeed.", opts:["who","which","where"], a:"who", exp:"İnsanlar için 'who' kullanılır.", expEn:"'Who' is used for people."}
   ]},
   {topic:"Dolaylı Anlatım (Reported Speech)", level:"B2", qs:[
-    {q:"She said, \"I am tired.\" → She said that she ___ tired.", opts:["was","is","were"], a:"was", exp:"Dolaylı anlatımda zaman bir adım geriye kayar: am → was."},
-    {q:"He said, \"I will call you.\" → He said that he ___ call me.", opts:["would","will","can"], a:"would", exp:"'Will' dolaylı anlatımda 'would' olur."},
-    {q:"They said, \"We are happy.\" → They said that they ___ happy.", opts:["were","are","was"], a:"were", exp:"'Are' dolaylı anlatımda 'were' olur."},
-    {q:"She said, \"I have finished.\" → She said that she ___ finished.", opts:["had","has","have"], a:"had", exp:"'Have finished' dolaylı anlatımda 'had finished' olur."},
-    {q:"He said, \"I can swim.\" → He said that he ___ swim.", opts:["could","can","would"], a:"could", exp:"'Can' dolaylı anlatımda 'could' olur."},
-    {q:"She asked, \"Where do you live?\" → She asked where I ___.", opts:["lived","live","was living"], a:"lived", exp:"Dolaylı sorularda zaman geriye kayar: do live → lived."},
-    {q:"He said, \"I went there yesterday.\" → He said that he ___ gone there the day before.", opts:["had","has","went"], a:"had", exp:"Geçmiş zaman dolaylı anlatımda past perfect'e döner: went → had gone."}
+    {q:"She said, \"I am tired.\" → She said that she ___ tired.", opts:["was","is","were"], a:"was", exp:"Dolaylı anlatımda zaman bir adım geriye kayar: am → was.", expEn:"Tenses shift back one step in reported speech: am → was."},
+    {q:"He said, \"I will call you.\" → He said that he ___ call me.", opts:["would","will","can"], a:"would", exp:"'Will' dolaylı anlatımda 'would' olur.", expEn:"'Will' becomes 'would' in reported speech."},
+    {q:"They said, \"We are happy.\" → They said that they ___ happy.", opts:["were","are","was"], a:"were", exp:"'Are' dolaylı anlatımda 'were' olur.", expEn:"'Are' becomes 'were' in reported speech."},
+    {q:"She said, \"I have finished.\" → She said that she ___ finished.", opts:["had","has","have"], a:"had", exp:"'Have finished' dolaylı anlatımda 'had finished' olur.", expEn:"'Have finished' becomes 'had finished' in reported speech."},
+    {q:"He said, \"I can swim.\" → He said that he ___ swim.", opts:["could","can","would"], a:"could", exp:"'Can' dolaylı anlatımda 'could' olur.", expEn:"'Can' becomes 'could' in reported speech."},
+    {q:"She asked, \"Where do you live?\" → She asked where I ___.", opts:["lived","live","was living"], a:"lived", exp:"Dolaylı sorularda zaman geriye kayar: do live → lived.", expEn:"Tenses shift back in reported questions: do live → lived."},
+    {q:"He said, \"I went there yesterday.\" → He said that he ___ gone there the day before.", opts:["had","has","went"], a:"had", exp:"Geçmiş zaman dolaylı anlatımda past perfect'e döner: went → had gone.", expEn:"The past simple shifts to past perfect in reported speech: went → had gone."}
   ]},
   {topic:"İkinci Şart Cümlesi (Second Conditional)", level:"B2", qs:[
-    {q:"If I ___ (have) more time, I would travel more.", opts:["had","have","will have"], a:"had", exp:"İkinci şart cümlesinde 'if' cümleciğinde past simple kullanılır."},
-    {q:"If she won the lottery, she ___ (buy) a house.", opts:["would buy","buys","will buy"], a:"would buy", exp:"Ana cümlede 'would + fiil' kullanılır."},
-    {q:"If I ___ (be) you, I would apologize.", opts:["were","was","am"], a:"were", exp:"İkinci şart cümlesinde 'be' fiili genellikle 'were' olarak kullanılır."},
-    {q:"What would you do if you ___ (lose) your job?", opts:["lost","lose","will lose"], a:"lost", exp:"'If' cümleciğinde past simple kullanılır."},
-    {q:"They would travel more if they ___ (have) more money.", opts:["had","have","will have"], a:"had", exp:"'If' cümleciğinde past simple kullanılır."},
-    {q:"If he studied harder, he ___ (pass) the exam.", opts:["would pass","passes","will pass"], a:"would pass", exp:"Ana cümlede 'would + fiil' kullanılır."},
-    {q:"I would help you if I ___ (can).", opts:["could","can","will"], a:"could", exp:"'Can' ikinci şart cümlesinde 'could' olarak kullanılır."}
+    {q:"If I ___ (have) more time, I would travel more.", opts:["had","have","will have"], a:"had", exp:"İkinci şart cümlesinde 'if' cümleciğinde past simple kullanılır.", expEn:"In the second conditional the 'if' clause takes the past simple."},
+    {q:"If she won the lottery, she ___ (buy) a house.", opts:["would buy","buys","will buy"], a:"would buy", exp:"Ana cümlede 'would + fiil' kullanılır.", expEn:"The main clause takes 'would + verb'."},
+    {q:"If I ___ (be) you, I would apologize.", opts:["were","was","am"], a:"were", exp:"İkinci şart cümlesinde 'be' fiili genellikle 'were' olarak kullanılır.", expEn:"In the second conditional the verb 'be' is normally 'were'."},
+    {q:"What would you do if you ___ (lose) your job?", opts:["lost","lose","will lose"], a:"lost", exp:"'If' cümleciğinde past simple kullanılır.", expEn:"The past simple is used in the 'if' clause."},
+    {q:"They would travel more if they ___ (have) more money.", opts:["had","have","will have"], a:"had", exp:"'If' cümleciğinde past simple kullanılır.", expEn:"The past simple is used in the 'if' clause."},
+    {q:"If he studied harder, he ___ (pass) the exam.", opts:["would pass","passes","will pass"], a:"would pass", exp:"Ana cümlede 'would + fiil' kullanılır.", expEn:"The main clause takes 'would + verb'."},
+    {q:"I would help you if I ___ (can).", opts:["could","can","will"], a:"could", exp:"'Can' ikinci şart cümlesinde 'could' olarak kullanılır.", expEn:"'Can' becomes 'could' in the second conditional."}
   ]},
   {topic:"Kullanılmış Alışkanlıklar (used to)", level:"B1", qs:[
-    {q:"I ___ (play) football every weekend when I was young.", opts:["used to play","use to play","was playing"], a:"used to play", exp:"Geçmişteki alışkanlıklar için 'used to + fiil' kullanılır."},
-    {q:"She ___ (not/like) vegetables as a child.", opts:["didn't use to like","doesn't use to like","didn't used to like"], a:"didn't use to like", exp:"Olumsuzda 'didn't use to' kullanılır (used değil)."},
-    {q:"___ you use to live in Istanbul?", opts:["Did","Do","Were"], a:"Did", exp:"Soru formunda 'Did + özne + use to' kullanılır."},
-    {q:"There ___ (be) a cinema here, but now it's closed.", opts:["used to be","use to be","was being"], a:"used to be", exp:"Geçmişte var olan ama artık olmayan durumlar için 'used to be' kullanılır."},
-    {q:"We ___ (not/have) a car when we were students.", opts:["didn't use to have","don't use to have","didn't used to have"], a:"didn't use to have", exp:"Olumsuzda 'didn't use to' kullanılır."},
-    {q:"He ___ (smoke), but he quit two years ago.", opts:["used to smoke","uses to smoke","was smoking"], a:"used to smoke", exp:"Artık yapılmayan geçmiş alışkanlık: used to + fiil."},
-    {q:"I ___ (be) afraid of the dark when I was a kid.", opts:["used to be","use to be","was being"], a:"used to be", exp:"Geçmişteki bir durum için 'used to be' kullanılır."}
+    {q:"I ___ (play) football every weekend when I was young.", opts:["used to play","use to play","was playing"], a:"used to play", exp:"Geçmişteki alışkanlıklar için 'used to + fiil' kullanılır.", expEn:"'Used to + verb' describes past habits."},
+    {q:"She ___ (not/like) vegetables as a child.", opts:["didn't use to like","doesn't use to like","didn't used to like"], a:"didn't use to like", exp:"Olumsuzda 'didn't use to' kullanılır (used değil).", expEn:"The negative is 'didn't use to' (not 'used')."},
+    {q:"___ you use to live in Istanbul?", opts:["Did","Do","Were"], a:"Did", exp:"Soru formunda 'Did + özne + use to' kullanılır.", expEn:"The question form is 'Did + subject + use to'."},
+    {q:"There ___ (be) a cinema here, but now it's closed.", opts:["used to be","use to be","was being"], a:"used to be", exp:"Geçmişte var olan ama artık olmayan durumlar için 'used to be' kullanılır.", expEn:"'Used to be' describes something that existed in the past but no longer does."},
+    {q:"We ___ (not/have) a car when we were students.", opts:["didn't use to have","don't use to have","didn't used to have"], a:"didn't use to have", exp:"Olumsuzda 'didn't use to' kullanılır.", expEn:"The negative is 'didn't use to'."},
+    {q:"He ___ (smoke), but he quit two years ago.", opts:["used to smoke","uses to smoke","was smoking"], a:"used to smoke", exp:"Artık yapılmayan geçmiş alışkanlık: used to + fiil.", expEn:"A past habit that has stopped: used to + verb."},
+    {q:"I ___ (be) afraid of the dark when I was a kid.", opts:["used to be","use to be","was being"], a:"used to be", exp:"Geçmişteki bir durum için 'used to be' kullanılır.", expEn:"'Used to be' describes a past state."}
   ]},
   {topic:"Gerund ve Mastar (Gerunds & Infinitives)", level:"B2", qs:[
-    {q:"She enjoys ___ (read) books.", opts:["reading","to read","read"], a:"reading", exp:"'Enjoy' fiilinden sonra '-ing' (gerund) kullanılır."},
-    {q:"I want ___ (learn) a new language.", opts:["to learn","learning","learn"], a:"to learn", exp:"'Want' fiilinden sonra mastar (to + fiil) kullanılır."},
-    {q:"They decided ___ (travel) next month.", opts:["to travel","traveling","travel"], a:"to travel", exp:"'Decide' fiilinden sonra mastar kullanılır."},
-    {q:"He avoids ___ (eat) junk food.", opts:["eating","to eat","eat"], a:"eating", exp:"'Avoid' fiilinden sonra gerund kullanılır."},
-    {q:"We plan ___ (visit) Paris this summer.", opts:["to visit","visiting","visit"], a:"to visit", exp:"'Plan' fiilinden sonra mastar kullanılır."},
-    {q:"She finished ___ (write) the report.", opts:["writing","to write","write"], a:"writing", exp:"'Finish' fiilinden sonra gerund kullanılır."},
-    {q:"I would like ___ (order) some coffee.", opts:["to order","ordering","order"], a:"to order", exp:"'Would like' kalıbından sonra mastar kullanılır."}
+    {q:"She enjoys ___ (read) books.", opts:["reading","to read","read"], a:"reading", exp:"'Enjoy' fiilinden sonra '-ing' (gerund) kullanılır.", expEn:"'Enjoy' is followed by an '-ing' form (gerund)."},
+    {q:"I want ___ (learn) a new language.", opts:["to learn","learning","learn"], a:"to learn", exp:"'Want' fiilinden sonra mastar (to + fiil) kullanılır.", expEn:"'Want' is followed by an infinitive (to + verb)."},
+    {q:"They decided ___ (travel) next month.", opts:["to travel","traveling","travel"], a:"to travel", exp:"'Decide' fiilinden sonra mastar kullanılır.", expEn:"'Decide' is followed by an infinitive."},
+    {q:"He avoids ___ (eat) junk food.", opts:["eating","to eat","eat"], a:"eating", exp:"'Avoid' fiilinden sonra gerund kullanılır.", expEn:"'Avoid' is followed by a gerund."},
+    {q:"We plan ___ (visit) Paris this summer.", opts:["to visit","visiting","visit"], a:"to visit", exp:"'Plan' fiilinden sonra mastar kullanılır.", expEn:"'Plan' is followed by an infinitive."},
+    {q:"She finished ___ (write) the report.", opts:["writing","to write","write"], a:"writing", exp:"'Finish' fiilinden sonra gerund kullanılır.", expEn:"'Finish' is followed by a gerund."},
+    {q:"I would like ___ (order) some coffee.", opts:["to order","ordering","order"], a:"to order", exp:"'Would like' kalıbından sonra mastar kullanılır.", expEn:"'Would like' is followed by an infinitive."}
   ]},
   {topic:"Soru Etiketleri (Question Tags)", level:"B1", qs:[
-    {q:"You like coffee, ___?", opts:["don't you","do you","aren't you"], a:"don't you", exp:"Olumlu cümle olumsuz etiket alır: don't you?"},
-    {q:"She isn't coming, ___?", opts:["is she","isn't she","does she"], a:"is she", exp:"Olumsuz cümle olumlu etiket alır: is she?"},
-    {q:"They have finished, ___?", opts:["haven't they","have they","don't they"], a:"haven't they", exp:"Olumlu cümle olumsuz etiket alır: haven't they?"},
-    {q:"He can swim, ___?", opts:["can't he","can he","does he"], a:"can't he", exp:"Olumlu cümle olumsuz etiket alır: can't he?"},
-    {q:"You won't tell anyone, ___?", opts:["will you","won't you","do you"], a:"will you", exp:"Olumsuz cümle olumlu etiket alır: will you?"},
-    {q:"This is your bag, ___?", opts:["isn't it","is it","doesn't it"], a:"isn't it", exp:"Olumlu cümle olumsuz etiket alır: isn't it?"},
-    {q:"We should leave now, ___?", opts:["shouldn't we","should we","don't we"], a:"shouldn't we", exp:"Olumlu cümle olumsuz etiket alır: shouldn't we?"}
+    {q:"You like coffee, ___?", opts:["don't you","do you","aren't you"], a:"don't you", exp:"Olumlu cümle olumsuz etiket alır: don't you?", expEn:"A positive sentence takes a negative tag: don't you?"},
+    {q:"She isn't coming, ___?", opts:["is she","isn't she","does she"], a:"is she", exp:"Olumsuz cümle olumlu etiket alır: is she?", expEn:"A negative sentence takes a positive tag: is she?"},
+    {q:"They have finished, ___?", opts:["haven't they","have they","don't they"], a:"haven't they", exp:"Olumlu cümle olumsuz etiket alır: haven't they?", expEn:"A positive sentence takes a negative tag: haven't they?"},
+    {q:"He can swim, ___?", opts:["can't he","can he","does he"], a:"can't he", exp:"Olumlu cümle olumsuz etiket alır: can't he?", expEn:"A positive sentence takes a negative tag: can't he?"},
+    {q:"You won't tell anyone, ___?", opts:["will you","won't you","do you"], a:"will you", exp:"Olumsuz cümle olumlu etiket alır: will you?", expEn:"A negative sentence takes a positive tag: will you?"},
+    {q:"This is your bag, ___?", opts:["isn't it","is it","doesn't it"], a:"isn't it", exp:"Olumlu cümle olumsuz etiket alır: isn't it?", expEn:"A positive sentence takes a negative tag: isn't it?"},
+    {q:"We should leave now, ___?", opts:["shouldn't we","should we","don't we"], a:"shouldn't we", exp:"Olumlu cümle olumsuz etiket alır: shouldn't we?", expEn:"A positive sentence takes a negative tag: shouldn't we?"}
   ]},
   {topic:"Şimdiki Zamanda Mükemmel Süreklilik (Present Perfect Continuous)", level:"B2", qs:[
-    {q:"I ___ (wait) for you for an hour.", opts:["have been waiting","waited","am waiting"], a:"have been waiting", exp:"Present perfect continuous: have/has been + -ing."},
-    {q:"She ___ (study) English for three years.", opts:["has been studying","studied","is studying"], a:"has been studying", exp:"'She' ile: has been + -ing."},
-    {q:"How long ___ you been living here?", opts:["have","has","did"], a:"have", exp:"'You' ile present perfect continuous soru: have + been + -ing."},
-    {q:"They ___ (not/sleep) well lately.", opts:["haven't been sleeping","didn't sleep","aren't sleeping"], a:"haven't been sleeping", exp:"Olumsuzda: haven't been + -ing."},
-    {q:"He looks tired because he ___ (work) all day.", opts:["has been working","worked","works"], a:"has been working", exp:"Sonucu açıklayan süreklilik: has been + -ing."},
-    {q:"We ___ (plan) this trip for months.", opts:["have been planning","planned","plan"], a:"have been planning", exp:"'We' ile: have been + -ing."},
-    {q:"It ___ (rain) since this morning.", opts:["has been raining","rained","rains"], a:"has been raining", exp:"'It' ile: has been + -ing."}
+    {q:"I ___ (wait) for you for an hour.", opts:["have been waiting","waited","am waiting"], a:"have been waiting", exp:"Present perfect continuous: have/has been + -ing.", expEn:"Present perfect continuous: have/has been + -ing."},
+    {q:"She ___ (study) English for three years.", opts:["has been studying","studied","is studying"], a:"has been studying", exp:"'She' ile: has been + -ing.", expEn:"With 'she': has been + -ing."},
+    {q:"How long ___ you been living here?", opts:["have","has","did"], a:"have", exp:"'You' ile present perfect continuous soru: have + been + -ing.", expEn:"Present perfect continuous question with 'you': have + been + -ing."},
+    {q:"They ___ (not/sleep) well lately.", opts:["haven't been sleeping","didn't sleep","aren't sleeping"], a:"haven't been sleeping", exp:"Olumsuzda: haven't been + -ing.", expEn:"In the negative: haven't been + -ing."},
+    {q:"He looks tired because he ___ (work) all day.", opts:["has been working","worked","works"], a:"has been working", exp:"Sonucu açıklayan süreklilik: has been + -ing.", expEn:"Continuous form explaining a present result: has been + -ing."},
+    {q:"We ___ (plan) this trip for months.", opts:["have been planning","planned","plan"], a:"have been planning", exp:"'We' ile: have been + -ing.", expEn:"With 'we': have been + -ing."},
+    {q:"It ___ (rain) since this morning.", opts:["has been raining","rained","rains"], a:"has been raining", exp:"'It' ile: has been + -ing.", expEn:"With 'it': has been + -ing."}
   ]},
   {topic:"Geçmişte Mükemmel Zaman (Past Perfect)", level:"B2", qs:[
-    {q:"When we arrived, the film ___ (already/start).", opts:["had already started","already started","has already started"], a:"had already started", exp:"Bir geçmiş olaydan önce biten eylem: had + 3. hal."},
-    {q:"She ___ (never/see) snow before she moved to Canada.", opts:["had never seen","never saw","has never seen"], a:"had never seen", exp:"Geçmişte bir olaydan önceki durum: had + 3. hal."},
-    {q:"I ___ (finish) my homework before dinner.", opts:["had finished","finished","have finished"], a:"had finished", exp:"Bir geçmiş eylemden önce tamamlanan eylem: had + 3. hal."},
-    {q:"By the time he called, we ___ (leave) already.", opts:["had left","left","have left"], a:"had left", exp:"'By the time' ile past perfect kullanılır."},
-    {q:"They ___ (not/meet) before that party.", opts:["hadn't met","didn't meet","haven't met"], a:"hadn't met", exp:"Olumsuz past perfect: hadn't + 3. hal."},
-    {q:"___ you ever visited Paris before that trip?", opts:["Had","Have","Did"], a:"Had", exp:"Past perfect soru: Had + özne + 3. hal?"},
-    {q:"After she ___ (finish) the report, she went home.", opts:["had finished","finished","has finished"], a:"had finished", exp:"'After' ile past perfect kullanılabilir."}
+    {q:"When we arrived, the film ___ (already/start).", opts:["had already started","already started","has already started"], a:"had already started", exp:"Bir geçmiş olaydan önce biten eylem: had + 3. hal.", expEn:"An action finished before a past event: had + past participle."},
+    {q:"She ___ (never/see) snow before she moved to Canada.", opts:["had never seen","never saw","has never seen"], a:"had never seen", exp:"Geçmişte bir olaydan önceki durum: had + 3. hal.", expEn:"A state before a past event: had + past participle."},
+    {q:"I ___ (finish) my homework before dinner.", opts:["had finished","finished","have finished"], a:"had finished", exp:"Bir geçmiş eylemden önce tamamlanan eylem: had + 3. hal.", expEn:"An action completed before another past action: had + past participle."},
+    {q:"By the time he called, we ___ (leave) already.", opts:["had left","left","have left"], a:"had left", exp:"'By the time' ile past perfect kullanılır.", expEn:"Past perfect is used with 'by the time'."},
+    {q:"They ___ (not/meet) before that party.", opts:["hadn't met","didn't meet","haven't met"], a:"hadn't met", exp:"Olumsuz past perfect: hadn't + 3. hal.", expEn:"Negative past perfect: hadn't + past participle."},
+    {q:"___ you ever visited Paris before that trip?", opts:["Had","Have","Did"], a:"Had", exp:"Past perfect soru: Had + özne + 3. hal?", expEn:"Past perfect question: Had + subject + past participle?"},
+    {q:"After she ___ (finish) the report, she went home.", opts:["had finished","finished","has finished"], a:"had finished", exp:"'After' ile past perfect kullanılabilir.", expEn:"Past perfect can be used with 'after'."}
   ]},
   {topic:"Miktar Belirteçleri (some/any/much/many/a few/a little)", level:"A2", qs:[
-    {q:"There is ___ milk in the fridge.", opts:["some","any","many"], a:"some", exp:"Olumlu cümlelerde 'some' kullanılır."},
-    {q:"Is there ___ sugar left?", opts:["any","some","many"], a:"any", exp:"Soru cümlelerinde genellikle 'any' kullanılır."},
-    {q:"I don't have ___ money right now.", opts:["any","some","much"], a:"any", exp:"Olumsuz cümlelerde 'any' kullanılır."},
-    {q:"How ___ books do you have?", opts:["many","much","some"], a:"many", exp:"Sayılabilen isimlerle 'many' kullanılır."},
-    {q:"How ___ water do we need?", opts:["much","many","some"], a:"much", exp:"Sayılamayan isimlerle 'much' kullanılır."},
-    {q:"There are only ___ apples left.", opts:["a few","a little","much"], a:"a few", exp:"Sayılabilen isimlerle 'a few' kullanılır."},
-    {q:"We have ___ time before the train leaves.", opts:["a little","a few","many"], a:"a little", exp:"Sayılamayan isimlerle 'a little' kullanılır."}
+    {q:"There is ___ milk in the fridge.", opts:["some","any","many"], a:"some", exp:"Olumlu cümlelerde 'some' kullanılır.", expEn:"'Some' is used in positive sentences."},
+    {q:"Is there ___ sugar left?", opts:["any","some","many"], a:"any", exp:"Soru cümlelerinde genellikle 'any' kullanılır.", expEn:"'Any' is normally used in questions."},
+    {q:"I don't have ___ money right now.", opts:["any","some","much"], a:"any", exp:"Olumsuz cümlelerde 'any' kullanılır.", expEn:"'Any' is used in negative sentences."},
+    {q:"How ___ books do you have?", opts:["many","much","some"], a:"many", exp:"Sayılabilen isimlerle 'many' kullanılır.", expEn:"'Many' is used with countable nouns."},
+    {q:"How ___ water do we need?", opts:["much","many","some"], a:"much", exp:"Sayılamayan isimlerle 'much' kullanılır.", expEn:"'Much' is used with uncountable nouns."},
+    {q:"There are only ___ apples left.", opts:["a few","a little","much"], a:"a few", exp:"Sayılabilen isimlerle 'a few' kullanılır.", expEn:"'A few' is used with countable nouns."},
+    {q:"We have ___ time before the train leaves.", opts:["a little","a few","many"], a:"a little", exp:"Sayılamayan isimlerle 'a little' kullanılır.", expEn:"'A little' is used with uncountable nouns."}
   ]},
   {topic:"Modal Perfect (should have / could have / must have)", level:"B2", qs:[
-    {q:"You ___ (should/study) harder for the exam.", opts:["should have studied","should study","should studied"], a:"should have studied", exp:"Geçmişte yapılmayan bir tavsiye/pişmanlık: should have + 3. hal."},
-    {q:"He ___ (must/leave) already; his car isn't here.", opts:["must have left","must leave","must left"], a:"must have left", exp:"Geçmişe dair güçlü bir tahmin: must have + 3. hal."},
-    {q:"She ___ (could/call) me, but she didn't.", opts:["could have called","could call","could called"], a:"could have called", exp:"Geçmişte mümkün olan ama yapılmayan bir eylem: could have + 3. hal."},
-    {q:"They ___ (shouldn't/leave) so early; they missed the show.", opts:["shouldn't have left","shouldn't leave","shouldn't left"], a:"shouldn't have left", exp:"Geçmişte yapılmaması gereken bir eylem: shouldn't have + 3. hal."},
-    {q:"I ___ (might/miss) the bus; I'm not sure.", opts:["might have missed","might miss","might missed"], a:"might have missed", exp:"Geçmişe dair belirsiz bir tahmin: might have + 3. hal."},
-    {q:"You ___ (needn't/bring) an umbrella; it didn't rain.", opts:["needn't have brought","needn't bring","needn't brought"], a:"needn't have brought", exp:"Gereksiz yapılan bir eylem: needn't have + 3. hal."},
-    {q:"She ___ (can't/know) about the surprise; she looked shocked.", opts:["can't have known","can't know","can't knew"], a:"can't have known", exp:"Geçmişe dair imkansız bir ihtimal: can't have + 3. hal."}
+    {q:"You ___ (should/study) harder for the exam.", opts:["should have studied","should study","should studied"], a:"should have studied", exp:"Geçmişte yapılmayan bir tavsiye/pişmanlık: should have + 3. hal.", expEn:"Advice or regret about the past: should have + past participle."},
+    {q:"He ___ (must/leave) already; his car isn't here.", opts:["must have left","must leave","must left"], a:"must have left", exp:"Geçmişe dair güçlü bir tahmin: must have + 3. hal.", expEn:"A strong deduction about the past: must have + past participle."},
+    {q:"She ___ (could/call) me, but she didn't.", opts:["could have called","could call","could called"], a:"could have called", exp:"Geçmişte mümkün olan ama yapılmayan bir eylem: could have + 3. hal.", expEn:"An action that was possible but didn't happen: could have + past participle."},
+    {q:"They ___ (shouldn't/leave) so early; they missed the show.", opts:["shouldn't have left","shouldn't leave","shouldn't left"], a:"shouldn't have left", exp:"Geçmişte yapılmaması gereken bir eylem: shouldn't have + 3. hal.", expEn:"An action that shouldn't have been done: shouldn't have + past participle."},
+    {q:"I ___ (might/miss) the bus; I'm not sure.", opts:["might have missed","might miss","might missed"], a:"might have missed", exp:"Geçmişe dair belirsiz bir tahmin: might have + 3. hal.", expEn:"An uncertain guess about the past: might have + past participle."},
+    {q:"You ___ (needn't/bring) an umbrella; it didn't rain.", opts:["needn't have brought","needn't bring","needn't brought"], a:"needn't have brought", exp:"Gereksiz yapılan bir eylem: needn't have + 3. hal.", expEn:"An action that turned out to be unnecessary: needn't have + past participle."},
+    {q:"She ___ (can't/know) about the surprise; she looked shocked.", opts:["can't have known","can't know","can't knew"], a:"can't have known", exp:"Geçmişe dair imkansız bir ihtimal: can't have + 3. hal.", expEn:"Something impossible about the past: can't have + past participle."}
   ]},
   {topic:"Sıra Sayıları ve Tarihler (Ordinal Numbers & Dates)", level:"A2", qs:[
-    {q:"Today is the ___ of May.", opts:["first","one","onest"], a:"first", exp:"Tarihlerde sıra sayıları kullanılır: the first."},
-    {q:"My birthday is on the ___ of June.", opts:["twentieth","twenty","twentyth"], a:"twentieth", exp:"20 sayısının sıra hali: twentieth."},
-    {q:"He was born ___ 1995.", opts:["in","on","at"], a:"in", exp:"Yıllar için 'in' kullanılır."},
-    {q:"The meeting is ___ Monday morning.", opts:["on","in","at"], a:"on", exp:"Günler için 'on' kullanılır."},
-    {q:"She celebrates her birthday on the ___ of March.", opts:["third","three","threeth"], a:"third", exp:"3 sayısının sıra hali: third."},
-    {q:"This is his ___ visit to Turkey.", opts:["second","two","twoth"], a:"second", exp:"2 sayısının sıra hali: second."},
-    {q:"We will meet ___ the fifth of July.", opts:["on","at","in"], a:"on", exp:"Belirli bir tarih için 'on' kullanılır."}
+    {q:"Today is the ___ of May.", opts:["first","one","onest"], a:"first", exp:"Tarihlerde sıra sayıları kullanılır: the first.", expEn:"Ordinal numbers are used with dates: the first."},
+    {q:"My birthday is on the ___ of June.", opts:["twentieth","twenty","twentyth"], a:"twentieth", exp:"20 sayısının sıra hali: twentieth.", expEn:"The ordinal form of 20 is 'twentieth'."},
+    {q:"He was born ___ 1995.", opts:["in","on","at"], a:"in", exp:"Yıllar için 'in' kullanılır.", expEn:"'In' is used with years."},
+    {q:"The meeting is ___ Monday morning.", opts:["on","in","at"], a:"on", exp:"Günler için 'on' kullanılır.", expEn:"'On' is used with days."},
+    {q:"She celebrates her birthday on the ___ of March.", opts:["third","three","threeth"], a:"third", exp:"3 sayısının sıra hali: third.", expEn:"The ordinal form of 3 is 'third'."},
+    {q:"This is his ___ visit to Turkey.", opts:["second","two","twoth"], a:"second", exp:"2 sayısının sıra hali: second.", expEn:"The ordinal form of 2 is 'second'."},
+    {q:"We will meet ___ the fifth of July.", opts:["on","at","in"], a:"on", exp:"Belirli bir tarih için 'on' kullanılır.", expEn:"'On' is used for a specific date."}
   ]}
 ];
 
@@ -2863,7 +2972,7 @@ function updateHeaderStats(){
   const totalCorrect = progress.quiz.correct + progress.writing.correct;
   const avg = totalAnswered > 0 ? Math.round(100*totalCorrect/totalAnswered)+'%' : '–';
   document.getElementById('quizAvg').textContent = avg;
-  document.getElementById('levelBadge').textContent = 'Seviye: ' + LEVELS[progress.level].code;
+  document.getElementById('levelBadge').textContent = (LANG==='en'?'Level: ':'Seviye: ') + LEVELS[progress.level].code;
   const xp = progress.xp || 0;
   const rank = getRank(xp);
   document.getElementById('rankEmoji').textContent = rank.emoji;
@@ -2875,13 +2984,210 @@ function updateHeaderStats(){
   document.getElementById('xpBarFill').style.width = pct + '%';
 }
 
-/* ---------------- TAB NAV ---------------- */
+
+/* ---------------- I18N ---------------- */
+let LANG = (localStorage.getItem('app_lang') || 'en');
+const UI_STRINGS = {
+  // nav + tabs
+  "nav.learn":["Learn","Öğren"], "nav.practice":["Practice","Alıştırma"],
+  "nav.study":["Study","Çalış"], "nav.test":["Test","Sınav"],
+  "tab.flash":["Flashcards","Kelime Kartları"], "tab.wod":["Word of the Day","Günün Kelimesi"],
+  "tab.dict":["Dictionary","Sözlük"], "tab.match":["Match","Eşleştir"],
+  "tab.listen":["Listen","Dinle"], "tab.cloze":["Fill Blank","Boşluk"],
+  "tab.write":["Writing","Yazma"], "tab.sentence":["Sentence","Cümle"],
+  "tab.grammar":["Grammar","Grammar"], "tab.reading":["Reading","Okuma"],
+  "tab.exam":["Mixed Exam","Karma Sınav"],
+  "app.title":["My English Study Box","İngilizce Çalışma Kutum"],
+  "app.tagline":["Grow your English word by word, day by day 🌱","Kelime kelime, gün gün İngilizceni büyüt 🌱"],
+  "btn.logout":["Log Out","Çıkış Yap"], "btn.retest":["Retake test","Yeniden test et"],
+  "stat.streak":["🔥 day streak","🔥 gün seri"], "stat.known":["words learned","öğrenilen kelime"],
+  "stat.accuracy":["accuracy","başarı oranı"]
+};
+const UI_MAP = {
+  // headings & subtitles
+  "Kelime Kartları":"Flashcards",
+  "Karta dokun, çeviriyi gör. Sonra bildiğini ya da tekrar edeceğini işaretle.":"Tap the card to see the translation, then mark it as known or still learning.",
+  "Grammar Alıştırmaları":"Grammar Practice",
+  "Konuya dokun, soruları çöz, doğru cevabı işaretle. Kilitli konular seviyen yükseldikçe açılır.":"Tap a topic, answer the questions, and pick the correct option. Locked topics open as your level rises.",
+  "Yazma Alıştırması":"Writing Practice",
+  "Kelimenin çevirisini yaz. Yazım denetimi küçük hataları affeder.":"Type the translation. Minor spelling slips are forgiven.",
+  "Günün Kelimesi":"Word of the Day",
+  "Her gün yeni bir kelime, ardından küçük bir quiz.":"A new word every day, followed by a short quiz.",
+  "Cümle Kur":"Sentence Builder",
+  "Kelimelere doğru sırada dokunarak cümleyi oluştur. Seviyen yükseldikçe daha zor cümleler açılır.":"Tap the words in the right order to build the sentence. Harder sentences unlock as you level up.",
+  "Okuma Parçası":"Reading",
+  "Metni oku, anlamını çıkar, sorulara cevap ver. Takılırsan Türkçe çevirisine bakabilirsin.":"Read the passage, work out the meaning and answer the questions. You can check the Turkish translation if you get stuck.",
+  "Karma Sınav":"Mixed Exam",
+  "Kelime, grammar ve bir İngilizce okuma parçasını karıştırır; en çok zorlandığın kelime ve konulara daha sık yer verir. Her sınav farklı olur.":"Mixes vocabulary, grammar and an English reading passage, focusing on the words and topics you struggle with most. Every exam is different.",
+  "Sözlük":"Dictionary",
+  "Türkçe veya İngilizce bir kelime yaz — hem İngilizce-İngilizce tanımını hem Türkçe karşılığını görürsün.":"Type a word in Turkish or English — you'll get both the English definition and the Turkish meaning.",
+  "Eşleştir":"Match",
+  "Solda İngilizcesini, sağda Türkçesini bul ve ikisine de dokunarak eşleştir.":"Find the English word on the left and its Turkish meaning on the right, then tap both to match them.",
+  "Dinle":"Listen",
+  "Kelimeyi dinle, duyduğun kelimenin Türkçesini seç. Okuma değil, dinleme pratiği.":"Listen to the word and pick its Turkish meaning. This is listening practice, not reading.",
+  "Boşluk Doldurma":"Fill in the Blank",
+  "Cümledeki boşluğa uygun İngilizce kelimeyi yaz. Türkçe çeviri sana ipucu verir.":"Type the missing English word. The Turkish translation is your hint.",
+  // buttons
+  "Kontrol Et":"Check", "Sıfırla":"Reset", "Sonraki Cümle":"Next Sentence",
+  "Yeni Tur":"New Round", "Yeni Quiz":"New Quiz", "Yeni Sınav":"New Exam",
+  "Teste Başla":"Start Test", "Başlamaya Hazırım":"I'm Ready to Start",
+  "Ara":"Search", "Kapat":"Close", "Giriş Yap":"Log In", "Kayıt Ol":"Sign Up",
+  "Hesap Oluştur":"Create Account", "Çıkış Yap":"Log Out", "Doğrula":"Verify",
+  "Doğrulanıyor...":"Verifying...", "Aranıyor...":"Searching...",
+  "Türkçe Çeviriyi Göster":"Show Turkish Translation",
+  "Türkçe Çeviriyi Gizle":"Hide Turkish Translation",
+  "🔊 Dinle":"🔊 Listen",
+  "5 Soruluk Quiz Başlat":"Start 5-Question Quiz",
+  "8 Kelimelik Yazma Turu Başlat":"Start 8-Word Writing Round",
+  "6 Soruluk Dinleme Turu Başlat":"Start 6-Question Listening Round",
+  "6 Soruluk Boşluk Doldurma Başlat":"Start 6-Question Fill-in-the-Blank",
+  "12 Soruluk Karma Sınav Başlat":"Start 12-Question Mixed Exam",
+  "Bildirimleri Aç":"Enable Notifications", "Bildirimleri Kapat":"Disable Notifications",
+  // labels & stats
+  "Biliyorum":"Known", "Öğreniyorum":"Learning", "Tüm Seviyeler":"All Levels",
+  "Tümü":"All", "Toplam Soru":"Total Questions", "Başarı":"Accuracy",
+  "Gün Seri":"Day Streak", "Toplam Sınav":"Total Exams", "Son Skor":"Last Score",
+  "En İyi":"Best", "doğru cevap":"correct", "Kelime":"Vocabulary",
+  "Okuma":"Reading", "Cevabını yaz...":"Type your answer...",
+  "Eksik kelimeyi yaz...":"Type the missing word...",
+  "Cümleyi tamamla":"Complete the sentence",
+  "İngilizce ➜ Türkçe yaz":"Write English ➜ Turkish",
+  "Türkçe ➜ İngilizce yaz":"Write Turkish ➜ English",
+  "Bir kelime yaz... (örn. improve / gelişmek)":"Type a word... (e.g. improve / gelişmek)",
+  "🔔 Akıllı Hatırlatmalar":"🔔 Smart Reminders",
+  "Uygulama en sık hangi saatte çalıştığını öğrenir ve o saatlere yakın seni hatırlatır. Serini korumak için de gün bitmeden bildirim gönderir. (Uygulama açıkken veya ana ekrana eklenmişken çalışır.)":"The app learns the hours you usually study and reminds you around that time. It also nudges you before the day ends so you keep your streak. (Works while the app is open or added to your home screen.)",
+  "Tahmini en aktif saatin":"Your most active hour", "Bildirim durumu":"Notification status",
+  "Açık ✅":"On ✅", "Kapalı":"Off",
+  "Henüz belirlenmedi — birkaç gün çalış, otomatik öğrenilir":"Not set yet — study for a few days and it will be learned automatically",
+  "Önce seviyeni bulalım":"Let's find your level first",
+  "E-postanı doğrula":"Verify your email",
+  "Kodu buraya yaz":"Enter the code here",
+  "E-posta adresin":"Your email address",
+  "Şifre (en az 6 karakter)":"Password (at least 6 characters)",
+  "İlerlemen buluta kayıtlı — e-posta ve şifrenle devam et.":"Your progress is saved to the cloud — continue with your email and password.",
+  "E-posta ve şifre belirle, sana bir doğrulama kodu göndereceğiz.":"Set an email and password and we'll send you a verification code.",
+  "Hesabın yok mu? Kayıt ol":"No account? Sign up",
+  "Zaten hesabın var mı? Giriş yap":"Already have an account? Log in",
+  "Bağlantı kurulamadı":"Connection failed",
+  "Bağlantı hatası, tekrar dene.":"Connection error, please try again.",
+  "Kodu tekrar gönder":"Resend code",
+  "Sözlük servisine ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.":"Couldn't reach the dictionary service. Check your connection and try again.",
+  "Bu kelime için İngilizce-İngilizce tanım bulunamadı, sadece çeviri gösteriliyor.":"No English definition found for this word; showing the translation only.",
+  "Bu tarayıcı bildirimleri desteklemiyor.":"This browser doesn't support notifications.",
+  "Tarayıcı ayarlarından bu site için bildirim izni vermen gerekiyor.":"You need to allow notifications for this site in your browser settings.",
+  "🚀 Harika gidiyorsun! Seviye testini tekrar çözmeyi düşünebilirsin.":"🚀 You're doing great! Consider retaking the placement test.",
+  "Seviye Testini Tekrarla":"Retake Placement Test"
+};
+// dynamic patterns: [regex, replacement]
+const UI_PATTERNS = [
+  [/^Soru (\d+) \/ (\d+)$/, "Question $1 / $2"],
+  [/^Soru (\d+) \/ (\d+) · (.+)$/, "Question $1 / $2 · $3"],
+  [/^(\d+) \/ (\d+) — (.+)$/, "$1 / $2 — $3"],
+  [/^(\d+) \/ (\d+) eşleşti$/, "$1 / $2 matched"],
+  [/^(\d+)\/(\d+) soru tamamlandı$/, "$1/$2 questions completed"],
+  [/^Bu seviyede tamamlanan: (\d+) \/ (\d+)$/, "Completed at this level: $1 / $2"],
+  [/^Seviye: (.+)$/, "Level: $1"],
+  [/^BUGÜNÜN KELİMESİ · (.+)$/, "WORD OF THE DAY · $1"],
+  [/^%(\d+) başarı(.*)$/, "$1% score$2"],
+  [/^(\d+) XP$/, "$1 XP"]
+];
+const UI_INLINE = [
+  [/ · Kelime %/g, " · Vocabulary "], [/ · Grammar %/g, " · Grammar "], [/ · Okuma %/g, " · Reading "]
+];
+function expText(q){
+  return (LANG==='en' && q.expEn) ? q.expEn : q.exp;
+}
+function t(key){
+  const e = UI_STRINGS[key];
+  if(!e) return key;
+  return LANG==='en' ? e[0] : e[1];
+}
+function trUI(text){
+  if(LANG!=='en') return text;
+  const trimmed = text.trim();
+  if(!trimmed) return text;
+  if(UI_MAP[trimmed]) return text.replace(trimmed, UI_MAP[trimmed]);
+  for(const [re, rep] of UI_PATTERNS){
+    if(re.test(trimmed)) return text.replace(trimmed, trimmed.replace(re, rep));
+  }
+  return text;
+}
+function localizeDOM(root){
+  if(LANG!=='en' || !root) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(n=>{
+    const before = n.nodeValue;
+    let after = trUI(before);
+    UI_INLINE.forEach(([re,rep])=>{ after = after.replace(re, rep); });
+    if(after !== before) n.nodeValue = after;
+  });
+  root.querySelectorAll('[placeholder]').forEach(el=>{
+    const v = UI_MAP[el.getAttribute('placeholder').trim()];
+    if(v) el.setAttribute('placeholder', v);
+  });
+}
+function applyStaticI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    el.textContent = t(el.dataset.i18n);
+  });
+}
+function setLang(lang){
+  LANG = lang;
+  localStorage.setItem('app_lang', lang);
+  applyStaticI18n();
+  updateHeaderStats();
+  render();
+}
+
+/* ---------------- TAB NAV (groups + sub-tabs) ---------------- */
+const TAB_GROUPS = {
+  learn:    { tabs:['flash','wod','dict'] },
+  practice: { tabs:['match','listen','cloze','write','sentence'] },
+  study:    { tabs:['grammar','reading'] },
+  test:     { tabs:['exam'] }
+};
+const TAB_LABEL_KEY = {
+  flash:'tab.flash', wod:'tab.wod', dict:'tab.dict',
+  match:'tab.match', listen:'tab.listen', cloze:'tab.cloze', write:'tab.write', sentence:'tab.sentence',
+  grammar:'tab.grammar', reading:'tab.reading', exam:'tab.exam'
+};
+let activeGroup = 'learn';
+function groupOf(tab){
+  for(const g in TAB_GROUPS){ if(TAB_GROUPS[g].tabs.includes(tab)) return g; }
+  return 'learn';
+}
+function syncTabbar(){
+  document.querySelectorAll('.tabbar button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.group===activeGroup);
+  });
+}
+function setActiveTab(tab){
+  activeTab = tab;
+  activeGroup = groupOf(tab);
+  syncTabbar();
+  trackEvent('/tab/'+activeTab, 'Tab: '+activeTab);
+  render();
+}
+function subTabBarHtml(){
+  const tabs = TAB_GROUPS[activeGroup].tabs;
+  if(tabs.length < 2) return '';
+  return `<div class="subtabs">${tabs.map(tb=>
+    `<button class="subtab ${tb===activeTab?'active':''}" data-subtab="${tb}">${t(TAB_LABEL_KEY[tb])}</button>`
+  ).join('')}</div>`;
+}
+function bindSubTabs(){
+  document.querySelectorAll('.subtab').forEach(b=>{
+    b.addEventListener('click', ()=>setActiveTab(b.dataset.subtab));
+  });
+}
 document.querySelectorAll('.tabbar button').forEach(btn=>{
   btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    activeTab = btn.dataset.tab;
-    trackEvent('/tab/'+activeTab, 'Sekme: '+activeTab);
+    activeGroup = btn.dataset.group;
+    activeTab = TAB_GROUPS[activeGroup].tabs[0];
+    syncTabbar();
+    trackEvent('/tab/'+activeTab, 'Tab: '+activeTab);
     render();
   });
 });
@@ -2889,6 +3195,15 @@ document.querySelectorAll('.tabbar button').forEach(btn=>{
 /* ---------------- RENDER ROUTER ---------------- */
 function render(){
   const main = document.getElementById('main');
+  renderInner(main);
+  const bar = subTabBarHtml();
+  if(bar){
+    main.insertAdjacentHTML('afterbegin', bar);
+    bindSubTabs();
+  }
+  localizeDOM(main);
+}
+function renderInner(main){
   if(activeTab==='flash') renderFlash(main);
   else if(activeTab==='grammar') renderGrammar(main);
   else if(activeTab==='write') renderWrite(main);
@@ -2933,10 +3248,16 @@ function renderAuth(){
         <input class="write-input" id="authPassword" type="password" placeholder="Şifre (en az 6 karakter)" autocomplete="${isLogin?'current-password':'new-password'}">
         ${authError ? `<div class="write-feedback no show">${authError}</div>` : ''}
         <button class="btn-full" id="authSubmit">${isLogin ? 'Giriş Yap' : 'Kayıt Ol'}</button>
+        <div class="auth-divider"><span>${LANG==='en' ? 'or' : 'veya'}</span></div>
+        <button class="btn-google" id="googleBtn">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.53 5.53 0 01-2.4 3.63v3h3.87c2.26-2.09 3.56-5.17 3.56-8.87z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.94-2.91l-3.87-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.28v3.09A12 12 0 0012 24z"/><path fill="#FBBC05" d="M5.27 14.29a7.2 7.2 0 010-4.58V6.62H1.28a12 12 0 000 10.76l3.99-3.09z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.43-3.43C17.95 1.19 15.24 0 12 0A12 12 0 001.28 6.62l3.99 3.09C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
+          <span>${LANG==='en' ? 'Continue with Google' : 'Google ile devam et'}</span>
+        </button>
         <span class="pt-skip" id="authSwitch">${isLogin ? 'Hesabın yok mu? Kayıt ol' : 'Zaten hesabın var mı? Giriş yap'}</span>
       </div>
     `;
     document.getElementById('authSubmit').addEventListener('click', isLogin ? doLogin : doSignup);
+    document.getElementById('googleBtn').addEventListener('click', doGoogleLogin);
     document.getElementById('authPassword').addEventListener('keydown', (e)=>{ if(e.key==='Enter') (isLogin?doLogin:doSignup)(); });
     document.getElementById('authSwitch').addEventListener('click', ()=>{
       authMode = isLogin ? 'signup' : 'login';
@@ -2968,6 +3289,28 @@ async function doSignup(){
     renderAuth();
   }catch(e){
     authError = 'Bağlantı hatası, tekrar dene.';
+    renderAuth();
+  }
+}
+async function doGoogleLogin(){
+  authError = '';
+  try{
+    const redirectTo = window.location.origin + window.location.pathname;
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo }
+    });
+    if(error){
+      authError = (LANG==='en')
+        ? 'Google sign-in failed. Please try again.'
+        : 'Google ile giriş başarısız oldu. Lütfen tekrar dene.';
+      renderAuth();
+    }
+    // on success the browser navigates to Google, then returns to this page
+  }catch(e){
+    authError = (LANG==='en')
+      ? 'Could not reach Google sign-in. Check your connection.'
+      : 'Google girişine ulaşılamadı. Bağlantını kontrol et.';
     renderAuth();
   }
 }
@@ -3046,8 +3389,8 @@ async function onAuthed(user){
     readingLevelFilter = LEVELS[progress.level].code;
     document.getElementById('tabbar').style.display = 'flex';
     updateHeaderStats();
-    activeTab = 'flash';
-    document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab==='flash'));
+    activeTab = 'flash'; activeGroup = 'learn';
+    syncTabbar();
     render();
   }
 }
@@ -3145,8 +3488,8 @@ function finishPlacementUI(){
   flashLevelFilter = LEVELS[progress.level].code;
   readingLevelFilter = LEVELS[progress.level].code;
   updateHeaderStats();
-  activeTab = 'flash';
-  document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab==='flash'));
+  activeTab = 'flash'; activeGroup = 'learn';
+  syncTabbar();
   render();
 }
 
@@ -3230,7 +3573,7 @@ function renderFlash(main){
       flashFilter = 'Tümü';
       flashIndex = 0;
       flashFlipped = false;
-      renderFlash(main);
+      render();
     });
   });
   document.querySelectorAll('#catRow .chip').forEach(chip=>{
@@ -3238,14 +3581,14 @@ function renderFlash(main){
       flashFilter = chip.dataset.cat;
       flashIndex = 0;
       flashFlipped = false;
-      renderFlash(main);
+      render();
     });
   });
   const card = document.getElementById('flashCard');
   if(card){
     card.addEventListener('click', ()=>{
       flashFlipped = !flashFlipped;
-      renderFlash(main);
+      render();
     });
   }
   const btnKnown = document.getElementById('btnKnown');
@@ -3276,7 +3619,7 @@ function renderFlash(main){
 function nextCard(main, deck){
   flashIndex = deck.length ? (flashIndex+1) % deck.length : 0;
   flashFlipped = false;
-  renderFlash(main);
+  render();
 }
 
 /* ---------------- GRAMMAR ---------------- */
@@ -3310,7 +3653,7 @@ function renderGrammar(main){
         return;
       }
       openTopic = openTopic===tIdx ? null : tIdx;
-      renderGrammar(main);
+      render();
     });
     if(!locked && openTopic===tIdx){
       const body = card.querySelector('.topic-body');
@@ -3323,7 +3666,7 @@ function renderGrammar(main){
           <div class="q-options">
             ${q.opts.map(o=>`<div class="q-option" data-opt="${o}">${o}</div>`).join('')}
           </div>
-          <div class="q-explain" id="explain-${key}">${q.exp}</div>
+          <div class="q-explain" id="explain-${key}">${expText(q)}</div>
         `;
         body.appendChild(block);
         block.querySelectorAll('.q-option').forEach(opt=>{
@@ -3624,7 +3967,7 @@ function renderSentence(main){
       sbState.built.push(sbState.pool[i]);
       sbState.pool.splice(i,1);
       sbState.checked = false;
-      renderSentence(main);
+      render();
     });
   });
   document.querySelectorAll('#sbAnswer .sb-chip').forEach(chip=>{
@@ -3633,12 +3976,12 @@ function renderSentence(main){
       sbState.pool.push(sbState.built[i]);
       sbState.built.splice(i,1);
       sbState.checked = false;
-      renderSentence(main);
+      render();
     });
   });
   document.getElementById('sbReset').addEventListener('click', ()=>{
     initSb(sbState.idx);
-    renderSentence(main);
+    render();
   });
   document.getElementById('sbCheck').addEventListener('click', ()=>{
     sbState.checked = true;
@@ -3650,13 +3993,13 @@ function renderSentence(main){
       updateHeaderStats();
       checkBadges();
     }
-    renderSentence(main);
+    render();
   });
   document.getElementById('sbNext').addEventListener('click', ()=>{
     const nextList = unlockedSentences();
     const nextIdx = (sbState.idx+1) % nextList.length;
     initSb(nextIdx);
-    renderSentence(main);
+    render();
   });
 }
 
@@ -3704,7 +4047,7 @@ function buildAdaptiveExam(){
     });
   });
   const grammarPicks = weightedSample(grammarFlat, g=>g.weight, Math.min(4, grammarFlat.length));
-  const grammarQs = grammarPicks.map(g=>({type:'grammar', prompt:g.q.q, options:g.q.opts, answer:g.q.a, key:g.key, exp:g.q.exp}));
+  const grammarQs = grammarPicks.map(g=>({type:'grammar', prompt:g.q.q, options:g.q.opts, answer:g.q.a, key:g.key, exp:g.q.exp, expEn:g.q.expEn}));
   const curCode = LEVELS[progress.level].code;
   const readingPool = READINGS.filter(r=>r.tfEn && r.tfEn.length && r.level===curCode);
   const fallbackPool = READINGS.filter(r=>r.tfEn && r.tfEn.length && levelIdx(r.level)<=progress.level);
@@ -3775,7 +4118,7 @@ function renderExamQ(area){
       } else if(q.type==='grammar'){
         progress.grammarDone[q.key] = true;
         const exp = document.getElementById('examExplain');
-        if(exp){ exp.textContent = q.exp; exp.classList.add('show'); }
+        if(exp){ exp.textContent = expText(q); exp.classList.add('show'); }
       }
       setTimeout(()=>{
         examState.idx++;
@@ -3975,17 +4318,17 @@ function renderMatch(main){
             const leveledUp = checkLevelUp();
             afterProgress(leveledUp);
           }
-          renderMatch(main);
+          render();
         } else {
           matchState.wrongPair = {en:matchState.selectedEn, tr:matchState.selectedTr};
-          renderMatch(main);
+          render();
           setTimeout(()=>{
             matchState.selectedEn = null; matchState.selectedTr = null; matchState.wrongPair = null;
-            renderMatch(main);
+            render();
           }, 700);
         }
       } else {
-        renderMatch(main);
+        render();
       }
     });
   });
@@ -4171,11 +4514,15 @@ function renderClozeResult(){
 }
 
 /* ---------------- READING COMPREHENSION ---------------- */
+function readingQuestions(r){
+  return (LANG==='en' && r.qsEn && r.qsEn.length) ? r.qsEn : r.qs;
+}
 function renderReading(main){
   if(!readingLevelFilter) readingLevelFilter = LEVELS[progress.level].code;
   const levelOptions = LEVELS.filter((l,idx)=>idx<=progress.level).map(l=>l.code);
   const reading = READINGS.find(r=>r.level===readingLevelFilter) || READINGS[0];
-  const doneInThis = reading.qs.filter((q,qi)=>progress.readingDone[reading.level+'-'+qi]).length;
+  const rqs = readingQuestions(reading);
+  const doneInThis = rqs.filter((q,qi)=>progress.readingDone[reading.level+'-'+qi]).length;
   main.innerHTML = `
     <h2 class="section-title">Okuma Parçası</h2>
     <p class="section-sub">Metni oku, anlamını çıkar, sorulara cevap ver. Takılırsan Türkçe çevirisine bakabilirsin.</p>
@@ -4188,13 +4535,13 @@ function renderReading(main){
       <div class="reading-tr" id="readingTr">${reading.textTr}</div>
       <button class="reveal-btn" id="revealTr">Türkçe Çeviriyi Göster</button>
     </div>
-    <div class="deck-status">${doneInThis}/${reading.qs.length} soru tamamlandı</div>
+    <div class="deck-status">${doneInThis}/${rqs.length} soru tamamlandı</div>
     <div id="readingQs"></div>
   `;
   document.querySelectorAll('#readLevelRow .chip').forEach(chip=>{
     chip.addEventListener('click', ()=>{
       readingLevelFilter = chip.dataset.lvl;
-      renderReading(main);
+      render();
     });
   });
   const revealBtn = document.getElementById('revealTr');
@@ -4204,7 +4551,7 @@ function renderReading(main){
     revealBtn.textContent = tr.classList.contains('show') ? 'Türkçe Çeviriyi Gizle' : 'Türkçe Çeviriyi Göster';
   });
   const qArea = document.getElementById('readingQs');
-  reading.qs.forEach((q, qIdx)=>{
+  readingQuestions(reading).forEach((q, qIdx)=>{
     const key = reading.level+'-'+qIdx;
     const block = document.createElement('div');
     block.className = 'q-block';
@@ -4246,6 +4593,14 @@ function renderReading(main){
   });
   document.getElementById('logoutBtn').addEventListener('click', doLogout);
   document.getElementById('notifBtn').addEventListener('click', showNotifPanel);
+  const langBtn = document.getElementById('langBtn');
+  langBtn.textContent = LANG === 'en' ? 'EN' : 'TR';
+  langBtn.addEventListener('click', ()=>{
+    const next = LANG === 'en' ? 'tr' : 'en';
+    langBtn.textContent = next === 'en' ? 'EN' : 'TR';
+    setLang(next);
+  });
+  applyStaticI18n();
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(()=>{});
   }
@@ -4258,7 +4613,20 @@ function renderReading(main){
       </div>`;
     return;
   }
-  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      flowType: 'pkce'
+    }
+  });
+  // After a Google redirect the URL carries ?code=... — clean it once the session is set.
+  supabaseClient.auth.onAuthStateChange((event)=>{
+    if(event === 'SIGNED_IN' && (window.location.search.includes('code=') || window.location.hash.includes('access_token'))){
+      try{ window.history.replaceState({}, document.title, window.location.pathname); }catch(e){}
+    }
+  });
 
   try{
     const { data } = await supabaseClient.auth.getSession();

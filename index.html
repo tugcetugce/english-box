@@ -14,6 +14,20 @@
 <link rel="manifest" href="manifest.json">
 <!-- GoatCounter analytics — ücretsiz, çerezsiz. -->
 <script data-goatcounter="https://english-box.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://gc.zgo.at;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com data:;
+  img-src 'self' data: https:;
+  connect-src 'self' https://*.supabase.co https://api.dictionaryapi.dev https://api.mymemory.translated.net https://english-box.goatcounter.com https://gc.zgo.at;
+  form-action 'self';
+  base-uri 'self';
+  object-src 'none';
+  frame-ancestors 'none';
+  upgrade-insecure-requests;
+">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -880,6 +894,9 @@
     line-height:1.5;
   }
   /* Sub-tabs */
+  .flash-search{
+    margin-bottom:10px;
+  }
   .subtabs{
     display:flex;
     gap:6px;
@@ -1009,7 +1026,10 @@
   </nav>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Pinned to an exact version: a floating @2 range would auto-pull any future
+     (possibly compromised) release. Bump this deliberately after reviewing changelogs. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.115.0/dist/umd/supabase.min.js"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 /* ---------------- SUPABASE (account system) ---------------- */
 const SUPABASE_URL = 'https://iyxrbevjdufqimepmqwc.supabase.co';
@@ -1092,7 +1112,7 @@ const VOCAB = [
   // ---- B1 ----
   {id:57,en:"opinion",tr:"görüş",ex:"In my opinion, this is a good idea.",exTr:"Bence bu iyi bir fikir.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:58,en:"decide",tr:"karar vermek",ex:"We need to decide today.",exTr:"Bugün karar vermemiz gerekiyor.",cat:"Fikir ve Yaşam",level:"B1"},
-  {id:59,en:"improve",tr:"geliştirmek",ex:"I want to improve my English.",exTr:"İngilizcemi geliştirmek istiyorum.",cat:"Fikir ve Yaşam",level:"B1"},
+  {id:59,en:"improve",tr:"geliştirmek, geliştirmek, ilerlemek",ex:"I want to improve my English.",exTr:"İngilizcemi geliştirmek istiyorum.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:60,en:"experience",tr:"deneyim",ex:"She has a lot of experience.",exTr:"Onun çok deneyimi var.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:61,en:"successful",tr:"başarılı",ex:"He is a successful businessman.",exTr:"O başarılı bir iş insanı.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:62,en:"difficult",tr:"zor",ex:"This exercise is quite difficult.",exTr:"Bu alıştırma oldukça zor.",cat:"Fikir ve Yaşam",level:"B1"},
@@ -1377,7 +1397,6 @@ const VOCAB = [
   {id:329,en:"discuss",tr:"tartışmak, görüşmek",ex:"Let's discuss this problem tomorrow.",exTr:"Bu sorunu yarın tartışalım.",cat:"Fiiller",level:"B1"},
   {id:330,en:"solve",tr:"çözmek",ex:"He solved the problem quickly.",exTr:"Sorunu hızlıca çözdü.",cat:"Fiiller",level:"B1"},
   {id:331,en:"handle",tr:"halletmek, idare etmek",ex:"She can handle difficult situations well.",exTr:"Zor durumları iyi idare edebiliyor.",cat:"Fiiller",level:"B1"},
-  {id:332,en:"deadline",tr:"son teslim tarihi",ex:"Can we move the deadline to Friday?",exTr:"Son teslim tarihini Cuma'ya alabilir miyiz?",cat:"İş Hayatı",level:"B1"},
   // ---- B2 (3. ek) ----
   {id:333,en:"discrepancy",tr:"tutarsızlık, fark",ex:"There is a discrepancy between the two reports.",exTr:"İki rapor arasında bir tutarsızlık var.",cat:"İleri Kelimeler",level:"B2"},
   {id:334,en:"anomaly",tr:"anormallik, sapma",ex:"The results showed an unusual anomaly.",exTr:"Sonuçlar sıra dışı bir anormallik gösterdi.",cat:"İleri Kelimeler",level:"B2"},
@@ -1409,7 +1428,7 @@ const VOCAB = [
   {id:359,en:"finish",tr:"bitirmek",ex:"I finish work at six.",exTr:"İşi altıda bitiririm.",cat:"Fiiller",level:"A1"},
   {id:360,en:"wait",tr:"beklemek",ex:"Please wait for me here.",exTr:"Lütfen burada beni bekle.",cat:"Fiiller",level:"A1"},
   {id:361,en:"look",tr:"bakmak",ex:"Look at that beautiful sunset.",exTr:"Şu güzel gün batımına bak.",cat:"Fiiller",level:"A1"},
-  {id:362,en:"watch",tr:"izlemek",ex:"We watch TV after dinner.",exTr:"Akşam yemeğinden sonra televizyon izleriz.",cat:"Fiiller",level:"A1"},
+  {id:362,en:"watch",tr:"izlemek, kol saati",ex:"We watch TV after dinner.",exTr:"Akşam yemeğinden sonra televizyon izleriz.",cat:"Fiiller",level:"A1"},
   {id:363,en:"fast",tr:"hızlı",ex:"He is a very fast runner.",exTr:"O çok hızlı bir koşucu.",cat:"Sıfatlar",level:"A1"},
   {id:364,en:"slow",tr:"yavaş",ex:"This computer is very slow.",exTr:"Bu bilgisayar çok yavaş.",cat:"Sıfatlar",level:"A1"},
   {id:365,en:"easy",tr:"kolay",ex:"This exercise is very easy.",exTr:"Bu alıştırma çok kolay.",cat:"Sıfatlar",level:"A1"},
@@ -1519,7 +1538,7 @@ const VOCAB = [
   {id:464,en:"basketball",tr:"basketbol",ex:"He plays basketball every weekend.",exTr:"Her hafta sonu basketbol oynar.",cat:"Spor",level:"A2"},
   {id:465,en:"volleyball",tr:"voleybol",ex:"We played volleyball on the beach.",exTr:"Plajda voleybol oynadık.",cat:"Spor",level:"A2"},
   {id:466,en:"tennis",tr:"tenis",ex:"She has a tennis lesson today.",exTr:"Bugün tenis dersi var.",cat:"Spor",level:"A2"},
-  {id:467,en:"goal",tr:"gol",ex:"He scored the winning goal.",exTr:"Kazandıran golü attı.",cat:"Spor",level:"A2"},
+  {id:467,en:"goal",tr:"gol, hedef",ex:"He scored the winning goal.",exTr:"Kazandıran golü attı.",cat:"Spor",level:"A2"},
   {id:468,en:"win",tr:"kazanmak",ex:"Our team won the game.",exTr:"Takımımız maçı kazandı.",cat:"Spor",level:"A2"},
   {id:469,en:"lose",tr:"kaybetmek",ex:"We don't want to lose this match.",exTr:"Bu maçı kaybetmek istemiyoruz.",cat:"Spor",level:"A2"},
   {id:470,en:"score",tr:"skor / sayı yapmak",ex:"What's the score of the game?",exTr:"Maçın skoru ne?",cat:"Spor",level:"A2"},
@@ -1689,7 +1708,6 @@ const VOCAB = [
   {id:625,en:"challenge",tr:"zorluk, meydan okuma",ex:"Learning a new language is a real challenge.",exTr:"Yeni bir dil öğrenmek gerçek bir zorluk.",ex2:"He accepted the challenge without hesitation.",exTr2:"Meydan okumayı tereddüt etmeden kabul etti.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:626,en:"opportunity",tr:"fırsat",ex:"This job is a great opportunity for her.",exTr:"Bu iş onun için harika bir fırsat.",ex2:"Don't miss this opportunity to travel.",exTr2:"Seyahat etmek için bu fırsatı kaçırma.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:627,en:"achievement",tr:"başarı",ex:"Winning the award was a huge achievement.",exTr:"Ödülü kazanmak büyük bir başarıydı.",ex2:"He is proud of his achievements at work.",exTr2:"İşteki başarılarıyla gurur duyuyor.",cat:"Fikir ve Yaşam",level:"B1"},
-  {id:628,en:"goal",tr:"hedef",ex:"My goal is to finish the course this year.",exTr:"Hedefim kursu bu yıl bitirmek.",ex2:"They set a clear goal for the team.",exTr2:"Takım için net bir hedef belirlediler.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:629,en:"effort",tr:"çaba",ex:"She put a lot of effort into the project.",exTr:"Projeye çok fazla çaba harcadı.",ex2:"Thank you for your effort today.",exTr2:"Bugünkü çaban için teşekkür ederim.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:630,en:"struggle",tr:"mücadele etmek / mücadele",ex:"He struggled to finish the race.",exTr:"Yarışı bitirmek için mücadele etti.",ex2:"It was a real struggle at first.",exTr2:"Başlarda gerçek bir mücadeleydi.",cat:"Fikir ve Yaşam",level:"B1"},
   {id:631,en:"overcome",tr:"üstesinden gelmek",ex:"She overcame her fear of public speaking.",exTr:"Topluluk önünde konuşma korkusunun üstesinden geldi.",ex2:"We overcame many obstacles together.",exTr2:"Birçok engelin birlikte üstesinden geldik.",cat:"Fikir ve Yaşam",level:"B1"},
@@ -1794,7 +1812,6 @@ const VOCAB = [
   {id:724,en:"wallet",tr:"cüzdan",ex:"His wallet was in his back pocket.",exTr:"Cüzdanı arka cebindeydi.",cat:"Günlük Eşyalar",level:"A1"},
   {id:725,en:"umbrella",tr:"şemsiye",ex:"Take an umbrella, it might rain.",exTr:"Bir şemsiye al, yağmur yağabilir.",cat:"Günlük Eşyalar",level:"A1"},
   {id:726,en:"glasses",tr:"gözlük",ex:"She wears glasses for reading.",exTr:"Okumak için gözlük takıyor.",cat:"Günlük Eşyalar",level:"A1"},
-  {id:727,en:"watch",tr:"kol saati",ex:"He got a new watch for his birthday.",exTr:"Doğum günü için yeni bir kol saati aldı.",cat:"Günlük Eşyalar",level:"A1"},
   // ---- A2 (9. ek) ----
   {id:728,en:"museum",tr:"müze",ex:"We visited a history museum.",exTr:"Bir tarih müzesini ziyaret ettik.",cat:"Şehir",level:"A2"},
   {id:729,en:"library",tr:"kütüphane",ex:"She studies in the library every day.",exTr:"Her gün kütüphanede ders çalışıyor.",cat:"Şehir",level:"A2"},
@@ -2162,7 +2179,244 @@ const VOCAB = [
   {id:1069,en:"authoritarian",tr:"otoriter",ex:"The country had an authoritarian government for decades.",exTr:"Ülke onlarca yıl otoriter bir hükümete sahipti.",cat:"İleri Kelimeler",level:"B2"},
   {id:1070,en:"egalitarian",tr:"eşitlikçi",ex:"They believe in an egalitarian society.",exTr:"Eşitlikçi bir topluma inanıyorlar.",cat:"İleri Kelimeler",level:"B2"},
   {id:1071,en:"progressive",tr:"ilerici",ex:"She holds fairly progressive views.",exTr:"Oldukça ilerici görüşlere sahip.",cat:"İleri Kelimeler",level:"B2"},
-  {id:1072,en:"conservative",tr:"muhafazakar",ex:"His parents have more conservative values.",exTr:"Ailesinin daha muhafazakar değerleri var.",cat:"İleri Kelimeler",level:"B2"}
+  {id:1072,en:"conservative",tr:"muhafazakar",ex:"His parents have more conservative values.",exTr:"Ailesinin daha muhafazakar değerleri var.",cat:"İleri Kelimeler",level:"B2"},
+  // ---- A1 (15. ek) ----
+  {id:1074,en:"cheese",tr:"peynir",ex:"I like cheese on my sandwich.",exTr:"Sandviçimde peynir severim.",cat:"Yiyecek",level:"A1"},
+  {id:1075,en:"butter",tr:"tereyağı",ex:"Put some butter on the bread.",exTr:"Ekmeğe biraz tereyağı sür.",cat:"Yiyecek",level:"A1"},
+  {id:1076,en:"salt",tr:"tuz",ex:"This soup needs more salt.",exTr:"Bu çorbaya biraz daha tuz lazım.",cat:"Yiyecek",level:"A1"},
+  {id:1077,en:"pepper",tr:"karabiber",ex:"Add a little pepper to the salad.",exTr:"Salataya biraz karabiber ekle.",cat:"Yiyecek",level:"A1"},
+  {id:1078,en:"potato",tr:"patates",ex:"She boiled some potatoes for dinner.",exTr:"Akşam yemeği için patates haşladı.",cat:"Yiyecek",level:"A1"},
+  {id:1079,en:"tomato",tr:"domates",ex:"These tomatoes are from our garden.",exTr:"Bu domatesler bizim bahçemizden.",cat:"Yiyecek",level:"A1"},
+  {id:1080,en:"onion",tr:"soğan",ex:"Chop the onion finely.",exTr:"Soğanı ince ince doğra.",cat:"Yiyecek",level:"A1"},
+  {id:1081,en:"banana",tr:"muz",ex:"He eats a banana after training.",exTr:"Antrenmandan sonra bir muz yer.",cat:"Yiyecek",level:"A1"},
+  {id:1082,en:"grape",tr:"üzüm",ex:"These grapes are very sweet.",exTr:"Bu üzümler çok tatlı.",cat:"Yiyecek",level:"A1"},
+  {id:1083,en:"bird",tr:"kuş",ex:"A bird is singing outside.",exTr:"Dışarıda bir kuş ötüyor.",cat:"Hayvanlar",level:"A1"},
+  {id:1084,en:"horse",tr:"at",ex:"She rides a horse every weekend.",exTr:"Her hafta sonu ata biner.",cat:"Hayvanlar",level:"A1"},
+  {id:1085,en:"cow",tr:"inek",ex:"The cows are in the field.",exTr:"İnekler tarlada.",cat:"Hayvanlar",level:"A1"},
+  {id:1086,en:"sheep",tr:"koyun",ex:"The farmer has many sheep.",exTr:"Çiftçinin birçok koyunu var.",cat:"Hayvanlar",level:"A1"},
+  {id:1087,en:"rabbit",tr:"tavşan",ex:"A rabbit ran across the garden.",exTr:"Bir tavşan bahçeden koşarak geçti.",cat:"Hayvanlar",level:"A1"},
+  {id:1088,en:"bear",tr:"ayı",ex:"Bears sleep through the winter.",exTr:"Ayılar kış boyunca uyur.",cat:"Hayvanlar",level:"A1"},
+  {id:1089,en:"lion",tr:"aslan",ex:"We saw a lion at the zoo.",exTr:"Hayvanat bahçesinde bir aslan gördük.",cat:"Hayvanlar",level:"A1"},
+  {id:1090,en:"elephant",tr:"fil",ex:"The elephant is a very large animal.",exTr:"Fil çok büyük bir hayvandır.",cat:"Hayvanlar",level:"A1"},
+  {id:1091,en:"monkey",tr:"maymun",ex:"The monkey climbed the tree quickly.",exTr:"Maymun ağaca hızlıca tırmandı.",cat:"Hayvanlar",level:"A1"},
+  {id:1092,en:"insect",tr:"böcek",ex:"There is an insect on the window.",exTr:"Pencerede bir böcek var.",cat:"Hayvanlar",level:"A1"},
+  // ---- A2 (15. ek) ----
+  {id:1093,en:"borrow",tr:"ödünç almak",ex:"Can I borrow your pen for a minute?",exTr:"Kalemini bir dakikalığına ödünç alabilir miyim?",cat:"Fiiller",level:"A2"},
+  {id:1094,en:"lend",tr:"ödünç vermek",ex:"She lent me her notes.",exTr:"Notlarını bana ödünç verdi.",cat:"Fiiller",level:"A2"},
+  {id:1095,en:"return",tr:"iade etmek, geri dönmek",ex:"Please return the book by Friday.",exTr:"Lütfen kitabı Cuma'ya kadar iade et.",cat:"Fiiller",level:"A2"},
+  {id:1096,en:"choose",tr:"seçmek",ex:"You can choose any of these colors.",exTr:"Bu renklerden birini seçebilirsin.",cat:"Fiiller",level:"A2"},
+  {id:1098,en:"change",tr:"değiştirmek",ex:"I changed my mind about the trip.",exTr:"Gezi hakkında fikrimi değiştirdim.",cat:"Fiiller",level:"A2"},
+  {id:1099,en:"repeat",tr:"tekrarlamak",ex:"Could you repeat that, please?",exTr:"Bunu tekrarlayabilir misin, lütfen?",cat:"Fiiller",level:"A2"},
+  {id:1100,en:"continue",tr:"devam etmek",ex:"Let's continue after lunch.",exTr:"Öğle yemeğinden sonra devam edelim.",cat:"Fiiller",level:"A2"},
+  {id:1103,en:"describe",tr:"tarif etmek, betimlemek",ex:"Can you describe the man you saw?",exTr:"Gördüğün adamı tarif edebilir misin?",cat:"Fiiller",level:"A2"},
+  {id:1104,en:"believe",tr:"inanmak",ex:"I believe you are right.",exTr:"Haklı olduğuna inanıyorum.",cat:"Fiiller",level:"A2"},
+  {id:1105,en:"hope",tr:"ummak",ex:"I hope to see you soon.",exTr:"Seni yakında görmeyi umuyorum.",cat:"Fiiller",level:"A2"},
+  {id:1106,en:"prefer",tr:"tercih etmek",ex:"I prefer tea to coffee.",exTr:"Çayı kahveye tercih ederim.",cat:"Fiiller",level:"A2"},
+  {id:1108,en:"receive",tr:"almak (bir şey)",ex:"I received your message this morning.",exTr:"Mesajını bu sabah aldım.",cat:"Fiiller",level:"A2"},
+  {id:1109,en:"return ticket",tr:"gidiş-dönüş bileti",ex:"I booked a return ticket to Rome.",exTr:"Roma'ya gidiş-dönüş bileti aldım.",cat:"Seyahat",level:"A2"},
+  {id:1110,en:"boarding pass",tr:"biniş kartı",ex:"Please have your boarding pass ready.",exTr:"Lütfen biniş kartını hazır tut.",cat:"Seyahat",level:"A2"},
+  {id:1111,en:"departure",tr:"kalkış",ex:"The departure time is nine o'clock.",exTr:"Kalkış saati dokuz.",cat:"Seyahat",level:"A2"},
+  {id:1112,en:"arrival",tr:"varış",ex:"Our arrival was delayed by an hour.",exTr:"Varışımız bir saat gecikti.",cat:"Seyahat",level:"A2"},
+  // ---- B1 (15. ek) ----
+  {id:1113,en:"charity",tr:"hayır kurumu, yardım",ex:"She donates to a local charity every month.",exTr:"Her ay yerel bir hayır kurumuna bağış yapıyor.",cat:"Toplum",level:"B1"},
+  {id:1114,en:"volunteer",tr:"gönüllü",ex:"He volunteers at the animal shelter.",exTr:"Hayvan barınağında gönüllü olarak çalışıyor.",cat:"Toplum",level:"B1"},
+  {id:1115,en:"donate",tr:"bağışlamak",ex:"They donated books to the school.",exTr:"Okula kitap bağışladılar.",cat:"Toplum",level:"B1"},
+  {id:1116,en:"community",tr:"topluluk",ex:"Our community is very friendly.",exTr:"Topluluğumuz çok sıcakkanlı.",cat:"Toplum",level:"B1"},
+  {id:1117,en:"poverty",tr:"yoksulluk",ex:"The organisation fights poverty in rural areas.",exTr:"Kuruluş kırsal bölgelerde yoksullukla mücadele ediyor.",cat:"Toplum",level:"B1"},
+  {id:1118,en:"equality",tr:"eşitlik",ex:"They campaign for equality at work.",exTr:"İş yerinde eşitlik için kampanya yürütüyorlar.",cat:"Toplum",level:"B1"},
+  {id:1119,en:"responsibility",tr:"sorumluluk",ex:"Taking care of the team is his responsibility.",exTr:"Takıma bakmak onun sorumluluğu.",cat:"Toplum",level:"B1"},
+  {id:1120,en:"opportunity cost",tr:"fırsat maliyeti",ex:"Every choice has an opportunity cost.",exTr:"Her seçimin bir fırsat maliyeti vardır.",cat:"Toplum",level:"B1"},
+  {id:1121,en:"population",tr:"nüfus",ex:"The population of the city is growing.",exTr:"Şehrin nüfusu artıyor.",cat:"Toplum",level:"B1"},
+  {id:1122,en:"generation",tr:"kuşak, nesil",ex:"This generation grew up with smartphones.",exTr:"Bu nesil akıllı telefonlarla büyüdü.",cat:"Toplum",level:"B1"},
+  {id:1123,en:"immigrant",tr:"göçmen",ex:"Many immigrants settled in this neighbourhood.",exTr:"Birçok göçmen bu mahalleye yerleşti.",cat:"Toplum",level:"B1"},
+  {id:1124,en:"refugee",tr:"mülteci",ex:"The city welcomed refugee families.",exTr:"Şehir mülteci ailelerini karşıladı.",cat:"Toplum",level:"B1"},
+  {id:1125,en:"neighbourhood",tr:"mahalle",ex:"It's a quiet neighbourhood near the park.",exTr:"Parkın yanında sakin bir mahalle.",cat:"Toplum",level:"B1"},
+  {id:1126,en:"public",tr:"kamu, halka açık",ex:"Public transport here is very good.",exTr:"Buradaki toplu taşıma çok iyi.",cat:"Toplum",level:"B1"},
+  {id:1127,en:"private",tr:"özel",ex:"She works at a private company.",exTr:"Özel bir şirkette çalışıyor.",cat:"Toplum",level:"B1"},
+  {id:1128,en:"benefit",tr:"fayda, yarar",ex:"Exercise has many health benefits.",exTr:"Egzersizin birçok sağlık faydası vardır.",cat:"Toplum",level:"B1"},
+  {id:1129,en:"disadvantage",tr:"dezavantaj",ex:"The main disadvantage is the price.",exTr:"Ana dezavantaj fiyat.",cat:"Toplum",level:"B1"},
+  {id:1130,en:"advantage",tr:"avantaj",ex:"Speaking two languages is a big advantage.",exTr:"İki dil konuşmak büyük bir avantaj.",cat:"Toplum",level:"B1"},
+  {id:1131,en:"purpose",tr:"amaç",ex:"What is the purpose of this meeting?",exTr:"Bu toplantının amacı ne?",cat:"Toplum",level:"B1"},
+  {id:1132,en:"reason",tr:"sebep",ex:"There is a good reason for this rule.",exTr:"Bu kuralın iyi bir sebebi var.",cat:"Toplum",level:"B1"},
+  // ---- B2 (15. ek) ----
+  {id:1133,en:"scrutiny",tr:"yakın inceleme, mercek altı",ex:"The policy came under close scrutiny.",exTr:"Politika yakın incelemeye alındı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1134,en:"oversight",tr:"denetim / gözden kaçırma",ex:"The committee provides oversight of spending.",exTr:"Komite harcamaların denetimini sağlıyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1135,en:"leverage",tr:"kaldıraç, avantaja çevirmek",ex:"They leveraged their experience to win the contract.",exTr:"Sözleşmeyi kazanmak için deneyimlerini kullandılar.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1136,en:"streamline",tr:"sadeleştirmek, verimli hale getirmek",ex:"We streamlined the approval process.",exTr:"Onay sürecini sadeleştirdik.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1137,en:"delegate",tr:"yetki devretmek",ex:"A good manager knows how to delegate.",exTr:"İyi bir yönetici yetki devretmeyi bilir.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1138,en:"prioritise",tr:"önceliklendirmek",ex:"You need to prioritise your tasks.",exTr:"Görevlerini önceliklendirmen gerekiyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1139,en:"allocate",tr:"tahsis etmek",ex:"They allocated more budget to research.",exTr:"Araştırmaya daha fazla bütçe tahsis ettiler.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1140,en:"implement",tr:"uygulamaya koymak",ex:"The company implemented a new policy.",exTr:"Şirket yeni bir politikayı uygulamaya koydu.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1141,en:"evaluate",tr:"değerlendirmek",ex:"We will evaluate the results next month.",exTr:"Sonuçları gelecek ay değerlendireceğiz.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1142,en:"assess",tr:"ölçmek, değerlendirmek",ex:"The teacher assessed the students' progress.",exTr:"Öğretmen öğrencilerin ilerlemesini değerlendirdi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1143,en:"monitor",tr:"izlemek, takip etmek",ex:"Doctors monitor the patient's recovery closely.",exTr:"Doktorlar hastanın iyileşmesini yakından izliyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1144,en:"anticipate",tr:"öngörmek, beklemek",ex:"We anticipate strong demand this summer.",exTr:"Bu yaz güçlü bir talep öngörüyoruz.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1145,en:"undertake",tr:"üstlenmek",ex:"She undertook a major research project.",exTr:"Büyük bir araştırma projesini üstlendi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1146,en:"comply",tr:"uymak (kurala)",ex:"All staff must comply with safety rules.",exTr:"Tüm personel güvenlik kurallarına uymalıdır.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1147,en:"enforce",tr:"uygulatmak, yürürlüğe koymak",ex:"The city enforces parking rules strictly.",exTr:"Şehir park kurallarını sıkı bir şekilde uygulatıyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1148,en:"disclose",tr:"açıklamak, ifşa etmek",ex:"They refused to disclose the details.",exTr:"Detayları açıklamayı reddettiler.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1149,en:"withhold",tr:"esirgemek, alıkoymak",ex:"He withheld some important information.",exTr:"Bazı önemli bilgileri sakladı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1150,en:"acknowledge",tr:"kabul etmek, teslim etmek",ex:"She acknowledged the mistake immediately.",exTr:"Hatayı hemen kabul etti.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1151,en:"emphasise",tr:"vurgulamak",ex:"He emphasised the importance of practice.",exTr:"Pratiğin önemini vurguladı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1152,en:"clarify",tr:"netleştirmek",ex:"Could you clarify what you mean?",exTr:"Ne demek istediğini netleştirebilir misin?",cat:"İleri Kelimeler",level:"B2"},
+  // ---- 16. ek ----
+  {id:1153,en:"dawn",tr:"şafak",ex:"We set off at dawn.",exTr:"Şafakta yola çıktık.",cat:"Zaman",level:"A1"},
+  {id:1154,en:"afternoon",tr:"öğleden sonra",ex:"We can meet in the afternoon.",exTr:"Öğleden sonra buluşabiliriz.",cat:"Zaman",level:"A1"},
+  {id:1155,en:"evening",tr:"akşam",ex:"The shop closes in the evening.",exTr:"Dükkan akşam kapanıyor.",cat:"Zaman",level:"A1"},
+  {id:1156,en:"night",tr:"gece",ex:"It gets cold at night.",exTr:"Geceleri hava soğuyor.",cat:"Zaman",level:"A1"},
+  {id:1157,en:"month",tr:"ay (takvim)",ex:"We move house next month.",exTr:"Gelecek ay ev taşıyoruz.",cat:"Zaman",level:"A1"},
+  {id:1158,en:"year",tr:"yıl",ex:"She lived here for three years.",exTr:"Burada üç yıl yaşadı.",cat:"Zaman",level:"A1"},
+  {id:1159,en:"hello",tr:"merhaba",ex:"Hello, how are you?",exTr:"Merhaba, nasılsın?",cat:"Selamlaşma",level:"A1"},
+  {id:1160,en:"goodbye",tr:"hoşça kal",ex:"She said goodbye and left.",exTr:"Hoşça kal deyip ayrıldı.",cat:"Selamlaşma",level:"A1"},
+  {id:1161,en:"please",tr:"lütfen",ex:"Please sit down.",exTr:"Lütfen oturun.",cat:"Selamlaşma",level:"A1"},
+  {id:1162,en:"thank you",tr:"teşekkür ederim",ex:"Thank you for your help.",exTr:"Yardımın için teşekkür ederim.",cat:"Selamlaşma",level:"A1"},
+  {id:1163,en:"sorry",tr:"üzgünüm, özür dilerim",ex:"Sorry, I didn't hear you.",exTr:"Özür dilerim, seni duymadım.",cat:"Selamlaşma",level:"A1"},
+  {id:1164,en:"welcome",tr:"hoş geldin",ex:"Welcome to our home.",exTr:"Evimize hoş geldin.",cat:"Selamlaşma",level:"A1"},
+  {id:1165,en:"excuse me",tr:"affedersiniz",ex:"Excuse me, where is the station?",exTr:"Affedersiniz, istasyon nerede?",cat:"Selamlaşma",level:"A1"},
+  {id:1166,en:"good night",tr:"iyi geceler",ex:"Good night, sleep well.",exTr:"İyi geceler, iyi uykular.",cat:"Selamlaşma",level:"A1"},
+  {id:1167,en:"see you",tr:"görüşürüz",ex:"See you on Monday.",exTr:"Pazartesi görüşürüz.",cat:"Selamlaşma",level:"A1"},
+  {id:1168,en:"careful",tr:"dikkatli",ex:"Be careful on the stairs.",exTr:"Merdivenlerde dikkatli ol.",cat:"Sıfatlar",level:"A2"},
+  {id:1169,en:"dangerous",tr:"tehlikeli",ex:"Swimming here is dangerous.",exTr:"Burada yüzmek tehlikeli.",cat:"Sıfatlar",level:"A2"},
+  {id:1170,en:"safe",tr:"güvenli",ex:"This neighbourhood feels safe.",exTr:"Bu mahalle güvenli hissettiriyor.",cat:"Sıfatlar",level:"A2"},
+  {id:1171,en:"comfortable",tr:"rahat",ex:"These shoes are very comfortable.",exTr:"Bu ayakkabılar çok rahat.",cat:"Sıfatlar",level:"A2"},
+  {id:1172,en:"popular",tr:"popüler",ex:"This café is popular with students.",exTr:"Bu kafe öğrenciler arasında popüler.",cat:"Sıfatlar",level:"A2"},
+  {id:1173,en:"famous",tr:"ünlü",ex:"She is a famous writer.",exTr:"O ünlü bir yazar.",cat:"Sıfatlar",level:"A2"},
+  {id:1174,en:"modern",tr:"modern",ex:"They live in a modern apartment.",exTr:"Modern bir dairede yaşıyorlar.",cat:"Sıfatlar",level:"A2"},
+  {id:1175,en:"traditional",tr:"geleneksel",ex:"We had a traditional breakfast.",exTr:"Geleneksel bir kahvaltı yaptık.",cat:"Sıfatlar",level:"A2"},
+  {id:1176,en:"complicated",tr:"karmaşık",ex:"The form was too complicated.",exTr:"Form fazla karmaşıktı.",cat:"Sıfatlar",level:"A2"},
+  {id:1177,en:"lucky",tr:"şanslı",ex:"You were lucky to find a seat.",exTr:"Yer bulduğun için şanslıydın.",cat:"Sıfatlar",level:"A2"},
+  {id:1178,en:"hungry",tr:"aç",ex:"The children are hungry.",exTr:"Çocuklar aç.",cat:"Sıfatlar",level:"A2"},
+  {id:1179,en:"thirsty",tr:"susamış",ex:"I'm really thirsty after the run.",exTr:"Koşudan sonra gerçekten susadım.",cat:"Sıfatlar",level:"A2"},
+  {id:1180,en:"awake",tr:"uyanık",ex:"He was still awake at midnight.",exTr:"Gece yarısı hâlâ uyanıktı.",cat:"Sıfatlar",level:"A2"},
+  {id:1181,en:"asleep",tr:"uykuda",ex:"The baby is asleep now.",exTr:"Bebek şimdi uykuda.",cat:"Sıfatlar",level:"A2"},
+  {id:1182,en:"ready",tr:"hazır",ex:"Dinner is ready.",exTr:"Akşam yemeği hazır.",cat:"Sıfatlar",level:"A2"},
+  {id:1183,en:"alone",tr:"yalnız",ex:"He prefers working alone.",exTr:"Tek başına çalışmayı tercih ediyor.",cat:"Sıfatlar",level:"A2"},
+  {id:1184,en:"together",tr:"birlikte",ex:"We solved the problem together.",exTr:"Sorunu birlikte çözdük.",cat:"Sıfatlar",level:"A2"},
+  {id:1185,en:"take part in",tr:"katılmak",ex:"She took part in the competition.",exTr:"Yarışmaya katıldı.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1186,en:"get along with",tr:"iyi geçinmek",ex:"I get along well with my colleagues.",exTr:"Meslektaşlarımla iyi geçiniyorum.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1187,en:"give in",tr:"pes etmek, boyun eğmek",ex:"Don't give in to pressure.",exTr:"Baskıya boyun eğme.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1188,en:"work out",tr:"çözülmek / spor yapmak",ex:"Everything worked out in the end.",exTr:"Sonunda her şey yoluna girdi.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1189,en:"turn down",tr:"reddetmek",ex:"He turned down the job offer.",exTr:"İş teklifini reddetti.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1190,en:"turn up",tr:"gelmek, ortaya çıkmak",ex:"She turned up an hour late.",exTr:"Bir saat geç geldi.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1191,en:"look up",tr:"araştırmak (sözlükte)",ex:"Look up the word in a dictionary.",exTr:"Kelimeyi sözlükte araştır.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1192,en:"call off",tr:"iptal etmek",ex:"They called off the meeting.",exTr:"Toplantıyı iptal ettiler.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1193,en:"cheer up",tr:"neşelendirmek",ex:"A short walk cheered her up.",exTr:"Kısa bir yürüyüş onu neşelendirdi.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1194,en:"stand out",tr:"öne çıkmak, dikkat çekmek",ex:"Her design really stands out.",exTr:"Tasarımı gerçekten öne çıkıyor.",cat:"Phrasal Verbs",level:"B1"},
+  {id:1195,en:"habit",tr:"alışkanlık",ex:"Reading before bed is a good habit.",exTr:"Yatmadan önce okumak iyi bir alışkanlıktır.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1196,en:"lifestyle",tr:"yaşam tarzı",ex:"They have a very active lifestyle.",exTr:"Çok aktif bir yaşam tarzları var.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1197,en:"balance",tr:"denge",ex:"It's hard to find a work-life balance.",exTr:"İş-yaşam dengesi bulmak zor.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1198,en:"pressure",tr:"baskı",ex:"He works well under pressure.",exTr:"Baskı altında iyi çalışıyor.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1199,en:"focus",tr:"odaklanmak",ex:"Try to focus on one task at a time.",exTr:"Bir seferde tek bir göreve odaklanmaya çalış.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1200,en:"distract",tr:"dikkatini dağıtmak",ex:"Notifications distract me while working.",exTr:"Bildirimler çalışırken dikkatimi dağıtıyor.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1201,en:"maintain",tr:"sürdürmek, korumak",ex:"It's hard to maintain a daily routine.",exTr:"Günlük bir rutini sürdürmek zor.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1202,en:"attitude",tr:"tutum, tavır",ex:"His attitude changed after the trip.",exTr:"Geziden sonra tutumu değişti.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1203,en:"routine check",tr:"rutin kontrol",ex:"The car needs a routine check.",exTr:"Arabanın rutin kontrole ihtiyacı var.",cat:"Günlük Yaşam",level:"B1"},
+  {id:1204,en:"deliberate",tr:"kasıtlı, bilinçli",ex:"It was a deliberate decision, not an accident.",exTr:"Bu kasıtlı bir karardı, kaza değil.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1205,en:"eager",tr:"istekli, hevesli",ex:"She was eager to start the new project.",exTr:"Yeni projeye başlamak için hevesliydi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1206,en:"cautious",tr:"temkinli",ex:"They took a cautious approach.",exTr:"Temkinli bir yaklaşım benimsediler.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1207,en:"consistent",tr:"tutarlı, istikrarlı",ex:"His results have been consistent all season.",exTr:"Sonuçları bütün sezon istikrarlı oldu.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1208,en:"inconsistent",tr:"tutarsız",ex:"The data was inconsistent across reports.",exTr:"Veriler raporlar arasında tutarsızdı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1209,en:"adequate",tr:"yeterli",ex:"The budget is adequate for now.",exTr:"Bütçe şimdilik yeterli.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1210,en:"insufficient",tr:"yetersiz",ex:"The evidence was insufficient.",exTr:"Kanıtlar yetersizdi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1211,en:"abundant",tr:"bol, çok fazla",ex:"There is abundant sunshine in this region.",exTr:"Bu bölgede bol güneş ışığı var.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1212,en:"scarce",tr:"kıt, az bulunur",ex:"Water is scarce during the summer.",exTr:"Yazın su kıt oluyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1213,en:"widespread",tr:"yaygın",ex:"The practice is widespread in the industry.",exTr:"Bu uygulama sektörde yaygın.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1214,en:"remarkable",tr:"dikkate değer, olağanüstü",ex:"She made a remarkable recovery.",exTr:"Olağanüstü bir iyileşme gösterdi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1215,en:"noteworthy",tr:"kayda değer",ex:"There were several noteworthy findings.",exTr:"Kayda değer birkaç bulgu vardı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1216,en:"negligible",tr:"ihmal edilebilir",ex:"The difference was negligible.",exTr:"Fark ihmal edilebilir düzeydeydi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1217,en:"marginal",tr:"marjinal, sınırda",ex:"There was only a marginal improvement.",exTr:"Sadece marjinal bir iyileşme oldu.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1218,en:"drastic",tr:"kökten, sert",ex:"They made drastic changes to the plan.",exTr:"Planda kökten değişiklikler yaptılar.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1219,en:"gradual",tr:"kademeli, tedrici",ex:"There has been a gradual shift in attitudes.",exTr:"Tutumlarda kademeli bir değişim oldu.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1220,en:"abrupt",tr:"ani, sert",ex:"The meeting came to an abrupt end.",exTr:"Toplantı ani bir şekilde sona erdi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1221,en:"coherence",tr:"tutarlılık, bütünlük",ex:"The essay lacks coherence.",exTr:"Kompozisyonda tutarlılık eksik.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1222,en:"redundancy",tr:"gereksiz tekrar, fazlalık",ex:"There is some redundancy in this text.",exTr:"Bu metinde biraz gereksiz tekrar var.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1223,en:"ambiguity",tr:"belirsizlik, çok anlamlılık",ex:"The contract contains some ambiguity.",exTr:"Sözleşmede biraz belirsizlik var.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1224,en:"clarity",tr:"açıklık, netlik",ex:"The report is written with great clarity.",exTr:"Rapor büyük bir netlikle yazılmış.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1225,en:"precision",tr:"kesinlik, hassasiyet",ex:"The measurements require great precision.",exTr:"Ölçümler büyük bir hassasiyet gerektiriyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1226,en:"tendency",tr:"eğilim",ex:"He has a tendency to overthink.",exTr:"Fazla düşünme eğilimi var.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1227,en:"exposure",tr:"maruz kalma, teması",ex:"Exposure to English speeds up learning.",exTr:"İngilizceye maruz kalmak öğrenmeyi hızlandırır.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1228,en:"immersion",tr:"dile tam daldırma",ex:"Immersion is the fastest way to learn.",exTr:"Dile tam daldırma öğrenmenin en hızlı yoludur.",cat:"İleri Kelimeler",level:"B2"},
+  // ---- 17. ek ----
+  {id:1229,en:"sock",tr:"çorap (tek)",ex:"One sock is missing.",exTr:"Bir çorap kayıp.",cat:"Giyim",level:"A1"},
+  {id:1230,en:"scarf",tr:"atkı",ex:"She knitted a warm scarf.",exTr:"Sıcak bir atkı ördü.",cat:"Giyim",level:"A1"},
+  {id:1231,en:"glove",tr:"eldiven",ex:"I lost one glove in the snow.",exTr:"Karda bir eldivenimi kaybettim.",cat:"Giyim",level:"A1"},
+  {id:1232,en:"belt",tr:"kemer",ex:"This belt is too long.",exTr:"Bu kemer çok uzun.",cat:"Giyim",level:"A1"},
+  {id:1233,en:"pocket",tr:"cep",ex:"My keys are in my pocket.",exTr:"Anahtarlarım cebimde.",cat:"Giyim",level:"A1"},
+  {id:1234,en:"button",tr:"düğme",ex:"A button fell off my coat.",exTr:"Montumun bir düğmesi düştü.",cat:"Giyim",level:"A1"},
+  {id:1235,en:"notebook",tr:"defter",ex:"I write my notes in a notebook.",exTr:"Notlarımı bir deftere yazarım.",cat:"Okul",level:"A1"},
+  {id:1236,en:"eraser",tr:"silgi",ex:"Can I borrow your eraser?",exTr:"Silgini ödünç alabilir miyim?",cat:"Okul",level:"A1"},
+  {id:1237,en:"ruler",tr:"cetvel",ex:"Draw the line with a ruler.",exTr:"Çizgiyi cetvelle çiz.",cat:"Okul",level:"A1"},
+  {id:1238,en:"board",tr:"tahta",ex:"The teacher wrote on the board.",exTr:"Öğretmen tahtaya yazdı.",cat:"Okul",level:"A1"},
+  {id:1239,en:"student",tr:"öğrenci",ex:"Every student has a book.",exTr:"Her öğrencinin bir kitabı var.",cat:"Okul",level:"A1"},
+  {id:1240,en:"break",tr:"teneffüs, mola",ex:"We have a short break at eleven.",exTr:"Saat on birde kısa bir molamız var.",cat:"Okul",level:"A1"},
+  {id:1241,en:"wind up",tr:"kurmak (saat)",ex:"He wound up the old clock.",exTr:"Eski saati kurdu.",cat:"Ev",level:"A1"},
+  {id:1242,en:"bucket",tr:"kova",ex:"Fill the bucket with water.",exTr:"Kovayı suyla doldur.",cat:"Ev",level:"A1"},
+  {id:1243,en:"brush",tr:"fırça",ex:"Clean it with a soft brush.",exTr:"Yumuşak bir fırçayla temizle.",cat:"Ev",level:"A1"},
+  {id:1244,en:"garbage",tr:"çöp",ex:"Take the garbage outside.",exTr:"Çöpü dışarı çıkar.",cat:"Ev",level:"A1"},
+  {id:1245,en:"cupboard",tr:"dolap",ex:"The plates are in the cupboard.",exTr:"Tabaklar dolapta.",cat:"Ev",level:"A1"},
+  {id:1246,en:"drawer",tr:"çekmece",ex:"The scissors are in the top drawer.",exTr:"Makas üst çekmecede.",cat:"Ev",level:"A1"},
+  {id:1247,en:"scissors",tr:"makas",ex:"Be careful with the scissors.",exTr:"Makasa dikkat et.",cat:"Ev",level:"A1"},
+  {id:1248,en:"rope",tr:"ip, halat",ex:"Tie it with a strong rope.",exTr:"Sağlam bir iple bağla.",cat:"Ev",level:"A1"},
+  {id:1249,en:"cough",tr:"öksürük, öksürmek",ex:"He has had a cough for a week.",exTr:"Bir haftadır öksürüğü var.",cat:"Sağlık",level:"A2"},
+  {id:1250,en:"sneeze",tr:"hapşırmak",ex:"She sneezed three times.",exTr:"Üç kez hapşırdı.",cat:"Sağlık",level:"A2"},
+  {id:1251,en:"bandage",tr:"bandaj, sargı",ex:"The nurse put a bandage on my arm.",exTr:"Hemşire koluma bandaj sardı.",cat:"Sağlık",level:"A2"},
+  {id:1252,en:"vaccine",tr:"aşı",ex:"The vaccine is free at the clinic.",exTr:"Aşı klinikte ücretsiz.",cat:"Sağlık",level:"A2"},
+  {id:1253,en:"dentist",tr:"diş hekimi",ex:"I have a dentist appointment tomorrow.",exTr:"Yarın diş hekimi randevum var.",cat:"Sağlık",level:"A2"},
+  {id:1254,en:"emergency",tr:"acil durum",ex:"Call this number in an emergency.",exTr:"Acil durumda bu numarayı ara.",cat:"Sağlık",level:"A2"},
+  {id:1255,en:"ambulance",tr:"ambulans",ex:"The ambulance arrived in five minutes.",exTr:"Ambulans beş dakikada geldi.",cat:"Sağlık",level:"A2"},
+  {id:1256,en:"breathe",tr:"nefes almak",ex:"Breathe slowly and relax.",exTr:"Yavaşça nefes al ve rahatla.",cat:"Sağlık",level:"A2"},
+  {id:1257,en:"humid",tr:"nemli",ex:"The air is very humid today.",exTr:"Bugün hava çok nemli.",cat:"Hava Durumu",level:"A2"},
+  {id:1258,en:"temperature",tr:"sıcaklık",ex:"The temperature dropped last night.",exTr:"Dün gece sıcaklık düştü.",cat:"Hava Durumu",level:"A2"},
+  {id:1259,en:"forecast weather",tr:"hava tahmini",ex:"Check the weather forecast before you go.",exTr:"Gitmeden önce hava tahminini kontrol et.",cat:"Hava Durumu",level:"A2"},
+  {id:1260,en:"thunder",tr:"gök gürültüsü",ex:"The thunder woke up the children.",exTr:"Gök gürültüsü çocukları uyandırdı.",cat:"Hava Durumu",level:"A2"},
+  {id:1261,en:"lightning",tr:"şimşek",ex:"Lightning lit up the whole sky.",exTr:"Şimşek tüm gökyüzünü aydınlattı.",cat:"Hava Durumu",level:"A2"},
+  {id:1262,en:"flood",tr:"sel",ex:"The flood damaged many homes.",exTr:"Sel birçok eve zarar verdi.",cat:"Hava Durumu",level:"A2"},
+  {id:1263,en:"earthquake",tr:"deprem",ex:"The earthquake was felt across the region.",exTr:"Deprem bölge genelinde hissedildi.",cat:"Hava Durumu",level:"A2"},
+  {id:1264,en:"queue",tr:"kuyruk, sıra",ex:"There was a long queue at the bank.",exTr:"Bankada uzun bir kuyruk vardı.",cat:"Şehir",level:"A2"},
+  {id:1265,en:"elevator button",tr:"asansör düğmesi",ex:"Press the elevator button for floor three.",exTr:"Üçüncü kat için asansör düğmesine bas.",cat:"Şehir",level:"A2"},
+  {id:1266,en:"entrance",tr:"giriş",ex:"The entrance is on the left.",exTr:"Giriş sol tarafta.",cat:"Şehir",level:"A2"},
+  {id:1267,en:"exit",tr:"çıkış",ex:"The emergency exit is at the back.",exTr:"Acil çıkış arkada.",cat:"Şehir",level:"A2"},
+  {id:1268,en:"parking",tr:"otopark",ex:"Parking is free on Sundays.",exTr:"Pazar günleri otopark ücretsiz.",cat:"Şehir",level:"A2"},
+  {id:1269,en:"colleague network",tr:"meslek ağı",ex:"She built a strong colleague network.",exTr:"Güçlü bir meslek ağı kurdu.",cat:"İş Hayatı",level:"B1"},
+  {id:1270,en:"presentation",tr:"sunum",ex:"He gave a clear presentation.",exTr:"Net bir sunum yaptı.",cat:"İş Hayatı",level:"B1"},
+  {id:1271,en:"agenda",tr:"gündem",ex:"What's on the agenda for today?",exTr:"Bugünün gündeminde ne var?",cat:"İş Hayatı",level:"B1"},
+  {id:1272,en:"minutes",tr:"toplantı tutanağı",ex:"Who is taking the minutes?",exTr:"Tutanağı kim tutuyor?",cat:"İş Hayatı",level:"B1"},
+  {id:1273,en:"feedback",tr:"geri bildirim",ex:"Thanks for your honest feedback.",exTr:"Dürüst geri bildirimin için teşekkürler.",cat:"İş Hayatı",level:"B1"},
+  {id:1274,en:"contribution",tr:"katkı",ex:"Her contribution made the difference.",exTr:"Onun katkısı fark yarattı.",cat:"İş Hayatı",level:"B1"},
+  {id:1275,en:"teamwork",tr:"takım çalışması",ex:"Good teamwork solved the problem.",exTr:"İyi takım çalışması sorunu çözdü.",cat:"İş Hayatı",level:"B1"},
+  {id:1276,en:"workload",tr:"iş yükü",ex:"My workload is heavier this month.",exTr:"Bu ay iş yüküm daha ağır.",cat:"İş Hayatı",level:"B1"},
+  {id:1277,en:"productivity",tr:"verimlilik",ex:"Short breaks improve productivity.",exTr:"Kısa molalar verimliliği artırır.",cat:"İş Hayatı",level:"B1"},
+  {id:1278,en:"efficiency",tr:"verimlilik, etkinlik",ex:"We improved the efficiency of the process.",exTr:"Sürecin verimliliğini artırdık.",cat:"İş Hayatı",level:"B1"},
+  {id:1279,en:"summary",tr:"özet",ex:"Please write a short summary.",exTr:"Lütfen kısa bir özet yaz.",cat:"Eğitim",level:"B1"},
+  {id:1280,en:"outline",tr:"taslak, ana hat",ex:"Start with an outline of your essay.",exTr:"Kompozisyonunun taslağıyla başla.",cat:"Eğitim",level:"B1"},
+  {id:1281,en:"draft",tr:"müsvedde, taslak",ex:"This is only the first draft.",exTr:"Bu sadece ilk taslak.",cat:"Eğitim",level:"B1"},
+  {id:1282,en:"revise",tr:"gözden geçirmek",ex:"I revised the text three times.",exTr:"Metni üç kez gözden geçirdim.",cat:"Eğitim",level:"B1"},
+  {id:1283,en:"proofread",tr:"son okuma yapmak",ex:"Could you proofread my email?",exTr:"E-postamın son okumasını yapabilir misin?",cat:"Eğitim",level:"B1"},
+  {id:1284,en:"quotation",tr:"alıntı",ex:"She used a quotation from the book.",exTr:"Kitaptan bir alıntı kullandı.",cat:"Eğitim",level:"B1"},
+  {id:1285,en:"source",tr:"kaynak",ex:"Always check your sources.",exTr:"Kaynaklarını her zaman kontrol et.",cat:"Eğitim",level:"B1"},
+  {id:1286,en:"plagiarism",tr:"intihal",ex:"Plagiarism is a serious offence at university.",exTr:"İntihal üniversitede ciddi bir suçtur.",cat:"Eğitim",level:"B1"},
+  {id:1287,en:"deadline extension",tr:"süre uzatımı",ex:"She asked for a deadline extension.",exTr:"Süre uzatımı istedi.",cat:"Eğitim",level:"B1"},
+  {id:1288,en:"attendance",tr:"devam, katılım",ex:"Attendance is required for this course.",exTr:"Bu ders için devam zorunlu.",cat:"Eğitim",level:"B1"},
+  {id:1289,en:"premise",tr:"önerme, dayanak",ex:"The argument rests on a false premise.",exTr:"Argüman yanlış bir dayanağa oturuyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1290,en:"inference",tr:"çıkarım",ex:"That's a reasonable inference from the data.",exTr:"Bu, verilerden makul bir çıkarım.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1291,en:"presumption",tr:"varsayım, peşin hüküm",ex:"There is a presumption of innocence.",exTr:"Masumiyet karinesi vardır.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1292,en:"distinction",tr:"ayrım",ex:"There is an important distinction here.",exTr:"Burada önemli bir ayrım var.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1293,en:"nuisance",tr:"baş belası, rahatsızlık",ex:"The constant noise is a real nuisance.",exTr:"Sürekli gürültü gerçek bir baş belası.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1294,en:"burden",tr:"yük, külfet",ex:"The cost was a heavy burden on families.",exTr:"Maliyet aileler için ağır bir yüktü.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1295,en:"obstacle",tr:"engel",ex:"They overcame every obstacle.",exTr:"Her engeli aştılar.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1296,en:"setback",tr:"aksilik, geri adım",ex:"The delay was a serious setback.",exTr:"Gecikme ciddi bir aksilikti.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1297,en:"breakthrough moment",tr:"dönüm anı",ex:"That was the breakthrough moment for the team.",exTr:"Bu, takım için dönüm anıydı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1298,en:"prospect",tr:"olasılık, gelecek beklentisi",ex:"The prospect of change excites them.",exTr:"Değişim olasılığı onları heyecanlandırıyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1299,en:"prerequisite",tr:"ön koşul",ex:"Basic maths is a prerequisite for this course.",exTr:"Temel matematik bu ders için ön koşuldur.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1300,en:"constraint",tr:"kısıt, sınırlama",ex:"Time was the main constraint.",exTr:"Ana kısıt zamandı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1301,en:"threshold",tr:"eşik",ex:"Sales passed the threshold last quarter.",exTr:"Satışlar geçen çeyrekte eşiği aştı.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1302,en:"benchmark",tr:"kıyaslama ölçütü",ex:"We use last year as a benchmark.",exTr:"Geçen yılı kıyaslama ölçütü olarak kullanıyoruz.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1303,en:"compliance",tr:"uyumluluk (kurallara)",ex:"The audit checked compliance with the rules.",exTr:"Denetim kurallara uyumu kontrol etti.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1304,en:"liability",tr:"sorumluluk, yükümlülük",ex:"The company accepted liability for the error.",exTr:"Şirket hata için sorumluluğu kabul etti.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1305,en:"negligence",tr:"ihmal",ex:"The accident was caused by negligence.",exTr:"Kaza ihmal sonucu meydana geldi.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1306,en:"deterrent",tr:"caydırıcı",ex:"High fines act as a deterrent.",exTr:"Yüksek cezalar caydırıcı işlevi görüyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1307,en:"incentivise",tr:"teşvik etmek",ex:"The scheme incentivises recycling.",exTr:"Program geri dönüşümü teşvik ediyor.",cat:"İleri Kelimeler",level:"B2"},
+  {id:1308,en:"undermine trust",tr:"güveni sarsmak",ex:"Repeated delays undermine trust.",exTr:"Tekrarlanan gecikmeler güveni sarsar.",cat:"İleri Kelimeler",level:"B2"}
 ];
 
 /* ---------------- DATA: GRAMMAR ---------------- */
@@ -2717,6 +2971,7 @@ let dictState = {term:'', loading:false, result:null, error:null};
 let matchState = null;
 let listenState = null;
 let clozeState = null;
+let flashSearch = '';
 
 /* ---------------- STORAGE (local cache + cloud sync) ---------------- */
 const STORAGE_KEY = 'ingilizce-calisma-kutum-progress';
@@ -2733,18 +2988,110 @@ async function loadCloudProgress(){
         .eq('user_id', currentUser.id)
         .maybeSingle();
       if(data && data.data){
-        progress = Object.assign(progress, data.data);
+        progress = sanitizeProgress(data.data);
       }
     }catch(e){
       // offline or network error — fall back to the last local cache for this device
       try{
         const raw = localStorage.getItem(STORAGE_KEY);
-        if(raw) progress = Object.assign(progress, JSON.parse(raw));
+        if(raw) progress = sanitizeProgress(JSON.parse(raw));
       }catch(e2){}
     }
   }
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }catch(e){}
 }
+
+/* ---------------- UNTRUSTED PROGRESS VALIDATION ----------------
+   Anything coming back from the database or localStorage is treated as
+   untrusted input: a tampered row must not be able to pollute prototypes,
+   blow up memory, or hand us fields we never wrote. We rebuild the object
+   from scratch, keeping only known keys with the expected shapes.        */
+const DANGEROUS_KEYS = ['__proto__','constructor','prototype'];
+function safeInt(v, min, max, fallback){
+  const n = Number(v);
+  if(!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, Math.trunc(n)));
+}
+function safeBool(v){ return v === true; }
+function safeStr(v, max){
+  return typeof v === 'string' ? v.slice(0, max || 40) : '';
+}
+function safeIdMap(obj, allowed, cap){
+  const out = Object.create(null);
+  if(!obj || typeof obj !== 'object') return out;
+  let n = 0;
+  for(const k of Object.keys(obj)){
+    if(n >= (cap || 5000)) break;
+    if(DANGEROUS_KEYS.includes(k)) continue;
+    if(!/^[0-9]{1,7}$/.test(k) && !/^[0-9]{1,4}-[0-9]{1,4}$/.test(k) && !/^[A-Za-z0-9_-]{1,32}$/.test(k)) continue;
+    const v = obj[k];
+    if(allowed && !allowed.includes(v)) continue;
+    out[k] = allowed ? v : safeBool(v);
+    n++;
+  }
+  return Object.assign({}, out);
+}
+function sanitizeProgress(raw){
+  const base = defaultProgress();
+  if(!raw || typeof raw !== 'object' || Array.isArray(raw)) return base;
+  const p = base;
+  p.level        = safeInt(raw.level, 0, LEVELS.length-1, 0);
+  p.xp           = safeInt(raw.xp, 0, 100000000, 0);
+  p.placementDone= safeBool(raw.placementDone);
+  p.flashcards   = safeIdMap(raw.flashcards, ['known','learning'], 20000);
+  p.grammarDone  = safeIdMap(raw.grammarDone, null, 5000);
+  p.sentenceDone = safeIdMap(raw.sentenceDone, null, 5000);
+  p.readingDone  = safeIdMap(raw.readingDone, null, 5000);
+  p.badges       = safeIdMap(raw.badges, null, 200);
+
+  const q = (raw.quiz && typeof raw.quiz === 'object') ? raw.quiz : {};
+  p.quiz = {
+    correct:  safeInt(q.correct, 0, 10000000, 0),
+    total:    safeInt(q.total,   0, 10000000, 0),
+    streak:   safeInt(q.streak,  0, 100000, 0),
+    lastDate: /^\d{4}-\d{2}-\d{2}$/.test(q.lastDate) ? q.lastDate : null
+  };
+  const w = (raw.writing && typeof raw.writing === 'object') ? raw.writing : {};
+  p.writing = {
+    correct: safeInt(w.correct, 0, 10000000, 0),
+    total:   safeInt(w.total,   0, 10000000, 0)
+  };
+
+  const ws = (raw.wordStats && typeof raw.wordStats === 'object') ? raw.wordStats : {};
+  const stats = {};
+  let c = 0;
+  for(const k of Object.keys(ws)){
+    if(c >= 20000) break;
+    if(DANGEROUS_KEYS.includes(k) || !/^[0-9]{1,7}$/.test(k)) continue;
+    const e = ws[k];
+    if(!e || typeof e !== 'object') continue;
+    stats[k] = { right: safeInt(e.right, 0, 1000000, 0), wrong: safeInt(e.wrong, 0, 1000000, 0) };
+    c++;
+  }
+  p.wordStats = stats;
+
+  p.studyLog = Array.isArray(raw.studyLog)
+    ? raw.studyLog.slice(-40).map(h=>safeInt(h, 0, 23, 0)).filter(h=>Number.isInteger(h))
+    : [];
+
+  p.examHistory = Array.isArray(raw.examHistory)
+    ? raw.examHistory.slice(-20).filter(h=>h && typeof h === 'object').map(h=>({
+        date:    /^\d{4}-\d{2}-\d{2}$/.test(h.date) ? h.date : '',
+        correct: safeInt(h.correct, 0, 1000, 0),
+        total:   safeInt(h.total,   0, 1000, 0),
+        level:   ['A1','A2','B1','B2'].includes(h.level) ? h.level : ''
+      }))
+    : [];
+
+  const n = (raw.notif && typeof raw.notif === 'object') ? raw.notif : {};
+  p.notif = {
+    enabled: safeBool(n.enabled),
+    hour: (n.hour === null || n.hour === undefined) ? null : safeInt(n.hour, 0, 23, null),
+    lastPromptDate: /^\d{4}-\d{2}-\d{2}$/.test(n.lastPromptDate) ? n.lastPromptDate : null
+  };
+  return p;
+}
+
 function saveProgress(){
   const data = JSON.stringify(progress);
   try{ localStorage.setItem(STORAGE_KEY, data); }
@@ -2760,7 +3107,7 @@ async function syncCloud(){
       data: progress,
       updated_at: new Date().toISOString()
     });
-  }catch(e){ console.error('Cloud sync failed', e); }
+  }catch(e){ /* stay quiet: error objects can carry request details */ }
 }
 
 /* ---------------- HELPERS ---------------- */
@@ -2795,7 +3142,7 @@ function checkLevelUp(){
 function showLevelToast(msg){
   const t=document.createElement('div');
   t.className='level-toast';
-  t.textContent=msg;
+  t.textContent=trUI(msg);
   document.body.appendChild(t);
   requestAnimationFrame(()=>t.classList.add('show'));
   setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2800);
@@ -2926,7 +3273,7 @@ function showBadgeToast(b){
   const t=document.createElement('div');
   t.className='level-toast';
   t.style.background = 'var(--navy)';
-  t.textContent = `${b.emoji} Yeni rozet: ${b.name}`;
+  t.textContent = trUI(`${b.emoji} Yeni rozet: ${b.name}`);
   document.body.appendChild(t);
   requestAnimationFrame(()=>t.classList.add('show'));
   burstConfetti(window.innerWidth/2, 110, 16);
@@ -2982,6 +3329,7 @@ function updateHeaderStats(){
   const prevT = rank.min;
   const pct = nextT===null ? 100 : Math.min(100, Math.round(100*(xp-prevT)/(nextT-prevT)));
   document.getElementById('xpBarFill').style.width = pct + '%';
+  localizeDOM(document.querySelector('.topbar'));
 }
 
 
@@ -3004,6 +3352,48 @@ const UI_STRINGS = {
   "stat.accuracy":["accuracy","başarı oranı"]
 };
 const UI_MAP = {
+  "Biliyorum":"Known",
+  "Kelime ara...":"Search words...",
+  "Uzun süre işlem yapılmadığı için oturumun kapatıldı.":"You were signed out after a period of inactivity.",
+  "İngilizce Çalışma Kutum":"My English Study Box",
+  "Kelime kelime, gün gün İngilizceni büyüt 🌱":"Grow your English word by word, day by day 🌱",
+  "🔥 gün seri":"🔥 day streak",
+  "öğrenilen kelime":"words learned",
+  "başarı oranı":"accuracy",
+  "En üst seviyedesin, tebrikler! 🏆":"You're at the top level — congratulations! 🏆",
+  "Bu filtrede kart yok.":"No cards match this filter.",
+  "Tekrar Edeceğim":"Still Learning",
+  "Çeviriyi görmek için dokun":"Tap to see the translation",
+  "Yazarak Çalış":"Writing Practice",
+  "Kelimenin karşılığını doğru dilde yaz, anında geri bildirim al.":"Type the meaning in the right language and get instant feedback.",
+  "Doğrula ve Devam Et":"Verify and Continue",
+  "Geri dön":"Go back",
+  "E-posta ve şifreni gir.":"Enter your email and password.",
+  "Geçerli bir e-posta ve en az 6 karakterli bir şifre gir.":"Enter a valid email and a password of at least 6 characters.",
+  "Giriş yapılıyor...":"Signing in...",
+  "Gönderiliyor...":"Sending...",
+  "Kod gönderilemedi, tekrar dene.":"Couldn't send the code, please try again.",
+  "Kod hatalı ya da süresi dolmuş. Tekrar dene.":"The code is wrong or has expired. Please try again.",
+  "Kod tekrar gönderildi, e-postanı kontrol et.":"Code sent again — check your email.",
+  "Önce e-postanı doğrulaman gerekiyor.":"You need to verify your email first.",
+  "Bağlantı kurulamadı, tekrar dene.":"Connection failed, please try again.",
+  "Hesap sistemi için internete ihtiyaç var. Bağlantını kontrol edip sayfayı yenile.":"The account system needs an internet connection. Check your connection and reload the page.",
+  "Google ile giriş başarısız oldu. Lütfen tekrar dene.":"Google sign-in failed. Please try again.",
+  "Google girişine ulaşılamadı. Bağlantını kontrol et.":"Couldn't reach Google sign-in. Check your connection.",
+  "adresine gönderdiğimiz doğrulama kodunu gir.":"— enter the verification code we sent to this address.",
+  "Testi atla, A1'den başlayayım":"Skip the test, start me at A1",
+  "Kelime kartların ve grammar konuların bu seviyeye göre ayarlandı. Kelimeleri öğrendikçe daha zor seviyeler otomatik olarak açılacak.":"Your flashcards and grammar topics are set to this level. Harder levels unlock automatically as you learn more words.",
+  "✓ Doğru!":"✓ Correct!",
+  "Bugün henüz çalışmadın — birkaç dakikan yeter, serini bozma. 🌱":"You haven't studied today — a few minutes is enough to keep your streak. 🌱",
+  "Harika gidiyorsun, bugünkü serini korudun! 🔥":"Great work — you kept your streak today! 🔥",
+  "Çaylak":"Rookie", "Başlangıç":"Beginner", "Kelime Avcısı":"Word Hunter",
+  "Cümle Mimarı":"Sentence Builder", "Dil Kâşifi":"Language Explorer",
+  "Sözcük Ustası":"Word Master", "İngilizce Şampiyonu":"English Champion",
+  "İlk Adım":"First Step", "Seri Başladı":"Streak Started", "Ateşli Seri":"Hot Streak",
+  "Kelime Ustası":"Vocabulary Master", "Gramer Kâşifi":"Grammar Explorer",
+  "Yazı Ustası":"Writing Master", "Okuma Meraklısı":"Avid Reader",
+  "Sınav Ustası":"Exam Master", "Sınav Kâşifi":"Exam Explorer",
+  "Orta-Üstü":"Upper-Intermediate",
   // headings & subtitles
   "Kelime Kartları":"Flashcards",
   "Karta dokun, çeviriyi gör. Sonra bildiğini ya da tekrar edeceğini işaretle.":"Tap the card to see the translation, then mark it as known or still learning.",
@@ -3089,11 +3479,25 @@ const UI_PATTERNS = [
   [/^Seviye: (.+)$/, "Level: $1"],
   [/^BUGÜNÜN KELİMESİ · (.+)$/, "WORD OF THE DAY · $1"],
   [/^%(\d+) başarı(.*)$/, "$1% score$2"],
-  [/^(\d+) XP$/, "$1 XP"]
+  [/^(\d+) XP$/, "$1 XP"],
+  [/^(.+) seviyesinde açılır$/, "Unlocks at $1"],
+  [/^✗ Doğrusu: (.+)$/, "✗ Correct answer: $1"],
+  [/^✗ Tekrar dene\. Doğrusu: (.+)$/, "✗ Try again. Correct: $1"],
+  [/^🎉 Tebrikler! (.+) seviyesine geçtin, yeni kelimeler açıldı\.$/, "🎉 Congratulations! You've reached $1 — new words unlocked."],
+  [/^🔒 Bu konu (.+) seviyesinde açılıyor\. Önce (.+) kelimelerinin %70'ini öğren\.$/, "🔒 This topic unlocks at $1. First learn 70% of the $2 words."],
+  [/^(.+) Yeni rozet: (.+)$/, "$1 New badge: $2"],
+  [/^(\d+)\/(\d+) (.+) kelimesi öğrenildi$/, "$1/$2 $3 words learned"],
+  [/^%70'e ulaşınca (.+) açılır 🚀$/, "Reach 70% to unlock $1 🚀"]
 ];
 const UI_INLINE = [
   [/ · Kelime %/g, " · Vocabulary "], [/ · Grammar %/g, " · Grammar "], [/ · Okuma %/g, " · Reading "]
 ];
+function escapeHtml(v){
+  return String(v == null ? '' : v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function escapeAttr(v){ return escapeHtml(v); }
 function expText(q){
   return (LANG==='en' && q.expEn) ? q.expEn : q.exp;
 }
@@ -3282,7 +3686,7 @@ async function doSignup(){
   setAuthBusy('authSubmit', 'Gönderiliyor...');
   try{
     const { data, error } = await supabaseClient.auth.signUp({ email, password });
-    if(error){ authError = error.message; renderAuth(); return; }
+    if(error){ authError = friendlyAuthError(error); renderAuth(); return; }
     pendingEmail = email;
     authMode = 'verify';
     authError = '';
@@ -3292,6 +3696,47 @@ async function doSignup(){
     renderAuth();
   }
 }
+function friendlyAuthError(error){
+  // Never render a raw provider message into the DOM; map to our own safe text.
+  const raw = String((error && error.message) || '').toLowerCase();
+  const en = LANG === 'en';
+  if(raw.includes('already registered') || raw.includes('already exists'))
+    return en ? 'This email is already registered. Try logging in.' : 'Bu e-posta zaten kayıtlı. Giriş yapmayı dene.';
+  if(raw.includes('invalid login') || raw.includes('invalid credentials'))
+    return en ? 'Email or password is incorrect.' : 'E-posta veya şifre hatalı.';
+  if(raw.includes('email not confirmed') || raw.includes('not confirmed'))
+    return en ? 'Please verify your email first.' : 'Önce e-postanı doğrulaman gerekiyor.';
+  if(raw.includes('password') && raw.includes('6'))
+    return en ? 'Your password must be at least 6 characters.' : 'Şifren en az 6 karakter olmalı.';
+  if(raw.includes('rate limit') || raw.includes('too many'))
+    return en ? 'Too many attempts. Please wait a moment and try again.' : 'Çok fazla deneme yapıldı. Biraz bekleyip tekrar dene.';
+  return en ? 'Something went wrong. Please try again.' : 'Bir şeyler ters gitti. Lütfen tekrar dene.';
+}
+
+/* ---------------- SESSION HARDENING ----------------
+   Auto sign-out after prolonged inactivity so a session left open on a
+   shared or stolen device does not stay usable indefinitely.            */
+const IDLE_LIMIT_MS = 2 * 60 * 60 * 1000; // 2 hours
+let _idleTimer = null;
+function resetIdleTimer(){
+  if(!currentUser) return;
+  if(_idleTimer) clearTimeout(_idleTimer);
+  _idleTimer = setTimeout(async ()=>{
+    if(!currentUser) return;
+    try{ await supabaseClient.auth.signOut(); }catch(e){}
+    currentUser = null;
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    authMode = 'login';
+    authError = (LANG === 'en')
+      ? 'You were signed out after a period of inactivity.'
+      : 'Uzun süre işlem yapılmadığı için oturumun kapatıldı.';
+    renderAuth();
+  }, IDLE_LIMIT_MS);
+}
+['click','keydown','touchstart','visibilitychange'].forEach(evt=>{
+  window.addEventListener(evt, resetIdleTimer, { passive: true });
+});
+
 async function doGoogleLogin(){
   authError = '';
   try{
@@ -3330,7 +3775,7 @@ async function doLogin(){
         renderAuth();
         return;
       }
-      authError = error.message;
+      authError = friendlyAuthError(error);
       renderAuth();
       return;
     }
@@ -3378,6 +3823,7 @@ async function onAuthed(user){
   await loadCloudProgress();
   trackEvent(progress.placementDone ? '/session/returning-user' : '/session/new-user', 'Oturum');
   logStudySession();
+  resetIdleTimer();
   checkDailyReminder(false);
   if(!window._reminderInterval){
     window._reminderInterval = setInterval(()=>checkDailyReminder(false), 5*60*1000);
@@ -3397,6 +3843,8 @@ async function onAuthed(user){
 async function doLogout(){
   try{ await supabaseClient.auth.signOut(); }catch(e){}
   currentUser = null;
+  if(_idleTimer) clearTimeout(_idleTimer);
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
   progress = defaultProgress();
   document.getElementById('authRow').style.display = 'none';
   document.getElementById('headerLevelRow').style.display = 'none';
@@ -3499,7 +3947,12 @@ function currentDeck(){
   if(flashLevelFilter && flashLevelFilter!=='Tümü'){
     pool = pool.filter(w=>w.level===flashLevelFilter);
   }
-  return flashFilter==='Tümü' ? pool : pool.filter(w=>w.cat===flashFilter);
+  if(flashFilter!=='Tümü') pool = pool.filter(w=>w.cat===flashFilter);
+  const q = flashSearch.trim().toLowerCase();
+  if(q){
+    pool = pool.filter(w=> w.en.toLowerCase().includes(q) || w.tr.toLowerCase().includes(q));
+  }
+  return pool;
 }
 function renderFlash(main){
   if(!flashLevelFilter) flashLevelFilter = LEVELS[progress.level].code;
@@ -3528,6 +3981,7 @@ function renderFlash(main){
       ${levelOptions.map(lv=>`<div class="chip ${lv===flashLevelFilter?'active':''}" data-lvl="${lv}">${lv} ${lv===LEVELS[progress.level].code?'(seviyen)':''}</div>`).join('')}
       <div class="chip ${flashLevelFilter==='Tümü'?'active':''}" data-lvl="Tümü">Tüm Seviyeler</div>
     </div>
+    <input class="write-input flash-search" id="flashSearch" type="text" autocomplete="off" placeholder="Kelime ara..." maxlength="40" value="${escapeAttr(flashSearch)}">
     <div class="chip-row" id="catRow">
       ${cats.map(c=>`<div class="chip ${c===flashFilter?'active':''}" data-cat="${c}">${c}</div>`).join('')}
     </div>
@@ -3584,6 +4038,18 @@ function renderFlash(main){
       render();
     });
   });
+  const searchEl = document.getElementById('flashSearch');
+  if(searchEl){
+    searchEl.addEventListener('input', ()=>{
+      flashSearch = searchEl.value;
+      flashIndex = 0;
+      flashFlipped = false;
+      const pos = searchEl.selectionStart;
+      render();
+      const again = document.getElementById('flashSearch');
+      if(again){ again.focus(); try{ again.setSelectionRange(pos,pos); }catch(e){} }
+    });
+  }
   const card = document.getElementById('flashCard');
   if(card){
     card.addEventListener('click', ()=>{
@@ -4163,25 +4629,61 @@ function renderExamResult(area){
 function looksTurkish(str){
   return /[çğıöşüÇĞİÖŞÜ]/.test(str);
 }
+const DICT_MAX_TERM = 60;
+let _lastLookupAt = 0;
+function fetchWithTimeout(url, ms){
+  const ctrl = new AbortController();
+  const timer = setTimeout(()=>ctrl.abort(), ms || 8000);
+  return fetch(url, { signal: ctrl.signal, credentials: 'omit', referrerPolicy: 'no-referrer' })
+    .finally(()=>clearTimeout(timer));
+}
+function sanitizeTerm(term){
+  // Only letters (incl. Turkish), spaces and hyphens; nothing that could steer a URL.
+  return String(term || '')
+    .slice(0, DICT_MAX_TERM)
+    .replace(/[^\p{L}\s'-]/gu, '')
+    .trim();
+}
 async function translateText(text, from, to){
-  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`;
-  const res = await fetch(url);
+  const clean = sanitizeTerm(text);
+  if(!clean) throw new Error('translate-empty');
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(clean)}&langpair=${encodeURIComponent(from)}|${encodeURIComponent(to)}`;
+  const res = await fetchWithTimeout(url, 8000);
   if(!res.ok) throw new Error('translate-failed');
   const data = await res.json();
   const translated = data && data.responseData && data.responseData.translatedText;
-  if(!translated) throw new Error('translate-empty');
-  return translated;
+  if(typeof translated !== 'string' || !translated.trim()) throw new Error('translate-empty');
+  return translated.slice(0, 300);
 }
 async function fetchEnglishDefinition(word){
-  const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+  const clean = sanitizeTerm(word);
+  if(!clean) return null;
+  const res = await fetchWithTimeout(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(clean)}`, 8000);
   if(res.status===404) return null;
   if(!res.ok) throw new Error('dict-failed');
   const data = await res.json();
-  return Array.isArray(data) ? data[0] : null;
+  const entry = Array.isArray(data) ? data[0] : null;
+  if(!entry || typeof entry !== 'object') return null;
+  // Keep only the fields we render, as strings, with sane caps.
+  const str = v => (typeof v === 'string' ? v.slice(0, 400) : '');
+  return {
+    word: str(entry.word),
+    phonetic: str(entry.phonetic),
+    meanings: Array.isArray(entry.meanings) ? entry.meanings.slice(0,3).map(m=>({
+      partOfSpeech: str(m && m.partOfSpeech),
+      definitions: Array.isArray(m && m.definitions) ? m.definitions.slice(0,2).map(d=>({
+        definition: str(d && d.definition),
+        example: str(d && d.example)
+      })) : []
+    })) : []
+  };
 }
 async function performLookup(term){
-  term = term.trim();
+  term = sanitizeTerm(term);
   if(!term) return;
+  const now = Date.now();
+  if(now - _lastLookupAt < 700) return;   // throttle rapid-fire lookups
+  _lastLookupAt = now;
   dictState = {term, loading:true, result:null, error:null};
   render();
   trackEvent('/dictionary/search', 'Sözlük araması');
@@ -4223,7 +4725,7 @@ function renderDictionary(main){
     <h2 class="section-title">Sözlük</h2>
     <p class="section-sub">Türkçe veya İngilizce bir kelime yaz — hem İngilizce-İngilizce tanımını hem Türkçe karşılığını görürsün.</p>
     <div class="dict-search-row">
-      <input class="write-input" id="dictInput" type="text" placeholder="Bir kelime yaz... (örn. improve / gelişmek)" value="${dictState.term ? dictState.term.replace(/"/g,'&quot;') : ''}" autocomplete="off">
+      <input class="write-input" id="dictInput" type="text" maxlength="60" placeholder="Bir kelime yaz... (örn. improve / gelişmek)" value="${escapeAttr(dictState.term || '')}" autocomplete="off">
       <button class="btn btn-primary" id="dictSearchBtn">Ara</button>
     </div>
     <div id="dictResult"></div>
@@ -4236,30 +4738,30 @@ function renderDictionary(main){
   if(dictState.loading){
     resArea.innerHTML = `<p class="section-sub">Aranıyor...</p>`;
   } else if(dictState.error==='notfound'){
-    resArea.innerHTML = `<p class="write-feedback no show">"${dictState.term}" için bir sonuç bulunamadı. Yazımı kontrol et.</p>`;
+    resArea.innerHTML = `<p class="write-feedback no show">"${escapeHtml(dictState.term)}" için bir sonuç bulunamadı. Yazımı kontrol et.</p>`;
   } else if(dictState.error==='offline'){
     resArea.innerHTML = `<p class="write-feedback no show">Sözlük servisine ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.</p>`;
   } else if(dictState.result){
     const r = dictState.result;
     let html = `<div class="dict-card">`;
-    html += `<div class="dict-word">${r.englishWord}</div>`;
+    html += `<div class="dict-word">${escapeHtml(r.englishWord)}</div>`;
     if(r.definitionEntry && r.definitionEntry.phonetic){
-      html += `<div class="dict-phonetic">${r.definitionEntry.phonetic}</div>`;
+      html += `<div class="dict-phonetic">${escapeHtml(r.definitionEntry.phonetic)}</div>`;
     }
     if(r.turkishText){
-      html += `<div class="dict-tr">🇹🇷 ${r.turkishText}</div>`;
+      html += `<div class="dict-tr">🇹🇷 ${escapeHtml(r.turkishText)}</div>`;
     }
     if(r.definitionEntry && r.definitionEntry.meanings){
       r.definitionEntry.meanings.slice(0,3).forEach(m=>{
-        html += `<div class="dict-pos">${m.partOfSpeech}</div>`;
+        html += `<div class="dict-pos">${escapeHtml(m.partOfSpeech)}</div>`;
         (m.definitions||[]).slice(0,2).forEach(d=>{
-          html += `<div class="dict-def">• ${d.definition}</div>`;
-          if(d.example) html += `<div class="dict-example">"${d.example}"</div>`;
+          html += `<div class="dict-def">• ${escapeHtml(d.definition)}</div>`;
+          if(d.example) html += `<div class="dict-example">"${escapeHtml(d.example)}"</div>`;
         });
       });
     } else if(r.localMatch){
-      html += `<div class="dict-def">• ${r.localMatch.ex}</div>`;
-      html += `<div class="dict-example">${r.localMatch.exTr}</div>`;
+      html += `<div class="dict-def">• ${escapeHtml(r.localMatch.ex)}</div>`;
+      html += `<div class="dict-example">${escapeHtml(r.localMatch.exTr)}</div>`;
     } else {
       html += `<p class="section-sub">Bu kelime için İngilizce-İngilizce tanım bulunamadı, sadece çeviri gösteriliyor.</p>`;
     }

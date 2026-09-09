@@ -2,15 +2,16 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
-<title>İngilizce Çalışma Kutum</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loquat — Learn English Step by Step</title>
 <meta name="theme-color" content="#2B3A67">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="İngilizce Kutum">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232B3A67'/%3E%3Ctext x='50' y='64' font-size='46' text-anchor='middle' fill='%23E39A34' font-family='Georgia,serif' font-weight='700'%3EEn%3C/text%3E%3C/svg%3E">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232B3A67'/%3E%3Ctext x='50' y='64' font-size='46' text-anchor='middle' fill='%23E39A34' font-family='Georgia,serif' font-weight='700'%3EEn%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-title" content="Loquat">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<meta name="description" content="Learn English step by step: 1300+ words with CEFR levels, grammar practice, listening, reading and adaptive tests.">
 <link rel="manifest" href="manifest.json">
 <!-- GoatCounter analytics — ücretsiz, çerezsiz. -->
 <script data-goatcounter="https://english-box.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -67,6 +68,7 @@
     box-shadow:0 0 40px rgba(31,42,68,0.08);
   }
   header.topbar{
+    padding-top:calc(18px + env(safe-area-inset-top));
     background:var(--navy);
     color:#fff;
     padding:calc(20px + env(safe-area-inset-top)) 20px 18px;
@@ -187,6 +189,7 @@
     line-height:1.5;
   }
   nav.tabbar{
+    padding-bottom:env(safe-area-inset-bottom);
     position:fixed;
     bottom:0;
     left:50%;
@@ -897,6 +900,18 @@
   .flash-search{
     margin-bottom:10px;
   }
+  .attribution{
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin-top:12px;
+  }
+  .attribution a{color:var(--ink-soft);}
+  .attribution-standing{
+    margin-top:22px;
+    padding-top:12px;
+    border-top:1px solid var(--border);
+  }
   .subtabs{
     display:flex;
     gap:6px;
@@ -968,6 +983,57 @@
     font-weight:600;
     letter-spacing:0.5px;
   }
+  .settings-sep{
+    height:1px;
+    background:var(--border);
+    margin:18px 0 14px;
+  }
+  .settings-sub-h{
+    font-size:0.95rem !important;
+    margin-top:4px !important;
+  }
+  .btn-secondary-full{
+    width:100%;
+    background:var(--bg);
+    color:var(--navy);
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    padding:12px 16px;
+    font-family:inherit;
+    font-size:0.9rem;
+    font-weight:500;
+    cursor:pointer;
+    margin-bottom:8px;
+  }
+  .btn-danger-full{
+    width:100%;
+    background:transparent;
+    color:var(--rose);
+    border:1.5px solid var(--rose);
+    border-radius:12px;
+    padding:12px 16px;
+    font-family:inherit;
+    font-size:0.9rem;
+    font-weight:500;
+    cursor:pointer;
+  }
+  .btn-danger-full.btn-danger-armed{
+    background:var(--rose);
+    color:#fff;
+  }
+  .btn-danger-full:disabled{opacity:0.6;cursor:default;}
+  .settings-link{
+    display:block;
+    text-align:center;
+    margin-top:14px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+  }
+  .notif-card{
+    max-height:85vh;
+    overflow-y:auto;
+    padding-bottom:calc(22px + env(safe-area-inset-bottom));
+  }
   .cloze-tr{
     font-size:0.82rem;
     color:var(--ink-soft);
@@ -978,7 +1044,7 @@
 <body>
 <div class="app">
   <header class="topbar">
-    <h1 data-i18n="app.title">My English Study Box</h1>
+    <h1 data-i18n="app.title">Loquat</h1>
     <p data-i18n="app.tagline">Grow your English word by word, day by day 🌱</p>
     <div class="auth-row" id="authRow" style="display:none">
       <span class="user-email" id="userEmailLabel"></span>
@@ -3204,6 +3270,82 @@ function disableNotifications(){
   saveProgress();
   showNotifPanel();
 }
+
+/* ---------------- ACCOUNT & DATA RIGHTS ----------------
+   Required by both app stores and by KVKK/GDPR: the user must be able to
+   export their data and delete their account from inside the app.        */
+function exportMyData(){
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    email: currentUser ? currentUser.email : null,
+    progress: progress
+  };
+  try{
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'loquat-my-data.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+    trackEvent('/account/export', 'Data exported');
+  }catch(e){
+    alert(LANG==='en' ? 'Export failed. Please try again.' : 'Dışa aktarma başarısız. Lütfen tekrar dene.');
+  }
+}
+let _deleteArmed = false;
+async function deleteMyAccount(){
+  const btn = document.getElementById('deleteAccountBtn');
+  if(!_deleteArmed){
+    _deleteArmed = true;
+    if(btn) btn.textContent = LANG==='en'
+      ? 'Tap again to permanently delete'
+      : 'Kalıcı olarak silmek için tekrar dokun';
+    if(btn) btn.classList.add('btn-danger-armed');
+    setTimeout(()=>{
+      _deleteArmed = false;
+      const b = document.getElementById('deleteAccountBtn');
+      if(b){ b.textContent = LANG==='en' ? 'Delete my account' : 'Hesabımı sil'; b.classList.remove('btn-danger-armed'); }
+    }, 6000);
+    return;
+  }
+  _deleteArmed = false;
+  if(btn){ btn.disabled = true; btn.textContent = LANG==='en' ? 'Deleting...' : 'Siliniyor...'; }
+  let ok = false;
+  try{
+    // 1) remove the user's own data row (allowed by RLS)
+    if(currentUser){
+      await supabaseClient.from('progress').delete().eq('user_id', currentUser.id);
+    }
+    // 2) ask the server to delete the auth account itself
+    const { data: sess } = await supabaseClient.auth.getSession();
+    const token = sess && sess.session ? sess.session.access_token : null;
+    if(token){
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/delete-account`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
+      });
+      ok = res.ok;
+    }
+  }catch(e){ ok = false; }
+  // 3) always clear the device and sign out, whatever the server said
+  try{ await supabaseClient.auth.signOut(); }catch(e){}
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  currentUser = null;
+  progress = defaultProgress();
+  trackEvent('/account/delete', 'Account deleted');
+  const modal = document.getElementById('notifModal');
+  if(modal) modal.classList.remove('show');
+  authMode = 'login';
+  authError = ok
+    ? (LANG==='en' ? 'Your account and data have been deleted.' : 'Hesabın ve verilerin silindi.')
+    : (LANG==='en'
+        ? 'Your data was removed and you have been signed out. If the account itself still exists, contact us and we will erase it.'
+        : 'Verilerin silindi ve oturumun kapatıldı. Hesap hâlâ duruyorsa bize yaz, tamamen kaldıralım.');
+  renderAuth();
+}
+
 function showNotifPanel(){
   let modal = document.getElementById('notifModal');
   if(!modal){
@@ -3218,20 +3360,35 @@ function showNotifPanel(){
   const permission = supported ? Notification.permission : 'unsupported';
   modal.innerHTML = `
     <div class="notif-card">
-      <h3>🔔 Akıllı Hatırlatmalar</h3>
+      <h3>⚙️ ${LANG==='en' ? 'Settings' : 'Ayarlar'}</h3>
+      <h3 class="settings-sub-h">🔔 ${LANG==='en' ? 'Smart Reminders' : 'Akıllı Hatırlatmalar'}</h3>
       <p class="section-sub">Uygulama en sık hangi saatte çalıştığını öğrenir ve o saatlere yakın seni hatırlatır. Serini korumak için de gün bitmeden bildirim gönderir. (Uygulama açıkken veya ana ekrana eklenmişken çalışır.)</p>
       <div class="notif-row"><span>Tahmini en aktif saatin</span><strong>${hourText}</strong></div>
       <div class="notif-row"><span>Bildirim durumu</span><strong>${progress.notif && progress.notif.enabled ? 'Açık ✅' : 'Kapalı'}</strong></div>
       ${permission==='denied' ? `<p class="write-feedback no show">Tarayıcı ayarlarından bu site için bildirim izni vermen gerekiyor.</p>` : ''}
       <button class="btn-full" id="notifToggleBtn">${progress.notif && progress.notif.enabled ? 'Bildirimleri Kapat' : 'Bildirimleri Aç'}</button>
+
+      <div class="settings-sep"></div>
+      <h3>${LANG==='en' ? 'Account & data' : 'Hesap ve veriler'}</h3>
+      <p class="section-sub">${LANG==='en'
+        ? 'You can download everything we store about you, or delete your account and all of its data at any time.'
+        : 'Hakkında sakladığımız her şeyi indirebilir ya da hesabını ve tüm verilerini istediğin zaman silebilirsin.'}</p>
+      <button class="btn-secondary-full" id="exportDataBtn">${LANG==='en' ? 'Download my data' : 'Verilerimi indir'}</button>
+      <button class="btn-danger-full" id="deleteAccountBtn">${LANG==='en' ? 'Delete my account' : 'Hesabımı sil'}</button>
+      <a class="settings-link" href="privacy.html" target="_blank" rel="noopener noreferrer">${LANG==='en' ? 'Privacy Policy' : 'Gizlilik Politikası'}</a>
+
       <span class="pt-skip" id="notifCloseBtn">Kapat</span>
     </div>
   `;
   modal.classList.add('show');
+  localizeDOM(modal);
   document.getElementById('notifToggleBtn').addEventListener('click', ()=>{
     if(progress.notif && progress.notif.enabled) disableNotifications(); else enableNotifications();
   });
+  document.getElementById('exportDataBtn').addEventListener('click', exportMyData);
+  document.getElementById('deleteAccountBtn').addEventListener('click', deleteMyAccount);
   document.getElementById('notifCloseBtn').addEventListener('click', ()=>{
+    _deleteArmed = false;
     modal.classList.remove('show');
   });
 }
@@ -3247,7 +3404,7 @@ function checkDailyReminder(force){
   if(!closeToPreferred && !force) return;
   if(progress.notif.lastPromptDate === today && !force) return;
   try{
-    new Notification('İngilizce Çalışma Kutum', {
+    new Notification('Loquat', {
       body: practicedToday ? 'Harika gidiyorsun, bugünkü serini korudun! 🔥' : 'Bugün henüz çalışmadın — birkaç dakikan yeter, serini bozma. 🌱',
       tag: 'daily-reminder'
     });
@@ -3345,17 +3502,92 @@ const UI_STRINGS = {
   "tab.write":["Writing","Yazma"], "tab.sentence":["Sentence","Cümle"],
   "tab.grammar":["Grammar","Grammar"], "tab.reading":["Reading","Okuma"],
   "tab.exam":["Mixed Exam","Karma Sınav"],
-  "app.title":["My English Study Box","İngilizce Çalışma Kutum"],
+  "app.title":["Loquat","Loquat"],
   "app.tagline":["Grow your English word by word, day by day 🌱","Kelime kelime, gün gün İngilizceni büyüt 🌱"],
   "btn.logout":["Log Out","Çıkış Yap"], "btn.retest":["Retake test","Yeniden test et"],
   "stat.streak":["🔥 day streak","🔥 gün seri"], "stat.known":["words learned","öğrenilen kelime"],
   "stat.accuracy":["accuracy","başarı oranı"]
 };
 const UI_MAP = {
+  "Çoğul (Plurals)":"Plurals",
+  "Karşılaştırma (Comparatives)":"Comparatives",
+  "Modal Fiiller (can/must/should)":"Modal Verbs (can / must / should)",
+  "Gelecek Zaman (will / going to)":"Future (will / going to)",
+  "Şart Cümleleri (First Conditional)":"First Conditional",
+  "Geçmişte Süreklilik (Past Continuous)":"Past Continuous",
+  "Edilgen Çatı (Passive Voice)":"Passive Voice",
+  "İlgi Cümlecikleri (Relative Clauses)":"Relative Clauses",
+  "Dolaylı Anlatım (Reported Speech)":"Reported Speech",
+  "İkinci Şart Cümlesi (Second Conditional)":"Second Conditional",
+  "Kullanılmış Alışkanlıklar (used to)":"Past Habits (used to)",
+  "Gerund ve Mastar (Gerunds & Infinitives)":"Gerunds & Infinitives",
+  "Soru Etiketleri (Question Tags)":"Question Tags",
+  "Şimdiki Zamanda Mükemmel Süreklilik (Present Perfect Continuous)":"Present Perfect Continuous",
+  "Geçmişte Mükemmel Zaman (Past Perfect)":"Past Perfect",
+  "Miktar Belirteçleri (some/any/much/many/a few/a little)":"Quantifiers (some / any / much / many)",
+  "Sıra Sayıları ve Tarihler (Ordinal Numbers & Dates)":"Ordinal Numbers & Dates",
+  "Aile":"Family",
+  "Alışkanlıklar":"Habits",
+  "Alışveriş":"Shopping",
+  "Bağlaçlar":"Connectives",
+  "Bilim ve Doğa":"Science & Nature",
+  "Doğa":"Nature",
+  "Doğa ve Macera":"Nature & Adventure",
+  "Duygu ve Karakter":"Emotions & Character",
+  "Duygular":"Feelings",
+  "Ev":"Home",
+  "Ev ve Çevre":"Home & Surroundings",
+  "Eğitim":"Education",
+  "Fiiller":"Verbs",
+  "Fikir ve Yaşam":"Ideas & Life",
+  "Giyim":"Clothing",
+  "Günler ve Aylar":"Days & Months",
+  "Günlük Eşyalar":"Everyday Objects",
+  "Günlük Rutin":"Daily Routine",
+  "Günlük Yaşam":"Daily Life",
+  "Hava Durumu":"Weather",
+  "Hayvanlar":"Animals",
+  "Hobiler":"Hobbies",
+  "Hukuk ve Toplum":"Law & Society",
+  "Konum":"Position",
+  "Kutlama":"Celebration",
+  "Kültür ve Gelenek":"Culture & Tradition",
+  "Medya ve Eğlence":"Media & Entertainment",
+  "Meslekler":"Jobs",
+  "Mutfak":"Kitchen",
+  "Müzik":"Music",
+  "Okul":"School",
+  "Phrasal Verbs":"Phrasal Verbs",
+  "Psikoloji ve Davranış":"Psychology & Behaviour",
+  "Renkler":"Colours",
+  "Sağlık":"Health",
+  "Selamlaşma":"Greetings",
+  "Seyahat":"Travel",
+  "Soru Kelimeleri":"Question Words",
+  "Soyut Kavramlar":"Abstract Concepts",
+  "Spor":"Sports",
+  "Sıfatlar":"Adjectives",
+  "Teknoloji":"Technology",
+  "Toplum":"Society",
+  "Ulaşım":"Transport",
+  "Vücut":"Body",
+  "Yemek Pişirme":"Cooking",
+  "Yiyecek":"Food",
+  "Yol Tarifi":"Directions",
+  "Zaman":"Time",
+  "Çevre ve Teknoloji":"Environment & Technology",
+  "İleri Kelimeler":"Advanced Words",
+  "İletişim":"Communication",
+  "İlişkiler":"Relationships",
+  "İş Hayatı":"Working Life",
+  "İş Yeri":"Workplace",
+  "Şehir":"City",
+  "Şekiller ve Sayılar":"Shapes & Numbers",
+  "20 soruluk daha kapsamlı bir test ile İngilizce seviyeni doğru tahmin edelim. Sorular kolaydan zora doğru ilerliyor. Sana en uygun kelime ve grammar içerikleriyle, tam olman gereken seviyeden başlayacaksın — yaklaşık 4-5 dakika sürer.":"Let's estimate your English level with a 20-question test. The questions get harder as you go. You'll start at exactly the right level, with the vocabulary and grammar that suit you — it takes about 4-5 minutes.",
   "Biliyorum":"Known",
   "Kelime ara...":"Search words...",
   "Uzun süre işlem yapılmadığı için oturumun kapatıldı.":"You were signed out after a period of inactivity.",
-  "İngilizce Çalışma Kutum":"My English Study Box",
+  "İngilizce Çalışma Kutum":"Loquat",
   "Kelime kelime, gün gün İngilizceni büyüt 🌱":"Grow your English word by word, day by day 🌱",
   "🔥 gün seri":"🔥 day streak",
   "öğrenilen kelime":"words learned",
@@ -3490,7 +3722,13 @@ const UI_PATTERNS = [
   [/^%70'e ulaşınca (.+) açılır 🚀$/, "Reach 70% to unlock $1 🚀"]
 ];
 const UI_INLINE = [
-  [/ · Kelime %/g, " · Vocabulary "], [/ · Grammar %/g, " · Grammar "], [/ · Okuma %/g, " · Reading "]
+  [/ · Kelime %/g, " · Vocabulary "],
+  [/ · Grammar %/g, " · Grammar "],
+  [/ · Okuma %/g, " · Reading "],
+  [/(A1|A2|B1|B2) kelimesi öğrenildi/g, "$1 words learned"],
+  [/\(seviyen\)/g, "(your level)"],
+  [/ soru tamamlandı/g, " questions completed"],
+  [/ kelimesi öğrenildi/g, " words learned"]
 ];
 function escapeHtml(v){
   return String(v == null ? '' : v)
@@ -3498,6 +3736,9 @@ function escapeHtml(v){
     .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function escapeAttr(v){ return escapeHtml(v); }
+function uiLabel(v){
+  return (LANG === 'en' && UI_MAP[v]) ? UI_MAP[v] : v;
+}
 function expText(q){
   return (LANG==='en' && q.expEn) ? q.expEn : q.exp;
 }
@@ -3623,6 +3864,7 @@ function renderInner(main){
 
 /* ---------------- AUTH (sign up / log in / email verification) ---------------- */
 function renderAuth(){
+  // (localized at the end of this function)
   document.getElementById('tabbar').style.display = 'none';
   document.getElementById('authRow').style.display = 'none';
   const main = document.getElementById('main');
@@ -3669,6 +3911,7 @@ function renderAuth(){
       renderAuth();
     });
   }
+  localizeDOM(document.getElementById('main'));
 }
 function setAuthBusy(btnId, busyText){
   const btn = document.getElementById(btnId);
@@ -4001,9 +4244,9 @@ function renderFlash(main){
       </div>
     </div>
     ${deck.length ? `
-    <div class="deck-status">${flashIndex+1} / ${deck.length} — ${word.cat}</div>
+    <div class="deck-status">${flashIndex+1} / ${deck.length} — ${uiLabel(word.cat)}</div>
     <div class="flashcard" id="flashCard">
-      <span class="cat-label">${word.cat}</span>
+      <span class="cat-label">${uiLabel(word.cat)}</span>
       <span class="lvl-label">${word.level}</span>
       ${flashFlipped ? `
         <div class="word-tr">${word.tr}</div>
@@ -4105,7 +4348,7 @@ function renderGrammar(main){
     card.innerHTML = `
       <div class="topic-head" data-t="${tIdx}">
         <div>
-          <h3>${locked ? '🔒 ' : ''}${topic.topic}</h3>
+          <h3>${locked ? '🔒 ' : ''}${uiLabel(topic.topic)}</h3>
           ${locked ? `<div class="tier-note" style="margin:4px 0 0;text-align:left;">${topic.level} seviyesinde açılır</div>` : `<div class="topic-progress-bar"><div class="topic-progress-fill" style="width:${pct}%"></div></div>`}
         </div>
         <span style="font-size:0.75rem;color:var(--ink-soft)">${locked ? '' : doneCount+'/'+topic.qs.length}</span>
@@ -4729,6 +4972,9 @@ function renderDictionary(main){
       <button class="btn btn-primary" id="dictSearchBtn">Ara</button>
     </div>
     <div id="dictResult"></div>
+    <p class="attribution attribution-standing">${LANG==='en'
+      ? 'Dictionary data from Wiktionary (CC BY-SA 4.0). Translations by MyMemory.'
+      : 'Sözlük verisi Wiktionary kaynaklıdır (CC BY-SA 4.0). Çeviriler MyMemory tarafından sağlanır.'}</p>
   `;
   const input = document.getElementById('dictInput');
   const doSearch = ()=> performLookup(input.value);
@@ -4767,6 +5013,10 @@ function renderDictionary(main){
     }
     html += `<button class="sound-btn" id="dictSpeak">🔊 Dinle</button>`;
     html += `</div>`;
+    // CC BY-SA 4.0 requires visible credit and a link back to the source.
+    html += `<p class="attribution">${LANG==='en'
+      ? 'Definitions from <a href="https://en.wiktionary.org/wiki/' + encodeURIComponent(r.englishWord) + '" target="_blank" rel="noopener noreferrer">Wiktionary</a>, licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. Translations by <a href="https://mymemory.translated.net/" target="_blank" rel="noopener noreferrer">MyMemory</a>.'
+      : 'Tanımlar <a href="https://en.wiktionary.org/wiki/' + encodeURIComponent(r.englishWord) + '" target="_blank" rel="noopener noreferrer">Wiktionary</a> kaynaklıdır ve <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> ile lisanslıdır. Çeviriler <a href="https://mymemory.translated.net/" target="_blank" rel="noopener noreferrer">MyMemory</a> tarafından sağlanır.'}</p>`;
     resArea.innerHTML = html;
     const speakBtn = document.getElementById('dictSpeak');
     if(speakBtn) speakBtn.addEventListener('click', ()=>speak(r.englishWord));

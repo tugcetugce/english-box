@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gizlilik Politikası — Loquat</title>
+<meta name="theme-color" content="#2B3A67">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F0F3EE; --surface:#FFFFFF; --navy:#2B3A67; --ink:#22262B;
+    --ink-soft:#6B7280; --border:#DEE3D9; --amber:#E39A34;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Work Sans',system-ui,sans-serif; line-height:1.65; font-size:0.95rem;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:32px 20px 80px;}
+  h1{font-family:'Fraunces',serif; color:var(--navy); font-size:1.7rem; margin:0 0 6px;}
+  h2{font-family:'Fraunces',serif; color:var(--navy); font-size:1.15rem; margin:30px 0 8px;}
+  .updated{color:var(--ink-soft); font-size:0.85rem; margin-bottom:26px;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px 22px; margin-bottom:18px;}
+  ul{padding-left:20px; margin:8px 0;}
+  li{margin-bottom:6px;}
+  a{color:var(--navy);}
+  .back{display:inline-block; margin-bottom:22px; text-decoration:none; color:var(--navy); font-weight:600;}
+  .lang-switch{float:right; font-size:0.85rem;}
+  .lang-switch button{
+    background:none; border:1.5px solid var(--border); border-radius:999px;
+    padding:4px 12px; cursor:pointer; font-family:inherit; color:var(--navy); font-weight:600;
+  }
+  .lang-switch button.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+  table{width:100%; border-collapse:collapse; margin:10px 0; font-size:0.88rem;}
+  th,td{text-align:left; padding:8px 6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{color:var(--navy);}
+  [hidden]{display:none !important;}
+  footer{color:var(--ink-soft); font-size:0.82rem; margin-top:30px; text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./">&larr; <span data-tr="Uygulamaya dön" data-en="Back to the app">Uygulamaya dön</span></a>
+  <div class="lang-switch">
+    <button id="langBtn">English</button>
+  </div>
+
+  <!-- ============ TÜRKÇE ============ -->
+  <section id="tr">
+    <h1>Gizlilik Politikası</h1>
+    <p class="updated">Son güncelleme: 9 Eylül 2026</p>
+
+    <div class="card">
+      <p>Bu politika, <strong>Loquat</strong> uygulamasını kullandığında hangi verilerin işlendiğini, neden işlendiğini ve bunlar üzerinde hangi haklara sahip olduğunu açıklar. Kısa tutmaya çalıştık, çünkü topladığımız veri de az.</p>
+    </div>
+
+    <h2>1. Hangi verileri işliyoruz</h2>
+    <div class="card">
+      <table>
+        <tr><th>Veri</th><th>Neden</th><th>Nerede</th></tr>
+        <tr>
+          <td>E-posta adresin</td>
+          <td>Hesabını oluşturmak, giriş yapmanı sağlamak ve şifre sıfırlama</td>
+          <td>Supabase (kimlik doğrulama)</td>
+        </tr>
+        <tr>
+          <td>Öğrenme ilerlemen<br><span style="color:var(--ink-soft)">(seviye, XP, bilinen kelimeler, quiz istatistikleri, seri, sınav geçmişi)</span></td>
+          <td>İlerlemeni cihazlar arasında saklamak ve sana uygun içerik göstermek</td>
+          <td>Supabase (veritabanı) ve cihazının yerel deposu</td>
+        </tr>
+        <tr>
+          <td>Çalıştığın saatler</td>
+          <td>Hatırlatma bildirimlerini alışkanlığına göre zamanlamak</td>
+          <td>Sadece ilerleme kaydının içinde</td>
+        </tr>
+        <tr>
+          <td>Anonim kullanım sayıları</td>
+          <td>Hangi bölümlerin kullanıldığını görüp uygulamayı iyileştirmek</td>
+          <td>GoatCounter (çerezsiz)</td>
+        </tr>
+      </table>
+      <p><strong>Toplamadığımız şeyler:</strong> ad soyad, telefon, adres, konum, rehber, fotoğraf, ödeme bilgisi, reklam kimliği. Uygulamada reklam yok ve verilerini kimseye satmıyoruz.</p>
+    </div>
+
+    <h2>2. Google ile giriş</h2>
+    <div class="card">
+      <p>Google ile giriş yapmayı seçersen, Google bize yalnızca e-posta adresini ve hesap kimliğini iletir. Google şifreni hiçbir zaman görmez ve saklamayız. Google'ın kendi veri işleme uygulamaları için <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Gizlilik Politikası</a>'na bakabilirsin.</p>
+    </div>
+
+    <h2>3. Sözlük özelliği</h2>
+    <div class="card">
+      <p>Sözlükte bir kelime aradığında, o kelime tanımını ve çevirisini almak için iki üçüncü taraf servise gönderilir: <em>dictionaryapi.dev</em> ve <em>MyMemory</em>. Bu isteklerle birlikte kimliğin, e-postan veya hesabınla ilgili hiçbir bilgi gönderilmez — yalnızca aradığın kelime gider.</p>
+    </div>
+
+    <h2>4. Verilerin ne kadar saklanır</h2>
+    <div class="card">
+      <p>Hesabın açık olduğu sürece ilerleme kaydın saklanır. Hesabını sildiğinde verilerin kalıcı olarak silinir; yedeklerden temizlenmesi en fazla 30 gün sürebilir. Anonim kullanım sayıları kişiyle ilişkilendirilemez ve toplu istatistik olarak kalır.</p>
+    </div>
+
+    <h2>5. Verilerin nasıl korunuyor</h2>
+    <div class="card">
+      <ul>
+        <li>Tüm bağlantılar HTTPS ile şifrelenir.</li>
+        <li>Veritabanında satır düzeyinde güvenlik (RLS) etkindir: teknik olarak yalnızca sen kendi kaydına erişebilirsin.</li>
+        <li>Şifreler Supabase tarafında karma (hash) olarak saklanır, biz düz metin şifreni göremeyiz.</li>
+        <li>Uzun süre işlem yapılmazsa oturumun otomatik kapanır.</li>
+      </ul>
+    </div>
+
+    <h2>6. KVKK ve GDPR kapsamındaki haklarım</h2>
+    <div class="card">
+      <p>Şu haklara sahipsin ve bunları uygulama içinden kullanabilirsin:</p>
+      <ul>
+        <li><strong>Erişim ve taşınabilirlik:</strong> Ayarlar &rarr; <em>Verilerimi indir</em> ile tüm verini JSON olarak indirebilirsin.</li>
+        <li><strong>Silme:</strong> Ayarlar &rarr; <em>Hesabımı sil</em> ile hesabını ve tüm verilerini kalıcı olarak silebilirsin.</li>
+        <li><strong>Düzeltme ve itiraz:</strong> Aşağıdaki adresten bize yazabilirsin.</li>
+      </ul>
+    </div>
+
+    <h2>7. Çocukların gizliliği</h2>
+    <div class="card">
+      <p>Uygulama 13 yaş altındaki çocuklara yönelik değildir ve bilerek bu yaş grubundan veri toplamayız. Böyle bir kaydın oluştuğunu fark edersek sileriz.</p>
+    </div>
+
+    <h2>8. Değişiklikler ve iletişim</h2>
+    <div class="card">
+      <p>Bu politikada değişiklik olursa yukarıdaki tarih güncellenir ve önemli değişiklikleri uygulama içinde duyururuz.</p>
+      <p>Soruların veya talepler için: <a href="mailto:tugcebektas94@gmail.com">tugcebektas94@gmail.com</a></p>
+    </div>
+    <h2>9. Kaynaklar ve lisanslar</h2>
+    <div class="card">
+      <p>Uygulamadaki kelime listeleri, örnek cümleler, çeviriler, gramer soruları ve okuma parçalarının tamamı bu uygulama için özgün olarak yazılmıştır; herhangi bir basılı sözlük veya ders kitabından kopyalanmamıştır.</p>
+      <p>Sözlük bölümünde gösterilen İngilizce–İngilizce tanımlar <a href="https://en.wiktionary.org/" target="_blank" rel="noopener noreferrer">Wiktionary</a> kaynaklıdır ve <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> lisansı ile kullanılmaktadır. Türkçe çeviriler <a href="https://mymemory.translated.net/" target="_blank" rel="noopener noreferrer">MyMemory</a> servisinden alınmaktadır.</p>
+      <p>Arayüzde kullanılan <em>Fraunces</em> ve <em>Work Sans</em> yazı tipleri SIL Open Font License ile, <em>supabase-js</em> kütüphanesi MIT lisansı ile dağıtılmaktadır.</p>
+    </div>
+  </section>
+
+  <!-- ============ ENGLISH ============ -->
+  <section id="en" hidden>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: 9 September 2026</p>
+
+    <div class="card">
+      <p>This policy explains what data <strong>Loquat</strong> processes when you use it, why, and what rights you have over it. It is short because we collect very little.</p>
+    </div>
+
+    <h2>1. What we process</h2>
+    <div class="card">
+      <table>
+        <tr><th>Data</th><th>Why</th><th>Where</th></tr>
+        <tr>
+          <td>Your email address</td>
+          <td>To create your account, sign you in and reset your password</td>
+          <td>Supabase (authentication)</td>
+        </tr>
+        <tr>
+          <td>Your learning progress<br><span style="color:var(--ink-soft)">(level, XP, known words, quiz stats, streak, exam history)</span></td>
+          <td>To keep your progress across devices and show you suitable content</td>
+          <td>Supabase (database) and your device's local storage</td>
+        </tr>
+        <tr>
+          <td>The hours you study</td>
+          <td>To time reminder notifications around your habits</td>
+          <td>Inside your progress record only</td>
+        </tr>
+        <tr>
+          <td>Anonymous usage counts</td>
+          <td>To see which parts are used and improve the app</td>
+          <td>GoatCounter (cookie-free)</td>
+        </tr>
+      </table>
+      <p><strong>What we do not collect:</strong> your name, phone number, address, location, contacts, photos, payment details or advertising identifiers. There are no ads in the app and we do not sell your data to anyone.</p>
+    </div>
+
+    <h2>2. Signing in with Google</h2>
+    <div class="card">
+      <p>If you choose Google sign-in, Google shares only your email address and account identifier with us. Google never shows us your password and we never store it. See the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a> for how Google handles your data.</p>
+    </div>
+
+    <h2>3. The dictionary feature</h2>
+    <div class="card">
+      <p>When you look up a word, that word is sent to two third-party services to fetch its definition and translation: <em>dictionaryapi.dev</em> and <em>MyMemory</em>. No identity, email or account information is sent with these requests — only the word itself.</p>
+    </div>
+
+    <h2>4. How long we keep it</h2>
+    <div class="card">
+      <p>Your progress is kept while your account exists. When you delete your account, your data is permanently deleted; removal from backups can take up to 30 days. Anonymous usage counts cannot be linked to a person and remain as aggregate statistics.</p>
+    </div>
+
+    <h2>5. How your data is protected</h2>
+    <div class="card">
+      <ul>
+        <li>All connections are encrypted with HTTPS.</li>
+        <li>Row Level Security is enabled on the database: technically, only you can reach your own record.</li>
+        <li>Passwords are stored hashed by Supabase; we cannot see your plaintext password.</li>
+        <li>Your session signs out automatically after a long period of inactivity.</li>
+      </ul>
+    </div>
+
+    <h2>6. Your rights (GDPR / KVKK)</h2>
+    <div class="card">
+      <p>You have the following rights and can exercise them from inside the app:</p>
+      <ul>
+        <li><strong>Access and portability:</strong> Settings &rarr; <em>Download my data</em> gives you everything as a JSON file.</li>
+        <li><strong>Erasure:</strong> Settings &rarr; <em>Delete my account</em> permanently deletes your account and all its data.</li>
+        <li><strong>Correction and objection:</strong> Contact us at the address below.</li>
+      </ul>
+    </div>
+
+    <h2>7. Children's privacy</h2>
+    <div class="card">
+      <p>The app is not directed at children under 13 and we do not knowingly collect data from them. If we become aware of such an account, we delete it.</p>
+    </div>
+
+    <h2>8. Changes and contact</h2>
+    <div class="card">
+      <p>If this policy changes, the date above is updated and significant changes are announced in the app.</p>
+      <p>For questions or requests: <a href="mailto:tugcebektas94@gmail.com">tugcebektas94@gmail.com</a></p>
+    </div>
+    <h2>9. Sources and licences</h2>
+    <div class="card">
+      <p>All word lists, example sentences, translations, grammar questions and reading passages in this app were written originally for it; none were copied from a printed dictionary or coursebook.</p>
+      <p>The English definitions shown in the Loquatary section come from <a href="https://en.wiktionary.org/" target="_blank" rel="noopener noreferrer">Wiktionary</a> and are used under the <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> licence. Turkish translations are provided by <a href="https://mymemory.translated.net/" target="_blank" rel="noopener noreferrer">MyMemory</a>.</p>
+      <p>The <em>Fraunces</em> and <em>Work Sans</em> typefaces are distributed under the SIL Open Font License, and the <em>supabase-js</em> library under the MIT licence.</p>
+    </div>
+  </section>
+
+  <footer>Loquat</footer>
+</div>
+
+<script>
+  var btn = document.getElementById('langBtn');
+  var tr = document.getElementById('tr');
+  var en = document.getElementById('en');
+  function apply(lang){
+    var isEn = lang === 'en';
+    tr.hidden = isEn;
+    en.hidden = !isEn;
+    btn.textContent = isEn ? 'Türkçe' : 'English';
+    document.documentElement.lang = isEn ? 'en' : 'tr';
+    document.title = isEn ? 'Privacy Policy — Loquat' : 'Gizlilik Politikası — Loquat';
+    document.querySelectorAll('[data-tr]').forEach(function(el){
+      el.textContent = isEn ? el.getAttribute('data-en') : el.getAttribute('data-tr');
+    });
+    try{ localStorage.setItem('app_lang', lang); }catch(e){}
+  }
+  var saved = 'tr';
+  try{ saved = localStorage.getItem('app_lang') || 'en'; }catch(e){}
+  apply(saved);
+  btn.addEventListener('click', function(){
+    apply(en.hidden ? 'en' : 'tr');
+  });
+</script>
+</body>
+</html>

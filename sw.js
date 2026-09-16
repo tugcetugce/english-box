@@ -1,8 +1,8 @@
-// Service worker for Loquat.
+// Service worker for Oratino.
 // Two jobs: keep the app usable offline, and handle notification clicks.
 // Bump CACHE_VERSION whenever you deploy so clients pick up the new files.
 
-const CACHE_VERSION = 'loquat-v1';
+const CACHE_VERSION = 'oratino-v1';
 const APP_SHELL = [
   './',
   './index.html',

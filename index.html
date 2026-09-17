@@ -6533,7 +6533,7 @@ function startIelts(testId){
   const reading   = test.reading.questions.map((q,i)=>({ ...q, section:'reading', n:i+1 }));
   ieltsState = {
     test,
-    section: 'intro',
+    section: 'listening',
     questions: { listening, reading },
     answers: {},
     writing: '',
@@ -6704,7 +6704,10 @@ function renderIelts(main){
   if(ieltsState.section === 'listening'){ renderIeltsListening(main); return; }
   if(ieltsState.section === 'reading'){ renderIeltsReading(main); return; }
   if(ieltsState.section === 'writing'){ renderIeltsWriting(main); return; }
-  renderIeltsIntro(main);
+  // an unknown section would strand the candidate on the start screen with the
+  // clock running, so send them to the first section instead
+  ieltsState.section = 'listening';
+  renderIeltsListening(main);
 }
 
 function renderIeltsIntro(main){
@@ -7019,6 +7022,26 @@ function renderIeltsResult(main){
    One word a day, five clues, revealed one at a time. Clues are derived from
    data we already hold, so every word in the list can be the answer — no
    hand-written puzzle per word.                                           */
+/** Blank a word out of a sentence even when it appears inflected there:
+    "apply" has to match "applied", "sleep" has to match "sleeps". */
+function blankWordInSentence(word, sentence){
+  if(!sentence) return null;
+  const base = String(word).trim();
+  if(!base) return null;
+  const direct = new RegExp('\\b' + escapeRegExp(base) + '\\b', 'i');
+  if(direct.test(sentence)) return sentence.replace(direct, '_____');
+  // try the usual endings, longest first so "applied" wins over "apply"
+  const stem = base.replace(/(e|y)$/i, '');
+  const forms = [
+    base + 'ied', base + 'ing', base + 'ies', base + 'es', base + 'ed', base + 's',
+    stem + 'ied', stem + 'ying', stem + 'ing', stem + 'ies', stem + 'ed', stem + 'es'
+  ].sort((a,b)=>b.length - a.length);
+  for(const f of forms){
+    const re = new RegExp('\\b' + escapeRegExp(f) + '\\b', 'i');
+    if(re.test(sentence)) return sentence.replace(re, '_____');
+  }
+  return null;
+}
 function mysteryWordForToday(){
   const pool = unlockedVocab().filter(w=>/^[a-zA-Z]{4,}$/.test(w.en));
   if(!pool.length) return null;
@@ -7029,19 +7052,21 @@ function mysteryWordForToday(){
 }
 function mysteryClues(w){
   const letters = w.en.length;
-  const blanked = w.ex.replace(new RegExp('\\b' + escapeRegExp(w.en) + '\\b','i'), '_____');
+  const blanked = blankWordInSentence(w.en, w.ex) || blankWordInSentence(w.en, w.ex2 || '');
+  const lastClue = blanked ? `"${blanked}"`
+    : (LANG === 'en' ? `It is used like this: "${w.ex}"` : `Şöyle kullanılır: "${w.ex}"`);
   return LANG === 'en' ? [
     `It belongs to the category "${uiLabel(w.cat)}".`,
     `It has ${letters} letters.`,
     `It starts with "${w.en[0].toUpperCase()}".`,
     `In Turkish it means: ${w.tr}`,
-    `"${blanked}"`
+    lastClue
   ] : [
     `"${uiLabel(w.cat)}" kategorisinde.`,
     `${letters} harfli.`,
     `"${w.en[0].toUpperCase()}" harfiyle başlıyor.`,
     `Türkçesi: ${w.tr}`,
-    `"${blanked}"`
+    lastClue
   ];
 }
 let mysteryState = null;
@@ -7161,7 +7186,7 @@ function buildBoss(){
   // sentence completion from real examples
   wordPool.filter(w=>findClozeSentence(w)).sort(()=>Math.random()-0.5).slice(0,5).forEach(w=>{
     const found = findClozeSentence(w);
-    const blanked = found.sentence.replace(new RegExp('\\b'+escapeRegExp(w.en)+'\\b','i'), '_____');
+    const blanked = blankWordInSentence(w.en, found.sentence);
     const opts = [...wordPool.filter(x=>x.id!==w.id).sort(()=>Math.random()-0.5).slice(0,3)
       .map(x=>x.en), w.en].sort(()=>Math.random()-0.5);
     qs.push({ kind:'cloze', wordId:w.id,
@@ -7980,6 +8005,8 @@ async function callChatFunction(payload){
     const e = new Error(body.error || 'request_failed');
     e.code = body.error;
     e.limit = body.limit;
+    // 404 = the function was never deployed, 503 = deployed but no API key set
+    e.notSetUp = res.status === 404 || res.status === 503;
     throw e;
   }
   return body;
@@ -8022,13 +8049,19 @@ async function sendChatMessage(text){
     chatState.remaining = body.remaining;
     addXp(6);
   }catch(e){
-    chatState.error = e.code === 'daily_limit'
-      ? (LANG==='en'
-          ? `You've used today's free messages. Come back tomorrow.`
-          : `Bugünkü ücretsiz mesaj hakkın doldu. Yarın devam edebilirsin.`)
-      : (LANG==='en'
-          ? `Couldn't reach the tutor. Check your connection and try again.`
-          : `Öğretmene ulaşılamadı. Bağlantını kontrol edip tekrar dene.`);
+    if(e.code === 'daily_limit'){
+      chatState.error = LANG==='en'
+        ? `You've used today's free messages. Come back tomorrow.`
+        : `Bugünkü ücretsiz mesaj hakkın doldu. Yarın devam edebilirsin.`;
+    } else if(e.notSetUp){
+      chatState.error = LANG==='en'
+        ? `AI conversation is not switched on for this app yet. Everything else works as normal.`
+        : `AI konuşma bu uygulamada henüz açılmadı. Diğer her şey normal çalışıyor.`;
+    } else {
+      chatState.error = LANG==='en'
+        ? `Couldn't reach the tutor. Check your connection and try again.`
+        : `Öğretmene ulaşılamadı. Bağlantını kontrol edip tekrar dene.`;
+    }
   }
   chatState.sending = false;
   render();
@@ -8501,9 +8534,8 @@ function renderListenResult(){
 /* ---------------- FILL IN THE BLANK (CLOZE) ---------------- */
 function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function findClozeSentence(w){
-  const re = new RegExp('\\b'+escapeRegExp(w.en)+'\\b','i');
-  if(w.ex && re.test(w.ex)) return {sentence:w.ex, sentenceTr:w.exTr};
-  if(w.ex2 && re.test(w.ex2)) return {sentence:w.ex2, sentenceTr:w.exTr2};
+  if(blankWordInSentence(w.en, w.ex)) return {sentence:w.ex, sentenceTr:w.exTr};
+  if(w.ex2 && blankWordInSentence(w.en, w.ex2)) return {sentence:w.ex2, sentenceTr:w.exTr2};
   return null;
 }
 function buildCloze(){
@@ -8513,8 +8545,7 @@ function buildCloze(){
   const picks = weightedSample(basePool, wordWeight, Math.min(6, basePool.length));
   const questions = picks.map(w=>{
     const found = findClozeSentence(w);
-    const re = new RegExp('\\b'+escapeRegExp(w.en)+'\\b','i');
-    const blanked = found.sentence.replace(re, '_____');
+    const blanked = blankWordInSentence(w.en, found.sentence);
     return {word:w, blanked, sentenceTr:found.sentenceTr, answer:w.en};
   });
   clozeState = {questions, idx:0, correctCount:0, finished:false, answered:false};
